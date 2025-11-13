@@ -243,7 +243,61 @@ main() {
     log_info "This repository is excluded from version control via .gitignore"
 }
 
-# Script entry point
+# Function to show help information
+show_help() {
+    cat << 'HELP_EOF'
+========================================
+Spring Modulith Repository Setup Script
+========================================
+
+DESCRIPTION:
+    This script provides idempotent cloning of the Spring Modulith reference
+    repository for the Omega agentic migration system.
+
+USAGE:
+    ./clone-spring-modulith.sh [OPTIONS]
+
+OPTIONS:
+    -h, --help     Show this help message and exit
+    -v, --version  Show version information
+    
+EXAMPLES:
+    ./clone-spring-modulith.sh                # Clone repository
+    ./clone-spring-modulith.sh --help         # Show help
+
+CONFIGURATION:
+    Source: https://github.com/spring-projects/spring-modulith.git
+    Target: /workspace/data/codebase/spring-modulith
+
+For more information, see: /workspace/docs/data/codebase/
+========================================
+HELP_EOF
+}
+
+# Function to show version information
+show_version() {
+    echo "Spring Modulith Cloning Script v1.0"
+    echo "Part of the Omega agentic migration system"
+}
+
+# Script entry point with argument parsing
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
+    case "${1:-}" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -v|--version)
+            show_version
+            exit 0
+            ;;
+        "")
+            main "$@"
+            ;;
+        *)
+            echo "Error: Unknown option '$1'"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
 fi

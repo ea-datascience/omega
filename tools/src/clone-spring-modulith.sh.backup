@@ -247,3 +247,103 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
 fi
+# Function to show detailed help information
+show_detailed_help() {
+    cat << 'HELP_EOF'
+=============================================================================
+Spring Modulith Repository Cloning Script - Detailed Help
+=============================================================================
+
+DESCRIPTION:
+    This script provides idempotent cloning of the Spring Modulith reference
+    repository for the Omega agentic migration system. It ensures the latest
+    version is always available for migration analysis and demonstration.
+
+USAGE:
+    ./clone-spring-modulith.sh [OPTIONS]
+    bash /workspace/tools/src/clone-spring-modulith.sh [OPTIONS]
+    /workspace/tools/src/clone-spring-modulith.sh [OPTIONS]
+
+OPTIONS:
+    -h, --help          Show this help message and exit
+    --detailed-help     Show this detailed help information
+    -v, --verbose       Enable verbose output (default)
+    -q, --quiet         Suppress non-essential output
+    -f, --force         Force re-clone even if repository appears current
+
+FEATURES:
+    • Idempotent Operation    - Safe to run multiple times
+    • Comprehensive Logging   - Color-coded progress reporting
+    • Error Handling         - Robust error checking and recovery
+    • Repository Validation  - Verifies structure and integrity
+    • Information Display    - Shows metadata and status
+    • Directory Management   - Auto-creates required directories
+
+CONFIGURATION:
+    Source Repository: https://github.com/spring-projects/spring-modulith.git
+    Target Directory:  /workspace/data/codebase/spring-modulith
+    Operation Mode:    Idempotent (removes existing, clones fresh)
+
+EXPECTED OUTPUT:
+    The script will:
+    1. Create directory structure if needed
+    2. Remove existing repository if present
+    3. Clone fresh copy from GitHub
+    4. Validate repository structure and content
+    5. Display repository information and status
+
+FILE STRUCTURE CREATED:
+    /workspace/data/codebase/spring-modulith/
+    ├── src/                    # Source code
+    ├── gradle/                 # Gradle wrapper
+    ├── .git/                   # Git repository data
+    ├── README.adoc             # Project documentation
+    ├── build.gradle            # Build configuration
+    └── [additional files...]   # Other project files
+
+INTEGRATION:
+    • GitHub Copilot Prompt: /workspace/.github/prompts/clonecodebase.prompt.md
+    • Git Ignore Integration: Repository excluded from version control
+    • Analysis Workflow: Provides foundation for migration analysis
+    • Validation Support: Comprehensive verification steps included
+
+REQUIREMENTS:
+    • Git (for repository operations)
+    • Internet connectivity (for GitHub access)
+    • Write permissions to /workspace/data/codebase/ directory
+    • Approximately 15MB free disk space
+
+EXIT CODES:
+    0  - Success (repository cloned and validated)
+    1  - General error (clone failed, validation failed, network issues)
+
+EXAMPLES:
+    # Basic usage - clone repository
+    ./clone-spring-modulith.sh
+
+    # Show help
+    ./clone-spring-modulith.sh --help
+
+    # Show detailed help
+    ./clone-spring-modulith.sh --detailed-help
+
+TROUBLESHOOTING:
+    • Network Issues: Check internet connectivity and GitHub accessibility
+    • Permission Errors: Ensure write access to /workspace/data/codebase/
+    • Disk Space: Verify at least 15MB free space available
+    • Git Errors: Confirm Git is installed and properly configured
+
+FOR MORE INFORMATION:
+    • Project Documentation: /workspace/docs/
+    • Tools Documentation: /workspace/tools/README.md
+    • GitHub Repository: https://github.com/ea-datascience/omega
+
+=============================================================================
+HELP_EOF
+}
+
+# Enhanced argument parsing
+if [[ "${BASH_SOURCE[0]}" == "${0}" && "${1:-}" == "--detailed-help" ]]; then
+    show_detailed_help
+    exit 0
+fi

@@ -254,6 +254,128 @@ Reference repositories are stored locally only and do not affect the project rep
 ### Access Issues
 Ensure you have internet connectivity when cloning reference repositories. Some repositories may require authentication for private access.
 
+## Automated Tools and Workflows
+
+The Omega project provides automated tools and workflows to streamline the reference codebase setup process.
+
+### Automated Cloning Script
+
+A dedicated bash script is available for automated, idempotent cloning of the Spring Modulith repository:
+
+**Script Location**: `/workspace/tools/src/clone-spring-modulith.sh`
+
+#### Features
+- **Idempotent Operation**: Safely handles existing repositories by removing and re-cloning
+- **Comprehensive Logging**: Color-coded output with detailed progress reporting
+- **Error Handling**: Robust error checking and graceful failure handling
+- **Repository Validation**: Verifies repository structure, remote URL, and file integrity
+- **Information Display**: Shows repository metadata (size, branch, last commit)
+
+#### Usage
+```bash
+# Execute the cloning script
+/workspace/tools/src/clone-spring-modulith.sh
+
+# Or make it executable and run directly
+chmod +x /workspace/tools/src/clone-spring-modulith.sh
+./tools/src/clone-spring-modulith.sh
+```
+
+#### Script Configuration
+The script uses these default configurations:
+- **Source Repository**: `https://github.com/spring-projects/spring-modulith.git`
+- **Target Directory**: `/workspace/data/codebase/spring-modulith`
+- **Operation Mode**: Idempotent (removes existing, clones fresh)
+
+#### Expected Output
+```
+========================================
+Spring Modulith Repository Setup Script
+========================================
+[INFO] Starting idempotent repository setup...
+[SUCCESS] Directory structure created: /workspace/data/codebase
+[INFO] Cloning Spring Modulith repository...
+[SUCCESS] Repository cloned successfully
+[SUCCESS] Repository verification passed
+[INFO] Repository Information:
+  Location: /workspace/data/codebase/spring-modulith
+  Size: 12M
+  Remote URL: https://github.com/spring-projects/spring-modulith.git
+  Current Branch: main
+  Last Commit: [commit-hash] - [commit-message] ([time-ago])
+========================================
+[SUCCESS] Spring Modulith repository setup completed successfully!
+========================================
+```
+
+### GitHub Copilot Integration
+
+A dedicated GitHub Copilot prompt provides operational wrapper functionality for the cloning script.
+
+**Prompt Location**: `/workspace/.github/prompts/clonecodebase.prompt.md`
+
+#### Prompt Features
+- **Task Definition**: Clear objectives and requirements for reference codebase setup
+- **Execution Workflow**: Step-by-step process from pre-checks to validation
+- **Validation Commands**: Comprehensive verification steps for operation success
+- **Error Handling**: Troubleshooting guidance for common failure scenarios
+- **Success Criteria**: 10-point checklist for systematic validation
+
+#### Validation Commands
+The prompt includes these validation categories:
+
+1. **Repository Structure Validation**
+   ```bash
+   ls -la /workspace/data/codebase/spring-modulith/ | head -10
+   du -sh /workspace/data/codebase/spring-modulith/
+   ```
+
+2. **Git Configuration Validation**
+   ```bash
+   cd /workspace/data/codebase/spring-modulith && git remote get-url origin
+   cd /workspace/data/codebase/spring-modulith && git branch --show-current
+   ```
+
+3. **Version Control Exclusion Validation**
+   ```bash
+   git status --porcelain | grep -c spring-modulith || echo "Repository properly excluded"
+   git check-ignore /workspace/data/codebase/spring-modulith/ && echo ".gitignore rule active"
+   ```
+
+4. **Repository Integrity Validation**
+   ```bash
+   cd /workspace/data/codebase/spring-modulith && git status --porcelain
+   ls -1 /workspace/data/codebase/spring-modulith/ | grep -E "(src|pom\.xml|build\.gradle)"
+   ```
+
+5. **Network and Freshness Validation**
+   ```bash
+   cd /workspace/data/codebase/spring-modulith && git fetch --dry-run origin main
+   ```
+
+#### Success Validation Checklist
+- [ ] Script execution completed without errors
+- [ ] Directory exists at `/workspace/data/codebase/spring-modulith/`
+- [ ] Valid git repository with `.git` folder
+- [ ] Correct remote URL: `https://github.com/spring-projects/spring-modulith.git`
+- [ ] Repository on `main` branch
+- [ ] Recent commit within reasonable timeframe
+- [ ] Repository size approximately 12M
+- [ ] Properly excluded from Omega project version control
+- [ ] Basic Spring project structure present
+- [ ] Repository represents latest version from GitHub
+
+### Integration Workflow
+
+The complete automated workflow combines both tools:
+
+1. **Invoke Prompt**: Use the GitHub Copilot prompt to trigger the operation
+2. **Execute Script**: The prompt guides execution of the bash script
+3. **Validate Results**: Run comprehensive validation commands
+4. **Verify Success**: Confirm all success criteria are met
+
+This integrated approach ensures consistent, reliable, and verifiable setup of reference codebases for migration analysis.
+
 ---
 
 *This documentation ensures reproducible setup of reference codebases for the Omega agentic migration system.*

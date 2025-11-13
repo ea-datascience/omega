@@ -38,6 +38,12 @@ Reference data is:
 - Organized by type (codebase, datasets, etc.)
 - Documented for reproducibility
 
+### Automated Tools
+The project provides automated workflows for reference codebase management:
+- **Bash Script**: Idempotent cloning with comprehensive validation (`/workspace/tools/src/clone-spring-modulith.sh`)
+- **GitHub Prompt**: Operational wrapper with validation commands (`/workspace/.github/prompts/clonecodebase.prompt.md`)
+- **Integrated Workflow**: Combined approach for consistent, reliable setup
+
 ### Clean Repository Maintenance
 - Only Omega project files are tracked
 - Reference materials remain available locally

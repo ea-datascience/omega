@@ -323,5 +323,6 @@ The combination of Omega's migration focus and Spec Kit's systematic development
 
 - **Official Documentation**: https://github.com/github/spec-kit
 - **Video Overview**: https://www.youtube.com/watch?v=a9eR1xsfvHg
-- **Detailed Methodology**: [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)
+- **Official SDD Methodology**: [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)
+- **Omega SDD Methodology Guide**: [SDD-METHODOLOGY.md](SDD-METHODOLOGY.md) - Detailed methodology adapted for Omega migration workflows
 - **Community Support**: [GitHub Discussions](https://github.com/github/spec-kit/discussions)

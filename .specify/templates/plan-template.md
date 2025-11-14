@@ -31,7 +31,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Migration Lifecycle Compliance**:
+- [ ] Feature aligns with specified lifecycle steps (1-29)
+- [ ] Agent roles clearly identified (owner and support)
+- [ ] Test strategy follows constitution taxonomy
+- [ ] Human-in-the-loop points defined for critical decisions
+- [ ] Integration with cockpit monitoring planned
+
+**Core Principles Compliance**:
+- [ ] Migration Intelligence: Provides actionable insights beyond manual analysis
+- [ ] Agent-Driven: Designed for multi-agent orchestration
+- [ ] Reference-Based: Validates against proven patterns (e.g., Spring Modulith)
+- [ ] Quality & Safety: Includes comprehensive testing and human oversight
+- [ ] Test-Driven: Specifications transform into executable tests
 
 ## Project Structure
 

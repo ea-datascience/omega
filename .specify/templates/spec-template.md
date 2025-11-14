@@ -75,6 +75,20 @@
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
 
+## Migration Lifecycle Alignment *(mandatory for Omega)*
+
+<!--
+  OMEGA CONSTITUTION REQUIREMENT: Every specification must reference migration lifecycle steps.
+  See constitution.md for complete 29-step lifecycle across 7 phases:
+  Discover & Baseline → Decompose & Design → Prepare Platform → Strangler Execution → Scale & Optimize → Org Readiness → Retire Monolith
+-->
+
+**Primary Lifecycle Steps**: [List relevant steps 1-29, e.g., "Step 2: Architecture & domain decomposition, Step 16: Build first vertical slice"]
+
+**Agent Roles**: [Identify accountable and supporting agent roles, e.g., "Owner: Architect & Decomposition, Support: API & Integration, QA/Quality"]
+
+**Test Strategy**: [Specify test types from constitution taxonomy, e.g., "Contract tests, Migration tests, Integration tests"]
+
 ## Requirements *(mandatory)*
 
 <!--

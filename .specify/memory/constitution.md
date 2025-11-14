@@ -1,50 +1,67 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+Version change: template → 1.0.0
+Added sections: Migration Lifecycle, Agent Archetypes, Test Strategy
+Templates requiring updates: ✅ constitution updated
+Follow-up TODOs: Review spec-template.md, plan-template.md, tasks-template.md for lifecycle alignment
+-->
+
+# Omega Agentic Migration System Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Migration Intelligence First
+Every feature must advance intelligent software migration from monoliths to microservices. Provide insights humans couldn't easily derive manually through AI-powered analysis of Spring Boot codebases. Generate actionable, practical recommendations over theoretical analysis. Learn from real-world patterns in reference architectures like Spring Modulith. Prioritize automation that enhances human decision-making rather than replacing it.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Agent-Driven Development  
+Build systems that amplify human capabilities through intelligent automation. Design tools that can be composed and orchestrated in multi-agent workflows. Create learning systems that improve from analyzing codebases and migration outcomes. Enable systematic approaches to complex migration decisions. Support both CLI and programmatic interfaces for maximum flexibility and integration.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Reference-Based Learning
+Use proven, well-architected examples as learning foundations. Extract and apply patterns from Spring Modulith and other successful modular architectures. Validate all approaches against real-world implementations before recommending them. Build comprehensive knowledge base of migration patterns, anti-patterns, and best practices. Maintain traceability from recommendations back to proven examples.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Quality and Safety (NON-NEGOTIABLE)
+Reliability and correctness in migration recommendations are paramount. Never modify source code without explicit user confirmation and detailed previews. Comprehensive testing with real codebases including edge cases and problematic legacy scenarios. Clear error handling and graceful degradation for all analysis tools. Professional communication standards with no decorative elements or emojis.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Test-Driven Migration
+All specifications transform into executable tests before implementation. Every requirement must have associated test cases covering migration lifecycle aspects. Agent-aligned testing where each agent role defines and maintains relevant test types. Human-in-the-loop validation for critical migration decisions and security assessments. Coverage across all 29 migration lifecycle steps, not just application behavior.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Migration Lifecycle Framework
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Omega follows a structured 29-step migration lifecycle across 7 phases. All specifications, plans, and tasks must reference specific lifecycle steps:
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Phases**: Discover & Baseline → Decompose & Design Guardrails → Prepare Platform → Strangler Execution → Scale & Optimize → Org Readiness → Retire Monolith
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Normative Rules**:
+- Every requirement, plan element, and task must reference at least one lifecycle step (1-29)
+- Each step must identify accountable agent roles and supporting roles
+- Migration follows incremental vertical slices using Strangler Fig pattern
+- All artifacts must be traceable, testable, and observable throughout migration
+
+## Agent Orchestration and Monitoring
+
+### Multi-Agent Cockpit System
+Centralized monitoring dashboard providing real-time visibility into all agent activities and states. Human oversight of distributed agent operations like a production floor of a robotic factory. Clear process mapping and workflow visualization with current progress tracking at every step. Well-defined human intervention points for critical decisions and risk management.
+
+### Metrics and Telemetry Framework
+Comprehensive observability through performance metrics (execution times, accuracy scores, completion rates), process metrics (workflow bottlenecks, intervention patterns, error rates), and quality metrics (recommendation acceptance rates, post-migration validation scores). Integration with existing Omega checkpoint system and external monitoring tools.
+
+### Agent Archetypes
+Fixed set of specialized agent roles: Planner/Conductor, Architect & Decomposition, API & Integration, Data Migration, Platform/CI-CD, QA/Quality, Security & Compliance, SRE/Observability/FinOps, Release/Change. Each agent has defined persona, tools, memory, and lifecycle hooks with specific KPIs and deliverables.
+
+## Technical Standards
+
+### Development Environment
+Python 3.12+ with comprehensive type hints and error handling. Docker containers for reproducible and isolated execution environments. Integration with Omega development container and existing toolchain. JSON for structured data exchange between agents and systems. CLI and programmatic API interfaces for flexible usage patterns.
+
+### Architecture Requirements
+Modular design with clear separation of concerns between agent roles. Plugin architecture for extensible analysis strategies and new migration patterns. Integration with checkpoint and documentation systems for session continuity. Structured output formats compatible with existing Omega infrastructure. Version control integration following established Git workflows and commit standards.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices within the Omega project. All specifications, plans, and implementations must demonstrate compliance with these principles and lifecycle requirements. 
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Amendments require documentation of rationale, impact analysis, and migration plan for affected artifacts. Version changes follow semantic versioning: MAJOR for backward-incompatible principle changes, MINOR for new principles or material expansions, PATCH for clarifications and refinements.
+
+All agent roles must verify compliance during reviews. Complexity in migration recommendations must be justified with reference to proven patterns. Human accountability remains paramount for all risk-bearing decisions despite automation capabilities.
+
+**Version**: 1.0.0 | **Ratified**: 2025-11-14 | **Last Amended**: 2025-11-14

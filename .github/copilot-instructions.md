@@ -88,6 +88,17 @@ This project welcomes contributions from developers interested in:
 - Software architecture evolution
 - Migration tooling and frameworks
 
+### Communication and Style Guidelines
+
+**Emoji Usage Policy**: Emojis are strongly discouraged and should NOT be used unless explicitly requested by the user. This applies to:
+1. **Documentation**: All project documentation should use clear, professional language without decorative emojis
+2. **Git Commit Messages**: Commit messages must be emoji-free and focus on clear, descriptive text
+3. **Code Base**: No emojis in code comments, variable names, or any code-related content
+4. **Chat Responses**: Provide direct, professional responses without emoji decorations
+5. **General Communication**: Default to emoji-free communication in all project contexts
+
+This policy ensures professional, accessible, and distraction-free communication that focuses on technical content rather than visual decorations.
+
 ## Current Development Phase
 
 The project is in its initial phase with the following established:

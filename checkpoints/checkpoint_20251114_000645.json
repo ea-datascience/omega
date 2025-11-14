@@ -1,0 +1,79 @@
+{
+  "checkpoint": {
+    "timestamp": "2025-11-14T00:06:45Z",
+    "created_by": "/workspace/tools/src/create-checkpoint.sh",
+    "version": "2.0",
+    "format": "json"
+  },
+  "project": {
+    "name": "Omega - Agentic Software Migration System",
+    "repository": "ea-datascience/omega",
+    "root_path": "/workspace"
+  },
+  "git_status": {
+  "is_git_repo": true,
+  "branch": "master ",
+  "remote_url": "git@github.com:ea-datascience/omega.git ",
+  "last_commit": "db2842c - ✨ Add help functionality to clone-spring-modulith.sh (8 minutes ago) ",
+  "staged_files": 0,
+  "unstaged_files": 2,
+  "untracked_files": 4
+},
+  "modified_files": {
+  "staged": [
+  ],
+  "unstaged": [
+    {"file": "checkpoints/checkpoint_20251113_234831.md ", "status": "M"},
+    {"file": "tools/src/create-checkpoint.sh ", "status": "M"}
+  ],
+  "untracked": [
+    "checkpoints/checkpoint_20251114_000431.json ",
+    "checkpoints/checkpoint_20251114_000534.json ",
+    "checkpoints/checkpoint_20251114_000645.json ",
+    "tools/src/create-checkpoint-old.sh "
+  ]
+},
+  "work_context": {
+    "current_epic": "Tool Modernization ",
+    "current_task": "Convert checkpoint script to JSON and non-interactive ",
+    "task_status": "completed ",
+    "next_tasks": "Clean up old files and commit changes ",
+    "blockers": " ",
+    "notes": "Successfully converted script to output JSON and eliminated interactive mode "
+  },
+  "environment": {
+  "shell": "/bin/bash",
+  "pwd": "/workspace",
+  "git_version": "2.51.1 ",
+  "python_version": "3.12.12 ",
+  "user": "vscode",
+  "hostname": "f07c0355164e"
+},
+  "project_structure": ". ├── checkpoints │   ├── checkpoint_20251114_000431.json │   ├── checkpoint_20251114_000534.json │   └── checkpoint_20251114_000645.json ├── .devcontainer │   ├── devcontainer.json │   ├── docker-compose.yml │   ├── Dockerfile │   └── README.md ├── docs │   └── git ├── .github │   ├── copilot-instructions.md │   └── prompts ├── .gitignore ├── README.md └── tools     ├── README.md     ├── src     └── tests  9 directories, 11 files ",
+  "resume_instructions": [
+  "Ensure you're in the project root: cd /workspace",
+  "Activate virtual environment if available: source .venv/bin/activate",
+  "Check Git status: git status",
+  "Review modified files listed in this checkpoint",
+  "Check recent commits: git log --oneline -5",
+  "Review the work context for current tasks and blockers",
+  "Check project documentation in /docs directory",
+  "Review tools available in /tools directory",
+  "Use GitHub Copilot with context from .github/copilot-instructions.md"
+],
+  "copilot_context": {
+    "project_goals": [
+      "Demonstrate migration workflows from monoliths to microservices",
+      "Provide intelligent automation through agentic systems", 
+      "Establish best practices for microservices decomposition",
+      "Enable practical implementation with real-world tools"
+    ],
+    "key_directories": {
+      "/data/codebase/": "Reference codebases (Spring Modulith)",
+      "/docs/": "Project documentation",
+      "/tools/": "Migration utilities and scripts",
+      "/.github/": "GitHub workflows and prompts"
+    },
+    "current_phase": "Initial phase focusing on development environment, Git workflow, tools structure, and reference codebase integration"
+  }
+}

@@ -90,14 +90,17 @@ This project welcomes contributions from developers interested in:
 
 ### Communication and Style Guidelines
 
-**Emoji Usage Policy**: Emojis are strongly discouraged and should NOT be used unless explicitly requested by the user. This applies to:
-1. **Documentation**: All project documentation should use clear, professional language without decorative emojis
-2. **Git Commit Messages**: Commit messages must be emoji-free and focus on clear, descriptive text
-3. **Code Base**: No emojis in code comments, variable names, or any code-related content
-4. **Chat Responses**: Provide direct, professional responses without emoji decorations
-5. **General Communication**: Default to emoji-free communication in all project contexts
+**STRICT NO EMOJI POLICY**: Emojis are ABSOLUTELY PROHIBITED in this project. This is a strict directive that must be followed without exception:
 
-This policy ensures professional, accessible, and distraction-free communication that focuses on technical content rather than visual decorations.
+1. **Documentation**: All project documentation must use clear, professional language with ZERO emojis or decorative symbols
+2. **Git Commit Messages**: Commit messages are STRICTLY emoji-free and must focus on clear, descriptive text only
+3. **Code Base**: NO emojis in code comments, variable names, or any code-related content whatsoever
+4. **Chat Responses**: Provide direct, professional responses with ABSOLUTELY NO emoji decorations
+5. **General Communication**: Default to completely emoji-free communication in ALL project contexts
+6. **GitHub Copilot Interactions**: All GitHub Copilot responses must be completely free of emojis
+7. **Agent Communications**: All agent modality interactions must maintain strict emoji-free professional communication
+
+This is a non-negotiable requirement that ensures professional, accessible, and distraction-free communication focused exclusively on technical content. Any use of emojis violates project standards and must be immediately corrected.
 
 ## Current Development Phase
 

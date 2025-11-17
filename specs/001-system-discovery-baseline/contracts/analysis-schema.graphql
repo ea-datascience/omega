@@ -1,0 +1,760 @@
+# GraphQL Schema: System Discovery and Baseline Assessment
+# Complex query interface for analysis results and relationships
+
+scalar DateTime
+scalar JSON
+scalar UUID
+
+# Root Query Type
+type Query {
+  # Project Management
+  project(id: UUID!): AnalysisProject
+  projects(
+    filter: ProjectFilter
+    pagination: PaginationInput
+    orderBy: ProjectOrderBy
+  ): ProjectConnection!
+
+  # Analysis Results
+  systemArchitecture(projectId: UUID!): SystemArchitecture
+  dependencyGraph(
+    projectId: UUID!
+    graphType: DependencyGraphType = COMBINED
+  ): DependencyGraph
+  performanceBaselines(
+    projectId: UUID!
+    environmentType: EnvironmentType
+  ): [PerformanceBaseline!]!
+  riskAssessment(projectId: UUID!): RiskAssessment
+  serviceBoundaries(
+    projectId: UUID!
+    filter: ServiceBoundaryFilter
+  ): [ServiceBoundary!]!
+  complianceRecords(projectId: UUID!): [ComplianceRecord!]!
+
+  # Cross-Project Analytics
+  migrationReadinessComparison(
+    projectIds: [UUID!]!
+  ): [MigrationReadinessComparison!]!
+  architecturalPatternAnalysis(
+    filter: ArchitecturalPatternFilter
+  ): ArchitecturalPatternAnalysis!
+  riskTrendAnalysis(
+    timeRange: TimeRangeInput!
+  ): RiskTrendAnalysis!
+
+  # Search and Discovery
+  searchProjects(
+    query: String!
+    limit: Int = 20
+  ): [ProjectSearchResult!]!
+  searchComponents(
+    projectId: UUID!
+    query: String!
+    componentTypes: [ComponentType!]
+  ): [ComponentSearchResult!]!
+}
+
+# Root Mutation Type
+type Mutation {
+  # Project Management
+  createProject(input: CreateProjectInput!): CreateProjectPayload!
+  updateProject(id: UUID!, input: UpdateProjectInput!): UpdateProjectPayload!
+  deleteProject(id: UUID!): DeleteProjectPayload!
+
+  # Analysis Operations
+  startAnalysis(projectId: UUID!, input: StartAnalysisInput!): StartAnalysisPayload!
+  cancelAnalysis(projectId: UUID!): CancelAnalysisPayload!
+
+  # Validation and Approval
+  validateDependencyGraph(
+    projectId: UUID!
+    input: ValidateDependencyGraphInput!
+  ): ValidateDependencyGraphPayload!
+  approveBoundary(
+    projectId: UUID!
+    boundaryId: UUID!
+    input: ApproveBoundaryInput!
+  ): ApproveBoundaryPayload!
+
+  # Baseline Management
+  createPerformanceBaseline(
+    projectId: UUID!
+    input: CreatePerformanceBaselineInput!
+  ): CreatePerformanceBaselinePayload!
+
+  # Report Generation
+  generateReport(
+    projectId: UUID!
+    input: GenerateReportInput!
+  ): GenerateReportPayload!
+}
+
+# Subscription Type for Real-time Updates
+type Subscription {
+  # Analysis Progress
+  analysisProgress(projectId: UUID!): AnalysisProgressUpdate!
+  
+  # System Events
+  projectStatusChanged(projectId: UUID!): ProjectStatusUpdate!
+  
+  # Validation Events
+  validationRequests: ValidationRequest!
+}
+
+# Core Types
+
+type AnalysisProject {
+  id: UUID!
+  name: String!
+  description: String
+  repositoryUrl: String!
+  repositoryBranch: String!
+  targetSystemType: SystemType!
+  analysisConfiguration: JSON!
+  status: ProjectStatus!
+  progressPercentage: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  completedAt: DateTime
+  createdBy: String!
+  validationStatus: ValidationStatus
+  validationNotes: String
+
+  # Related Data
+  systemArchitecture: SystemArchitecture
+  dependencyGraphs: [DependencyGraph!]!
+  performanceBaselines: [PerformanceBaseline!]!
+  riskAssessments: [RiskAssessment!]!
+  serviceBoundaries: [ServiceBoundary!]!
+  complianceRecords: [ComplianceRecord!]!
+  reports: [Report!]!
+
+  # Computed Fields
+  overallHealthScore: Float!
+  migrationReadinessScore: Float!
+  estimatedMigrationDuration: Int # days
+  recommendedNextSteps: [String!]!
+}
+
+type SystemArchitecture {
+  id: UUID!
+  analysisProjectId: UUID!
+  architectureStyle: ArchitectureStyle!
+  domainModel: DomainModel!
+  c4Model: C4Model!
+  technologyStack: TechnologyStack!
+  architecturalPatterns: [ArchitecturalPattern!]!
+  qualityMetrics: QualityMetrics!
+  documentationCoverage: Float!
+  testCoverage: Float!
+  generatedDiagrams: [Diagram!]!
+  discoveredAt: DateTime!
+  toolVersions: JSON!
+
+  # Navigation
+  project: AnalysisProject!
+  components: [ArchitecturalComponent!]!
+
+  # Computed Analysis
+  complexityScore: Float!
+  maintainabilityIndex: Float!
+  technicalDebtHours: Int!
+}
+
+type DependencyGraph {
+  id: UUID!
+  analysisProjectId: UUID!
+  graphType: DependencyGraphType!
+  nodes: [DependencyNode!]!
+  edges: [DependencyEdge!]!
+  couplingMetrics: CouplingMetrics!
+  externalDependencies: [ExternalDependency!]!
+  dataDependencies: [DataDependency!]!
+  circularDependencies: [CircularDependency!]!
+  criticalPathAnalysis: CriticalPathAnalysis!
+  confidenceScore: Float!
+  generatedAt: DateTime!
+  validationStatus: ValidationStatus!
+
+  # Navigation
+  project: AnalysisProject!
+
+  # Graph Analysis
+  stronglyConnectedComponents: [ComponentCluster!]!
+  dependencyHotspots: [DependencyHotspot!]!
+  isolationCandidates: [IsolationCandidate!]!
+}
+
+type PerformanceBaseline {
+  id: UUID!
+  analysisProjectId: UUID!
+  collectionPeriodStart: DateTime!
+  collectionPeriodEnd: DateTime!
+  environmentType: EnvironmentType!
+  loadCharacteristics: LoadCharacteristics!
+  responseTimeMetrics: ResponseTimeMetrics!
+  throughputMetrics: ThroughputMetrics!
+  errorRateMetrics: ErrorRateMetrics!
+  resourceUtilization: ResourceUtilization!
+  databasePerformance: DatabasePerformance!
+  externalServiceMetrics: [ExternalServiceMetric!]!
+  statisticalConfidence: Float!
+  sampleSize: Int!
+  dataQualityScore: Float!
+
+  # Navigation
+  project: AnalysisProject!
+  measurements: [MetricMeasurement!]!
+
+  # Analysis
+  performanceAnomalities: [PerformanceAnomaly!]!
+  bottleneckAnalysis: BottleneckAnalysis!
+  scalabilityAssessment: ScalabilityAssessment!
+}
+
+type RiskAssessment {
+  id: UUID!
+  analysisProjectId: UUID!
+  overallRiskScore: Float!
+  migrationComplexityScore: Float!
+  businessImpactScore: Float!
+  technicalDebtScore: Float!
+  couplingRiskFactors: [RiskFactor!]!
+  dependencyRiskFactors: [RiskFactor!]!
+  dataMigrationRisks: [RiskFactor!]!
+  performanceRisks: [RiskFactor!]!
+  securityRisks: [RiskFactor!]!
+  organizationalRisks: [RiskFactor!]!
+  mitigationStrategies: [MitigationStrategy!]!
+  goNoGoRecommendation: GoNoGoRecommendation!
+  recommendationRationale: String!
+  assessedAt: DateTime!
+  reviewedBy: String
+
+  # Navigation
+  project: AnalysisProject!
+  riskFactors: [RiskFactor!]!
+
+  # Risk Analysis
+  highRiskAreas: [RiskArea!]!
+  riskMitigationPlan: RiskMitigationPlan!
+  confidenceInterval: ConfidenceInterval!
+}
+
+type ServiceBoundary {
+  id: UUID!
+  analysisProjectId: UUID!
+  boundaryName: String!
+  boundaryDescription: String!
+  domainContext: String!
+  includedComponents: [String!]!
+  apiSurface: ApiSurface!
+  dataOwnership: DataOwnership!
+  externalDependencies: [ExternalDependency!]!
+  couplingStrength: Float!
+  cohesionScore: Float!
+  extractionComplexity: ExtractionComplexity!
+  effortEstimateDays: Int!
+  riskFactors: [RiskFactor!]!
+  prerequisites: [Prerequisite!]!
+  migrationOrder: Int
+  confidenceLevel: Float!
+  architectApproval: ApprovalStatus
+  approvalNotes: String
+
+  # Navigation
+  project: AnalysisProject!
+  metrics: [BoundaryMetric!]!
+
+  # Boundary Analysis
+  extractionPlan: ExtractionPlan!
+  impactAnalysis: BoundaryImpactAnalysis!
+  validationResults: BoundaryValidationResults!
+}
+
+type ComplianceRecord {
+  id: UUID!
+  analysisProjectId: UUID!
+  regulatoryFrameworks: [RegulatoryFramework!]!
+  dataClassifications: [DataClassification!]!
+  privacyObligations: [PrivacyObligation!]!
+  securityControls: [SecurityControl!]!
+  auditRequirements: [AuditRequirement!]!
+  complianceGaps: [ComplianceGap!]!
+  remediationPlans: [RemediationPlan!]!
+  evidenceArtifacts: [EvidenceArtifact!]!
+  complianceStatus: ComplianceStatus!
+  lastAssessmentDate: DateTime!
+  nextReviewDate: DateTime!
+  assessor: String!
+
+  # Navigation
+  project: AnalysisProject!
+  requirements: [ComplianceRequirement!]!
+
+  # Compliance Analysis
+  complianceScore: Float!
+  criticalGaps: [ComplianceGap!]!
+  remediationTimeline: RemediationTimeline!
+}
+
+# Supporting Types
+
+type DomainModel {
+  boundedContexts: [BoundedContext!]!
+  aggregates: [Aggregate!]!
+  domainEvents: [DomainEvent!]!
+  ubiquitousLanguage: [Term!]!
+}
+
+type BoundedContext {
+  name: String!
+  description: String!
+  responsibilities: [String!]!
+  relationships: [ContextRelationship!]!
+  coreSubdomains: [Subdomain!]!
+  supportingSubdomains: [Subdomain!]!
+  genericSubdomains: [Subdomain!]!
+}
+
+type C4Model {
+  contextDiagram: ContextDiagram!
+  containerDiagram: ContainerDiagram!
+  componentDiagrams: [ComponentDiagram!]!
+  codeDiagrams: [CodeDiagram!]!
+}
+
+type TechnologyStack {
+  frameworks: [Technology!]!
+  libraries: [Technology!]!
+  databases: [Technology!]!
+  messageQueues: [Technology!]!
+  cacheSystem: [Technology!]!
+  buildTools: [Technology!]!
+  testingFrameworks: [Technology!]!
+}
+
+type DependencyNode {
+  id: String!
+  name: String!
+  type: NodeType!
+  sourceType: String!
+  location: String!
+  metadata: JSON!
+}
+
+type DependencyEdge {
+  id: String!
+  sourceId: String!
+  targetId: String!
+  dependencyType: DependencyType!
+  strength: Float!
+  frequency: Int
+  metadata: JSON!
+}
+
+type RiskFactor {
+  id: UUID!
+  category: RiskCategory!
+  description: String!
+  probability: Float!
+  impact: Float!
+  severity: RiskSeverity!
+  mitigationStrategy: String!
+  estimatedCost: Int # in person-hours
+  timeline: String!
+}
+
+# Analytics and Comparison Types
+
+type MigrationReadinessComparison {
+  projectId: UUID!
+  projectName: String!
+  overallScore: Float!
+  technicalReadiness: Float!
+  organizationalReadiness: Float!
+  riskLevel: RiskLevel!
+  estimatedDuration: Int!
+  recommendedApproach: MigrationApproach!
+}
+
+type ArchitecturalPatternAnalysis {
+  commonPatterns: [PatternUsage!]!
+  antiPatterns: [AntiPatternUsage!]!
+  patternRecommendations: [PatternRecommendation!]!
+  migrationImplications: [PatternMigrationImplication!]!
+}
+
+type RiskTrendAnalysis {
+  timeRange: TimeRange!
+  overallTrend: Trend!
+  riskCategoryTrends: [RiskCategoryTrend!]!
+  improvementOpportunities: [ImprovementOpportunity!]!
+  benchmarkComparison: BenchmarkComparison!
+}
+
+# Search Result Types
+
+type ProjectSearchResult {
+  project: AnalysisProject!
+  matchScore: Float!
+  matchedFields: [String!]!
+  highlights: [SearchHighlight!]!
+}
+
+type ComponentSearchResult {
+  component: ArchitecturalComponent!
+  matchScore: Float!
+  matchContext: String!
+  relatedComponents: [ArchitecturalComponent!]!
+}
+
+# Connection Types for Pagination
+
+type ProjectConnection {
+  edges: [ProjectEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ProjectEdge {
+  node: AnalysisProject!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# Input Types
+
+input ProjectFilter {
+  status: [ProjectStatus!]
+  targetSystemType: [SystemType!]
+  createdBy: [String!]
+  dateRange: DateRangeInput
+  validationStatus: [ValidationStatus!]
+  riskLevel: [RiskLevel!]
+}
+
+input ServiceBoundaryFilter {
+  extractionComplexity: [ExtractionComplexity!]
+  architectApproval: [ApprovalStatus!]
+  couplingStrengthRange: FloatRangeInput
+  effortRange: IntRangeInput
+}
+
+input PaginationInput {
+  first: Int
+  after: String
+  last: Int
+  before: String
+}
+
+input DateRangeInput {
+  from: DateTime!
+  to: DateTime!
+}
+
+input FloatRangeInput {
+  min: Float
+  max: Float
+}
+
+input IntRangeInput {
+  min: Int
+  max: Int
+}
+
+input TimeRangeInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  granularity: TimeGranularity!
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String
+  repositoryUrl: String!
+  repositoryBranch: String = "main"
+  targetSystemType: SystemType!
+  analysisConfiguration: JSON = {}
+}
+
+input UpdateProjectInput {
+  name: String
+  description: String
+  repositoryBranch: String
+  analysisConfiguration: JSON
+  validationStatus: ValidationStatus
+  validationNotes: String
+}
+
+input StartAnalysisInput {
+  analysisTypes: [AnalysisType!] = [STATIC, RUNTIME, GAP_ANALYSIS, RISK_ASSESSMENT]
+  staticAnalysisConfig: JSON
+  runtimeAnalysisConfig: JSON
+  priority: AnalysisPriority = NORMAL
+}
+
+input ApproveBoundaryInput {
+  approvalDecision: ApprovalDecision!
+  approvalNotes: String
+  suggestedChanges: JSON
+}
+
+# Payload Types
+
+type CreateProjectPayload {
+  project: AnalysisProject!
+  errors: [UserError!]!
+}
+
+type UpdateProjectPayload {
+  project: AnalysisProject!
+  errors: [UserError!]!
+}
+
+type DeleteProjectPayload {
+  deletedProjectId: UUID!
+  errors: [UserError!]!
+}
+
+type StartAnalysisPayload {
+  project: AnalysisProject!
+  analysisStatus: AnalysisStatus!
+  errors: [UserError!]!
+}
+
+type ApproveBoundaryPayload {
+  boundary: ServiceBoundary!
+  errors: [UserError!]!
+}
+
+type UserError {
+  field: String
+  message: String!
+  code: String!
+}
+
+# Subscription Types
+
+type AnalysisProgressUpdate {
+  projectId: UUID!
+  status: ProjectStatus!
+  progressPercentage: Int!
+  currentPhase: AnalysisPhase
+  phaseDetails: JSON
+  estimatedCompletion: DateTime
+}
+
+type ProjectStatusUpdate {
+  projectId: UUID!
+  oldStatus: ProjectStatus!
+  newStatus: ProjectStatus!
+  timestamp: DateTime!
+  triggeredBy: String!
+}
+
+type ValidationRequest {
+  id: UUID!
+  type: ValidationType!
+  projectId: UUID!
+  entityId: UUID!
+  requestedBy: String!
+  priority: ValidationPriority!
+  dueDate: DateTime
+  metadata: JSON!
+}
+
+# Enums
+
+enum SystemType {
+  SPRING_BOOT
+  SPRING_MVC
+  JAVA_EE
+  OTHER
+}
+
+enum ProjectStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ValidationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_REVIEW
+}
+
+enum DependencyGraphType {
+  STATIC
+  RUNTIME
+  COMBINED
+}
+
+enum EnvironmentType {
+  PRODUCTION
+  STAGING
+  DEVELOPMENT
+  SYNTHETIC
+}
+
+enum ArchitectureStyle {
+  LAYERED
+  MODULAR_MONOLITH
+  MICROSERVICES
+  HYBRID
+  UNKNOWN
+}
+
+enum ExtractionComplexity {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_REVISION
+}
+
+enum ComplianceStatus {
+  COMPLIANT
+  NON_COMPLIANT
+  PARTIAL
+  UNKNOWN
+}
+
+enum RiskCategory {
+  TECHNICAL
+  BUSINESS
+  ORGANIZATIONAL
+  COMPLIANCE
+}
+
+enum RiskSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum GoNoGoRecommendation {
+  GO
+  NO_GO
+  CONDITIONAL_GO
+}
+
+enum NodeType {
+  MODULE
+  CLASS
+  METHOD
+  DATABASE
+  EXTERNAL_SERVICE
+  QUEUE
+  CACHE
+}
+
+enum DependencyType {
+  COMPILE
+  RUNTIME
+  TEST
+  PROVIDED
+  CALL
+  DATA_FLOW
+  EVENT
+}
+
+enum AnalysisType {
+  STATIC
+  RUNTIME
+  GAP_ANALYSIS
+  RISK_ASSESSMENT
+  COMPLIANCE_SCAN
+}
+
+enum AnalysisPhase {
+  STATIC_ANALYSIS
+  RUNTIME_ANALYSIS
+  GAP_ANALYSIS
+  RISK_ASSESSMENT
+  REPORT_GENERATION
+}
+
+enum AnalysisPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum MigrationApproach {
+  BIG_BANG
+  STRANGLER_FIG
+  PARALLEL_RUN
+  DATABASE_FIRST
+  API_FIRST
+}
+
+enum Trend {
+  IMPROVING
+  STABLE
+  DEGRADING
+  VOLATILE
+}
+
+enum TimeGranularity {
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  QUARTER
+}
+
+enum ValidationType {
+  DEPENDENCY_GRAPH
+  SERVICE_BOUNDARY
+  RISK_ASSESSMENT
+  COMPLIANCE_RECORD
+}
+
+enum ValidationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum ApprovalDecision {
+  APPROVE
+  REJECT
+  NEEDS_REVISION
+}
+
+enum ComponentType {
+  CONTROLLER
+  SERVICE
+  REPOSITORY
+  ENTITY
+  CONFIGURATION
+  UTILITY
+}

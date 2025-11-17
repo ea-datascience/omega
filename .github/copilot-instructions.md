@@ -125,6 +125,8 @@ The project is in its initial phase with the following established:
 ## Active Technologies
 - Python 3.12+ (per constitution requirements) + LangChain + LangGraph + LangChain4j, JavaParser, Microsoft App Cat, SonarQube Enterprise, Azure OpenAI Service (001-omega-migration-system)
 - PostgreSQL 15+ with pg_vector, ClickHouse for analytics, MinIO for file storage, Redis Cluster for caching, Apache Kafka for events (001-omega-migration-system)
+- Python 3.12+ (per constitution requirements) with Java 17+ for analysis tools + LangChain, LangGraph, FastAPI, Docker, OpenTelemetry, Context Mapper, Structurizr, CodeQL, Microsoft AppCAT (001-system-discovery-baseline)
+- PostgreSQL 15+ with pg_vector for analysis artifacts, MinIO for file storage, Redis Cluster for caching (001-system-discovery-baseline)
 
 ## Recent Changes
 - 001-omega-migration-system: Added Python 3.12+ (per constitution requirements) + LangChain + LangGraph + LangChain4j, JavaParser, Microsoft App Cat, SonarQube Enterprise, Azure OpenAI Service

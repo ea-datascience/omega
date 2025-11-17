@@ -1,0 +1,16 @@
+# .gitkeep
+
+This file ensures that the `data/codebase` directory is tracked by Git.
+
+This directory is intended for:
+- Reference codebases for migration analysis and pattern learning
+- Spring Modulith reference implementation (excluded from Git via .gitignore)
+- Other well-architected monolithic applications for study
+- Codebase samples for testing migration tools and algorithms
+
+The Spring Modulith codebase is excluded from version control but should be present
+for development and testing. Use the clone script to populate:
+- `/tools/src/clone-spring-modulith.sh`
+
+Other reference codebases can be added here as needed for comprehensive
+migration pattern analysis and validation.

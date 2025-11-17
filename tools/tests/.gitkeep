@@ -1,0 +1,11 @@
+# .gitkeep
+
+This file ensures that the `tools/tests` directory is tracked by Git.
+
+This directory is intended for:
+- Unit tests for Omega migration tools
+- Integration tests for tool functionality  
+- Test fixtures and mock data for tool testing
+- Test utilities and helper functions
+
+Remove this file when the first actual test file is added to this directory.

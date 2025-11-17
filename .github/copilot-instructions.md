@@ -121,3 +121,10 @@ The project is in its initial phase with the following established:
 ---
 
 *Omega represents the culmination (Ω) of monolithic architecture evolution - the final transformation into distributed microservices.*
+
+## Active Technologies
+- Python 3.12+ (per constitution requirements) + LangChain + LangGraph + LangChain4j, JavaParser, Microsoft App Cat, SonarQube Enterprise, Azure OpenAI Service (001-omega-migration-system)
+- PostgreSQL 15+ with pg_vector, ClickHouse for analytics, MinIO for file storage, Redis Cluster for caching, Apache Kafka for events (001-omega-migration-system)
+
+## Recent Changes
+- 001-omega-migration-system: Added Python 3.12+ (per constitution requirements) + LangChain + LangGraph + LangChain4j, JavaParser, Microsoft App Cat, SonarQube Enterprise, Azure OpenAI Service

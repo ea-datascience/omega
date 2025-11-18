@@ -1,0 +1,236 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omega-analysis-engine"
+version = "0.1.0"
+description = "Omega System Discovery and Baseline Assessment Analysis Engine"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Omega Team", email = "team@omega-migration.com"},
+]
+keywords = ["migration", "microservices", "analysis", "spring-boot"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    # Core framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.0.0",
+    
+    # Database and ORM
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "psycopg2-binary>=2.9.7",
+    "asyncpg>=0.29.0",
+    
+    # Vector database support
+    "pgvector>=0.2.0",
+    
+    # Caching and storage
+    "redis>=5.0.0",
+    "minio>=7.2.0",
+    
+    # Observability and tracing
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+    "opentelemetry-instrumentation-fastapi>=0.41b0",
+    "opentelemetry-instrumentation-sqlalchemy>=0.41b0",
+    "opentelemetry-instrumentation-redis>=0.41b0",
+    "opentelemetry-exporter-otlp>=1.20.0",
+    
+    # Authentication and security
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.6",
+    
+    # Configuration and environment
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+    
+    # HTTP client and JSON
+    "httpx>=0.25.0",
+    "orjson>=3.9.0",
+    
+    # Analysis tools integration
+    "docker>=6.1.0",
+    "kubernetes>=28.1.0",
+    "javalang>=0.13.0",
+    
+    # Data processing and validation
+    "pandas>=2.1.0",
+    "numpy>=1.25.0",
+    "pydantic>=2.5.0",
+    
+    # CLI support
+    "click>=8.1.0",
+    "rich>=13.7.0",
+    "typer>=0.9.0",
+    
+    # Async support
+    "asyncio-mqtt>=0.16.0",
+    "aiofiles>=23.2.1",
+    "aioredis>=2.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "testcontainers>=3.7.0",
+    "httpx>=0.25.0",  # for testing FastAPI
+    
+    # Linting and formatting
+    "black>=23.9.0",
+    "flake8>=6.1.0",
+    "mypy>=1.6.0",
+    "isort>=5.12.0",
+    
+    # Type checking
+    "types-redis>=4.6.0",
+    "types-requests>=2.31.0",
+    "sqlalchemy[mypy]>=2.0.0",
+    
+    # Development tools
+    "pre-commit>=3.5.0",
+    "bandit>=1.7.5",
+    "safety>=2.3.0",
+    
+    # Documentation
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0",
+]
+
+test = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "testcontainers>=3.7.0",
+    "httpx>=0.25.0",
+]
+
+[project.scripts]
+omega-analyze = "omega_analysis.cli.analyze:main"
+omega-validate = "omega_analysis.cli.validate:main"
+
+[project.urls]
+Homepage = "https://github.com/ea-datascience/omega"
+Repository = "https://github.com/ea-datascience/omega"
+Documentation = "https://github.com/ea-datascience/omega/docs"
+Issues = "https://github.com/ea-datascience/omega/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["omega_analysis"]
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "minio.*",
+    "docker.*",
+    "kubernetes.*",
+    "pygraphviz.*",
+    "javaparser.*",
+]
+ignore_missing_imports = true
+
+# pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.4"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = [
+    "tests",
+]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "contract: marks tests as contract tests",
+    "migration: marks tests as migration validation tests",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/*_test.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+tests = ["B201", "B301"]
+skips = ["B101", "B601"]

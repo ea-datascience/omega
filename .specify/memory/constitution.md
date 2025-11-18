@@ -53,6 +53,9 @@ Fixed set of specialized agent roles: Planner/Conductor, Architect & Decompositi
 ### Development Environment
 Python 3.12+ with comprehensive type hints and error handling. Docker containers for reproducible and isolated execution environments. Integration with Omega development container and existing toolchain. JSON for structured data exchange between agents and systems. CLI and programmatic API interfaces for flexible usage patterns.
 
+### Agent Framework Requirements
+Microsoft Agent Framework (https://github.com/microsoft/agent-framework) as the primary agentic orchestration platform for multi-agent coordination and workflow management. Docker and Docker Compose for local development and deployment within devcontainer environments.
+
 ### Architecture Requirements
 Modular design with clear separation of concerns between agent roles. Plugin architecture for extensible analysis strategies and new migration patterns. Integration with checkpoint and documentation systems for session continuity. Structured output formats compatible with existing Omega infrastructure. Version control integration following established Git workflows and commit standards.
 

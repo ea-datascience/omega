@@ -80,17 +80,18 @@
 
 ### Tool Chain Orchestration
 
-**Decision**: Apache Airflow for workflow orchestration with custom operators  
+**Decision**: Microsoft Agent Framework for agentic workflow orchestration  
 **Rationale**:
-- Proven workflow orchestration with dependency management
-- Custom operator development for analysis tool integration
-- Built-in monitoring, logging, and retry capabilities
-- Enterprise deployment patterns with authentication and role-based access
+- Azure-native agentic orchestration with built-in Azure OpenAI integration
+- Multi-agent coordination patterns for complex analysis workflows
+- Native integration with Azure Container Apps for scalable deployment
+- Enterprise-grade security and monitoring through Azure Monitor
+- Structured agent communication and state management
 
 **Alternatives Considered**:
-- Celery task queue: Rejected due to limited workflow visualization and dependency management
-- Custom orchestration: Rejected due to development timeline and operational complexity
-- GitHub Actions: Rejected due to limited enterprise deployment flexibility
+- Apache Airflow: Rejected due to lack of native agentic capabilities and Azure integration complexity
+- LangChain/LangGraph: Rejected due to vendor-neutral approach, prefer Azure-native solutions
+- Custom orchestration: Rejected due to development timeline and lack of proven agentic patterns
 
 ### Human-in-the-Loop Integration
 
@@ -145,6 +146,7 @@
 - Warm storage (MinIO) for analysis artifacts and generated reports
 - Cold storage integration for long-term audit and compliance requirements
 - Automated cleanup policies for ephemeral analysis data
+- Container-native deployment within Docker Compose environment
 
 **Implementation Approach**:
 - Analysis project lifecycle states (active, completed, archived)

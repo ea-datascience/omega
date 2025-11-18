@@ -96,6 +96,7 @@ Compliance officers and security engineers need comprehensive documentation of c
 - **FR-008**: System MUST produce audit trail documentation with complete analysis workflow history and decision rationale
 - **FR-009**: System MUST integrate Microsoft AppCAT for Azure-specific migration assessment with cloud readiness categorization
 - **FR-010**: System MUST support GitHub Copilot App Modernization workflows for AI-assisted analysis and automated validation when enterprise licenses are available, with graceful degradation to manual validation workflows and documented feature limitations when licenses are unavailable
+- **FR-011**: System MUST use Microsoft Agent Framework for all agentic orchestration with multi-agent coordination and containerized deployment patterns
 
 ### Key Entities *(include if feature involves data)*
 

@@ -16,6 +16,7 @@ This quickstart guide provides developers and operators with step-by-step instru
 - **Git**: Version 2.30+ for source code access
 - **Python**: Version 3.12+ (for development and CLI tools)
 - **Node.js**: Version 18+ (for dashboard frontend)
+- **Microsoft Agent Framework**: Latest version for agentic orchestration
 - **Minimum Hardware**: 8GB RAM, 4 CPU cores, 100GB storage
 - **Recommended Hardware**: 16GB RAM, 8 CPU cores, 500GB SSD storage
 
@@ -102,11 +103,12 @@ Expected services:
 #### 1. Local Development with Hot Reload
 
 ```bash
-# Install development dependencies
+# Install development dependencies including Microsoft Agent Framework
 pip install -r requirements-dev.txt
+pip install microsoft-agent-framework
 npm install -g @angular/cli
 
-# Start backend in development mode
+# Start backend in development mode with Agent Framework
 cd tools/
 python -m uvicorn src.api.main:app --reload --port 8000
 
@@ -147,6 +149,12 @@ POSTGRES_PASSWORD=secure_password_here
 
 # Redis Configuration
 REDIS_URL=redis://redis.prod.internal:6379
+
+# MinIO Configuration
+MINIO_ENDPOINT=minio:9000
+MINIO_ACCESS_KEY=minio_access_key
+MINIO_SECRET_KEY=minio_secret_key
+MINIO_BUCKET=analysis-artifacts
 
 # Authentication
 OAUTH_PROVIDER_URL=https://auth.company.com

@@ -1,0 +1,1 @@
+"""Configuration management system for Omega Analysis."""

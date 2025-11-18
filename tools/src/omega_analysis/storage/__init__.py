@@ -1,0 +1,1 @@
+"""MinIO object storage service for Omega Analysis system."""

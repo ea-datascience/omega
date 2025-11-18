@@ -12,7 +12,7 @@ Epic 1.1 implements a comprehensive legacy system analysis platform that combine
 ## Technical Context
 
 **Language/Version**: Python 3.12+ (per constitution requirements) with Java 17+ for analysis tools  
-**Primary Dependencies**: LangChain, LangGraph, FastAPI, Docker, OpenTelemetry, Context Mapper, Structurizr, CodeQL, Microsoft AppCAT  
+**Primary Dependencies**: Microsoft Agent Framework, FastAPI, Docker, OpenTelemetry, Context Mapper, Structurizr, CodeQL, Microsoft AppCAT  
 **Storage**: PostgreSQL 15+ with pg_vector for analysis artifacts, MinIO for file storage, Redis Cluster for caching  
 **Testing**: pytest, testcontainers, contract testing with Pact, migration test framework  
 **Target Platform**: Linux server (containerized), Kubernetes deployment ready  
@@ -72,7 +72,7 @@ tools/
 │   │   ├── compliance.py     # Compliance Record entity
 │   │   └── boundary.py       # Service Boundary entity
 │   ├── services/
-│   │   ├── orchestration/    # Analysis workflow orchestration
+│   │   ├── orchestration/    # Microsoft Agent Framework-based analysis workflow orchestration
 │   │   ├── reporting/        # Report generation and export
 │   │   └── validation/       # Accuracy validation and human oversight
 │   ├── api/
@@ -112,7 +112,7 @@ dashboard/
     └── unit/                 # Component unit tests
 ```
 
-**Structure Decision**: Web application architecture selected with separate analysis engine backend and dashboard frontend. The backend focuses on analysis orchestration and API services, while the frontend provides human-in-the-loop interfaces for validation and reporting. This structure supports the enterprise integration requirements and multi-agent orchestration patterns defined in the constitution.
+**Structure Decision**: Web application architecture selected with separate analysis engine backend and dashboard frontend, powered by Microsoft Agent Framework for agentic orchestration. The backend focuses on containerized analysis orchestration and API services, while the frontend provides human-in-the-loop interfaces for validation and reporting. This structure supports enterprise integration requirements, multi-agent orchestration patterns defined in the constitution, and Docker-based deployment from devcontainer environments.
 
 ## Complexity Tracking
 

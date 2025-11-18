@@ -13,19 +13,19 @@ Execute the automated cloning of the Spring Modulith reference repository using 
 ## Requirements
 
 ### Primary Objective
-- Execute `/workspace/tools/src/clone-spring-modulith.sh` to clone the Spring Modulith repository
+- Execute `/workspace/tools/src/utils/clone-spring-modulith.sh` to clone the Spring Modulith repository
 - Ensure idempotent operation that handles existing repositories correctly
 - Verify successful completion and repository validation
 
 ### Specific Requirements
-1. **Script Execution**: Run the clone-spring-modulith.sh script from the tools directory
+1. **Script Execution**: Run the clone-spring-modulith.sh script from the tools utilities directory
 2. **Idempotent Operation**: Handle existing repositories by removing and re-cloning for freshness
 3. **Validation**: Confirm repository structure, remote URL, and basic file integrity
 4. **Status Reporting**: Provide clear feedback on operation success/failure
 5. **Directory Management**: Ensure proper directory structure creation if needed
 
 ### Constraints
-- Must use the existing bash script at `/workspace/tools/src/clone-spring-modulith.sh`
+- Must use the existing bash script at `/workspace/tools/src/utils/clone-spring-modulith.sh`
 - Repository must be cloned to `/workspace/data/codebase/spring-modulith/`
 - Source repository: `https://github.com/spring-projects/spring-modulith.git`
 - Must respect .gitignore rules (cloned repo should not be tracked)

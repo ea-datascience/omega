@@ -178,6 +178,21 @@ class ContextMapperAnalyzer:
         """Classify a Java class based on annotations and naming patterns."""
         annotations = set(java_class.annotations)
         class_name = java_class.name.lower()
+        implements = [impl.split('<')[0].strip() for impl in java_class.implements]  # Remove generics
+        
+        # Check for domain events - implements DomainEvent interface or has event annotations
+        if 'DomainEvent' in implements or any('event' in impl.lower() for impl in implements):
+            return 'domain_event'
+        if any(ann in annotations for ann in ['DomainEvent', 'Externalized']):
+            return 'domain_event'
+        if class_name.endswith('event') or class_name.endswith('ed') or class_name.endswith('completed'):
+            return 'domain_event'
+        
+        # Check for aggregates - implements AggregateRoot or has Entity annotation
+        if any('aggregateroot' in impl.lower() for impl in implements):
+            return 'aggregate'
+        if 'AggregateRoot' in annotations or 'Entity' in annotations:
+            return 'aggregate'
         
         # Check Spring stereotypes
         if 'Service' in annotations or 'DomainService' in annotations:
@@ -186,13 +201,9 @@ class ContextMapperAnalyzer:
             return 'repository'
         elif any(ann in annotations for ann in ['Controller', 'RestController']):
             return 'controller'
-        elif 'Entity' in annotations or 'AggregateRoot' in annotations:
-            return 'aggregate'
-        elif 'DomainEvent' in annotations or 'event' in class_name:
-            return 'domain_event'
         
         # Check naming patterns
-        if class_name.endswith('service'):
+        if class_name.endswith('service') and 'management' in class_name:
             return 'service'
         elif class_name.endswith('repository'):
             return 'repository'
@@ -200,8 +211,6 @@ class ContextMapperAnalyzer:
             return 'controller'
         elif any(pattern in class_name for pattern in ['entity', 'aggregate', 'root']):
             return 'aggregate'
-        elif 'event' in class_name:
-            return 'domain_event'
         
         return 'other'
     

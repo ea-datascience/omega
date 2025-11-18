@@ -9,7 +9,7 @@ Create a comprehensive project checkpoint and commit current changes to maintain
 Execute the checkpoint creation tool with current work context:
 
 ```bash
-/workspace/tools/src/create-checkpoint.sh \
+/workspace/tools/src/utils/create-checkpoint.sh \
   -e "Current Epic/Feature" \
   -t "Current Task/Issue" \
   -s "Task Status (in-progress/blocked/testing/completed)" \
@@ -20,7 +20,7 @@ Execute the checkpoint creation tool with current work context:
 
 **Example:**
 ```bash
-/workspace/tools/src/create-checkpoint.sh \
+/workspace/tools/src/utils/create-checkpoint.sh \
   -e "Tool Development" \
   -t "Modernize checkpoint script" \
   -s "completed" \

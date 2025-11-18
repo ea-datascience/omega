@@ -36,6 +36,8 @@ dependencies = [
     # Caching and storage
     "redis>=5.0.0",
     "minio>=7.2.0",
+    # HTTP client for load testing
+    "aiohttp>=3.9.0",
     # Observability and tracing
     "opentelemetry-api>=1.20.0",
     "opentelemetry-sdk>=1.20.0",
@@ -57,7 +59,11 @@ dependencies = [
     # Analysis tools integration
     "docker>=6.1.0",
     "kubernetes>=28.1.0",
-    "javalang>=0.13.0",
+    # Java parsing (replaced javalang with tree-sitter for Java 17+ support)
+    "tree-sitter==0.23.2",
+    "tree-sitter-java==0.23.5",
+    # Configuration file parsing
+    "pyyaml>=6.0.0",
     # Data processing and validation
     "pandas>=2.1.0",
     "numpy>=1.25.0",

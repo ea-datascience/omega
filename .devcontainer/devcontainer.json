@@ -3,6 +3,18 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
+  // Specify which services to run
+  "runServices": [
+    "app",
+    "postgres",
+    "clickhouse",
+    "redis",
+    "minio",
+    "kafka",
+    "signoz-otel-collector",
+    "signoz-query-service",
+    "signoz-frontend"
+  ],
   // Mount current directory to /workspace in container
   "mounts": [
     "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"

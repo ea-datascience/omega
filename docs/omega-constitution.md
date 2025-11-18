@@ -141,19 +141,43 @@ import some_parser  # Where did this come from? What version?
 
 ### Dependency Management
 
+**CRITICAL PRINCIPLE**: All dependencies MUST be declared in configuration files BEFORE installation.
+
 **VERSION CONTROL**:
-- All Python dependencies in `pyproject.toml`
-- All JavaScript dependencies in `package.json`
-- All system dependencies in `Dockerfile`
-- Version pinning required for reproducibility
+- All Python dependencies in `pyproject.toml` with pinned versions
+- All JavaScript dependencies in `package.json` with pinned versions
+- All system dependencies in `Dockerfile` with pinned versions
+- NO ad-hoc installations allowed (pip install, npm install without updating config)
+
+**WORKFLOW** (MANDATORY):
+1. Add dependency to `pyproject.toml` (Python) or `package.json` (JavaScript)
+2. Pin exact version number (e.g., `tree-sitter==0.23.2`, not `tree-sitter>=0.23.0`)
+3. Run `uv pip install -e .` (Python) or `npm install` (JavaScript) to install
+4. Commit configuration file changes to Git
 
 **EXAMPLES**:
 ```toml
-# pyproject.toml
+# pyproject.toml - CORRECT
 [project.dependencies]
-tree-sitter = "==0.23.2"  # Pinned version
-tree-sitter-java = "==0.23.5"  # Pinned version
+tree-sitter = "==0.23.2"  # Pinned version - reproducible
+tree-sitter-java = "==0.23.5"  # Pinned version - reproducible
+pyyaml = ">=6.0.0"  # Minimum version for compatibility
+
+# INCORRECT - ad-hoc installation without config update
+# pip install tree-sitter  # NO! Update pyproject.toml first!
 ```
+
+**RATIONALE**:
+- Ensures all developers have identical dependency versions
+- Enables reproducible builds and deployments
+- Prevents "dependency drift" between environments
+- Supports automated CI/CD pipelines
+- Allows dependency security auditing
+
+**ENFORCEMENT**:
+- Pre-commit hooks to verify dependencies match config (future)
+- Code review requirement: all PRs with new imports must update config files
+- CI pipeline fails if installed packages differ from config files
 
 ---
 

@@ -26,12 +26,14 @@ services:
       - MINIO_ACCESS_KEY=omega
       - MINIO_SECRET_KEY=omega_dev_secret
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SIGNOZ_OTEL_COLLECTOR_ENDPOINT=http://signoz-otel-collector:4317
     depends_on:
       - postgres
       - clickhouse
       - redis
       - minio
       - kafka
+      - signoz-otel-collector
     networks:
       - omega-network
 
@@ -137,6 +139,67 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  # SigNoz Observability Stack (for runtime analysis)
+  signoz-otel-collector:
+    image: signoz/signoz-otel-collector:0.88.11
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=signoz-otel-collector,deployment.environment=development
+    volumes:
+      - ./signoz-config.yaml:/etc/otel-collector-config.yaml:ro
+    networks:
+      - omega-network
+    depends_on:
+      - clickhouse
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:13133/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  signoz-query-service:
+    image: signoz/query-service:0.38.0
+    command: ["-config=/root/config/prometheus.yml"]
+    ports:
+      - "8080:8080"
+    environment:
+      - ClickHouseUrl=tcp://clickhouse:9000
+      - STORAGE=clickhouse
+      - GODEBUG=netdns=go
+      - TELEMETRY_ENABLED=true
+      - DEPLOYMENT_TYPE=docker-standalone-amd
+    networks:
+      - omega-network
+    depends_on:
+      - clickhouse
+      - signoz-otel-collector
+    healthcheck:
+      test:
+        ["CMD", "wget", "--spider", "-q", "http://localhost:8080/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  signoz-frontend:
+    image: signoz/frontend:0.38.0
+    ports:
+      - "3301:3301"
+    environment:
+      - FRONTEND_API_ENDPOINT=http://signoz-query-service:8080
+    networks:
+      - omega-network
+    depends_on:
+      - signoz-query-service
+    healthcheck:
+      test:
+        ["CMD", "wget", "--spider", "-q", "http://localhost:3301/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   omega-network:

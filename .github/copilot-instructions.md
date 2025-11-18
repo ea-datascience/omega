@@ -114,9 +114,31 @@ This is a non-negotiable requirement that ensures professional, accessible, and 
 4. **Utility Modules**: All shared utilities MUST be in `/workspace/tools/src/utils/`
 5. **Documentation**: All tools MUST have setup documentation in `/workspace/docs/setup/`
 6. **Testing**: All utilities MUST have tests in `/workspace/tools/tests/`
+7. **Dependency Declaration**: ALL dependencies MUST be declared in configuration files BEFORE installation
+
+**DEPENDENCY MANAGEMENT WORKFLOW** (STRICTLY ENFORCED):
+
+```bash
+# STEP 1: Add dependency to pyproject.toml FIRST
+# Edit /workspace/tools/pyproject.toml:
+#   dependencies = [
+#       "pyyaml==6.0.3",  # Pin exact version
+#   ]
+
+# STEP 2: Install from configuration file
+cd /workspace/tools && uv pip install -e .
+
+# STEP 3: Commit configuration change
+git add pyproject.toml
+git commit -m "Add pyyaml==6.0.3 dependency for YAML config parsing"
+```
 
 **CORRECT EXAMPLES**:
 ```bash
+# CORRECT: Update config file, then install
+# 1. Edit pyproject.toml to add dependency
+# 2. Run: cd /workspace/tools && uv pip install -e .
+
 # CORRECT: Use scripted installation
 ./tools/src/utils/install-tree-sitter-java.sh
 
@@ -130,7 +152,10 @@ python -m src.utils.service_utils
 **INCORRECT EXAMPLES**:
 ```bash
 # INCORRECT: Ad-hoc pip install (no version control, not reproducible)
-pip install tree-sitter-java
+pip install pyyaml  # NO! Update pyproject.toml first!
+
+# INCORRECT: Ad-hoc uv pip install (not in config)
+uv pip install tree-sitter  # NO! Add to pyproject.toml first!
 
 # INCORRECT: Direct download (not tracked, not reproducible)
 curl -O https://example.com/tool.zip && unzip tool.zip
@@ -143,10 +168,11 @@ curl -O https://example.com/tool.zip && unzip tool.zip
 
 1. Create source in `/workspace/tools/src/utils/my_tool.py`
 2. Pin all versions in the tool (e.g., `TOOL_VERSION = "1.2.3"`)
-3. Create installation script if needed in `/workspace/tools/src/utils/install-my-tool.sh`
-4. Add tests in `/workspace/tools/tests/unit/test_my_tool.py`
-5. Document in `/workspace/docs/setup/my-tool-setup.md`
-6. Update this file (copilot-instructions.md) with tool availability
+3. Add dependencies to `/workspace/tools/pyproject.toml` with pinned versions
+4. Create installation script if needed in `/workspace/tools/src/utils/install-my-tool.sh`
+5. Add tests in `/workspace/tools/tests/unit/test_my_tool.py`
+6. Document in `/workspace/docs/setup/my-tool-setup.md`
+7. Update this file (copilot-instructions.md) with tool availability
 
 **RATIONALE**:
 - Prevents "works on my machine" issues
@@ -154,6 +180,7 @@ curl -O https://example.com/tool.zip && unzip tool.zip
 - Supports fast onboarding for new developers
 - Ensures audit trail for all dependencies
 - Facilitates security and compliance reviews
+- Eliminates dependency drift between environments
 
 See `/workspace/docs/omega-constitution.md` for complete reproducibility standards.
 
@@ -186,10 +213,13 @@ The project is in its initial phase with the following established:
 ## Infrastructure Services (Available in Dev Container)
 All infrastructure services are running and accessible via docker-compose:
 - PostgreSQL 15 with pg_vector at postgres:5432 - OPERATIONAL
-- ClickHouse at clickhouse:8123 - OPERATIONAL  
+- ClickHouse at clickhouse:8123 (HTTP) and clickhouse:9000 (native) - OPERATIONAL  
 - Redis at redis:6379 - OPERATIONAL
 - MinIO at minio:9000 (console at localhost:9001) - OPERATIONAL
 - Apache Kafka at kafka:9092 - OPERATIONAL
+- SigNoz OTel Collector at signoz-otel-collector:4317 (gRPC), :4318 (HTTP) - OPERATIONAL
+- SigNoz Query Service at signoz-query-service:8080 - OPERATIONAL
+- SigNoz Frontend at localhost:3301 - OPERATIONAL
 
 Service utilities available at `/workspace/tools/src/utils/service_utils.py` for connection management.
 

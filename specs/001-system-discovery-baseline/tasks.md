@@ -74,11 +74,11 @@ Based on plan.md structure:
 
 ### Static Analysis Integration for User Story 1
 
-- [ ] T023 [P] [US1] Implement Context Mapper integration in tools/src/analysis/static/context_mapper.py
-- [ ] T024 [P] [US1] Implement Structurizr integration for C4 diagrams in tools/src/analysis/static/structurizr.py
-- [ ] T025 [P] [US1] Implement CodeQL integration for security scanning in tools/src/analysis/static/codeql.py
-- [ ] T026 [P] [US1] Implement Microsoft AppCAT integration in tools/src/analysis/static/appcat.py
-- [ ] T027 [US1] Create static analysis orchestration service using Microsoft Agent Framework in tools/src/services/orchestration/static_analyzer.py
+- [x] T023 [P] [US1] Implement Context Mapper integration in tools/src/analysis/static/context_mapper.py
+- [x] T024 [P] [US1] Implement Structurizr integration for C4 diagrams in tools/src/analysis/static/structurizr.py
+- [x] T025 [P] [US1] Implement CodeQL integration for security scanning in tools/src/analysis/static/codeql.py
+- [x] T026 [P] [US1] Implement Microsoft AppCAT integration in tools/src/analysis/static/appcat.py
+- [x] T027 [US1] Create static analysis orchestration service using Microsoft Agent Framework in tools/src/services/orchestration/static_analyzer.py
 
 ### Runtime Analysis Integration for User Story 1
 

@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field, ConfigDict
 
 logger = logging.getLogger(__name__)
@@ -184,17 +184,15 @@ class ComponentDetail(BaseModel):
     )
 
 
-# Dependency placeholder - will be implemented in T040
+# Dependency: Get architecture service (implemented via orchestrator)
 def get_architecture_service():
     """Get architecture analysis service dependency.
     
-    Raises:
-        HTTPException: 501 Not Implemented until T040 is complete
+    Returns:
+        AnalysisOrchestrator: Orchestrator instance providing architecture methods
     """
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Architecture analysis service not yet implemented (T040 pending)"
-    )
+    from omega_analysis.services.orchestration.analysis_orchestrator import get_orchestrator_instance
+    return get_orchestrator_instance()
 
 
 # API Endpoints
@@ -207,7 +205,7 @@ def get_architecture_service():
 )
 async def get_system_architecture(
     project_id: UUID,
-    service = None  # Dependency will be: Depends(get_architecture_service)
+    service = Depends(get_architecture_service)
 ) -> SystemArchitecture:
     """Get complete system architecture for a project.
     
@@ -225,12 +223,8 @@ async def get_system_architecture(
     logger.info(f"Retrieving architecture for project {project_id}")
     
     try:
-        # Trigger service check (returns 501 until T040)
-        get_architecture_service()
-        
-        # When T040 is complete, this will become:
-        # architecture = await service.get_architecture(project_id)
-        # return architecture
+        architecture = await service.get_system_architecture(project_id)
+        return architecture
         
     except HTTPException:
         raise
@@ -250,7 +244,7 @@ async def get_system_architecture(
 )
 async def get_service_boundaries(
     project_id: UUID,
-    service = None  # Dependency will be: Depends(get_architecture_service)
+    service = Depends(get_architecture_service)
 ) -> List[ServiceBoundary]:
     """Get identified service boundaries for microservices migration.
     
@@ -268,12 +262,8 @@ async def get_service_boundaries(
     logger.info(f"Retrieving service boundaries for project {project_id}")
     
     try:
-        # Trigger service check (returns 501 until T040)
-        get_architecture_service()
-        
-        # When T040 is complete, this will become:
-        # boundaries = await service.get_service_boundaries(project_id)
-        # return boundaries
+        boundaries = await service.get_service_boundaries(project_id)
+        return boundaries
         
     except HTTPException:
         raise
@@ -294,7 +284,7 @@ async def get_service_boundaries(
 async def get_component_details(
     project_id: UUID,
     boundary_id: Optional[UUID] = None,
-    service = None  # Dependency will be: Depends(get_architecture_service)
+    service = Depends(get_architecture_service)
 ) -> List[ComponentDetail]:
     """Get detailed component information, optionally filtered by service boundary.
     
@@ -316,12 +306,8 @@ async def get_component_details(
     )
     
     try:
-        # Trigger service check (returns 501 until T040)
-        get_architecture_service()
-        
-        # When T040 is complete, this will become:
-        # components = await service.get_components(project_id, boundary_id)
-        # return components
+        components = await service.get_component_details(project_id, boundary_id)
+        return components
         
     except HTTPException:
         raise

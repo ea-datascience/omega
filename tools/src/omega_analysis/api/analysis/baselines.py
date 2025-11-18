@@ -154,16 +154,11 @@ def get_baselines_service():
     """
     Get performance baselines service instance.
     
-    Returns placeholder until T040 (Analysis Orchestrator) is implemented.
-    
-    Raises:
-        HTTPException: 501 Not Implemented until service is available
+    Returns:
+        AnalysisOrchestrator: Orchestrator instance providing baselines methods
     """
-    logger.warning("Baselines service not yet implemented (requires T040)")
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Performance baselines service not yet available. Implementation pending in T040 (Analysis Orchestrator)."
-    )
+    from omega_analysis.services.orchestration.analysis_orchestrator import get_orchestrator_instance
+    return get_orchestrator_instance()
 
 
 # ============================================================================
@@ -212,8 +207,8 @@ async def list_performance_baselines(
     logger.info(f"Retrieving performance baselines for project {id} (env: {environment_type or 'all'})")
     
     try:
-        # Service implementation pending in T040
-        baselines = await service.list_baselines(id, environment_type)
+        # Service implementation implemented in T040
+        baselines = await service.get_performance_baselines(id, environment_type)
         logger.info(f"Retrieved {len(baselines)} baselines for project {id}")
         return baselines
         

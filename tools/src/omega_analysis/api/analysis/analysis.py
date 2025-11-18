@@ -146,12 +146,8 @@ class CancelAnalysisRequest(BaseModel):
 # Dependency: Get analysis orchestrator
 def get_orchestrator():
     """Get analysis orchestrator instance."""
-    # TODO: Replace with proper dependency injection once orchestrator is implemented
-    # For now, return a placeholder that will be replaced when T040 is complete
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Analysis orchestrator not yet implemented. Complete T040 first."
-    )
+    from omega_analysis.services.orchestration.analysis_orchestrator import get_orchestrator_instance
+    return get_orchestrator_instance()
 
 
 # Endpoints

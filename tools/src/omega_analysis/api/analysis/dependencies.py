@@ -138,16 +138,11 @@ def get_dependency_service():
     """
     Get dependency analysis service instance.
     
-    Returns placeholder until T040 (Analysis Orchestrator) is implemented.
-    
-    Raises:
-        HTTPException: 501 Not Implemented until service is available
+    Returns:
+        AnalysisOrchestrator: Orchestrator instance providing dependency graph methods
     """
-    logger.warning("Dependency service not yet implemented (requires T040)")
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Dependency analysis service not yet available. Implementation pending in T040 (Analysis Orchestrator)."
-    )
+    from omega_analysis.services.orchestration.analysis_orchestrator import get_orchestrator_instance
+    return get_orchestrator_instance()
 
 
 # ============================================================================

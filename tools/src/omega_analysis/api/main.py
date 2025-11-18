@@ -154,7 +154,7 @@ app.include_router(
 
 app.include_router(
     architecture_router,
-    prefix="/api/v1/architecture",
+    prefix="/api/v1",
     tags=["architecture"]
 )
 

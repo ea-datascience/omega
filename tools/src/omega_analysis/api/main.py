@@ -148,7 +148,7 @@ app.include_router(
 
 app.include_router(
     analysis_router,
-    prefix="/api/v1/analysis",
+    prefix="/api/v1",
     tags=["analysis"]
 )
 

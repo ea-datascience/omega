@@ -82,10 +82,10 @@ Based on plan.md structure:
 
 ### Runtime Analysis Integration for User Story 1
 
-- [ ] T028 [P] [US1] Implement SigNoz deployment automation in tools/src/analysis/runtime/signoz_deployer.py
-- [ ] T029 [P] [US1] Implement OpenTelemetry instrumentation templates in tools/src/analysis/runtime/otel_instrumentation.py
-- [ ] T030 [P] [US1] Create synthetic load testing framework in tools/src/analysis/runtime/load_generator.py
-- [ ] T031 [US1] Create runtime analysis orchestration service using Microsoft Agent Framework in tools/src/services/orchestration/runtime_analyzer.py
+- [x] T028 [P] [US1] Implement SigNoz deployment automation in tools/src/analysis/runtime/signoz_deployer.py
+- [x] T029 [P] [US1] Implement OpenTelemetry instrumentation templates in tools/src/analysis/runtime/otel_instrumentation.py
+- [x] T030 [P] [US1] Create synthetic load testing framework in tools/src/analysis/runtime/load_generator.py
+- [x] T031 [US1] Create runtime analysis orchestration service using Microsoft Agent Framework in tools/src/services/orchestration/runtime_analyzer.py
 
 ### Gap Analysis Engine for User Story 1
 

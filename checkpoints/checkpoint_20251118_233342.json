@@ -1,0 +1,74 @@
+{
+  "checkpoint": {
+    "timestamp": "2025-11-18T23:33:42Z",
+    "created_by": "/workspace/tools/src/utils/create-checkpoint.sh",
+    "version": "2.0",
+    "format": "json"
+  },
+  "project": {
+    "name": "Omega - Agentic Software Migration System",
+    "repository": "ea-datascience/omega",
+    "root_path": "/workspace"
+  },
+  "git_status": {
+  "is_git_repo": true,
+  "branch": "001-system-discovery-baseline ",
+  "remote_url": "git@github.com:ea-datascience/omega.git ",
+  "last_commit": "e10ccef - feat(api): T038 Dependency Graph Endpoints (34 seconds ago) ",
+  "staged_files": 0,
+  "unstaged_files": 0,
+  "untracked_files": 1
+},
+  "modified_files": {
+  "staged": [
+  ],
+  "unstaged": [
+  ],
+  "untracked": [
+    "checkpoints/checkpoint_20251118_233342.json "
+  ]
+},
+  "work_context": {
+    "current_epic": "Epic 1.1 Milestone 3.1: REST API Development ",
+    "current_task": "T038 Dependency Graph Endpoints ",
+    "task_status": "completed ",
+    "next_tasks": "T039 Performance Baselines Endpoints, then T040-T042 Analysis Orchestration to enable full API functionality ",
+    "blockers": " ",
+    "notes": "Completed T038 with DependencyGraph schema, graph_type filtering (static/runtime/combined), coupling metrics, circular dependencies, and critical path analysis. All 19 integration tests passing. Returns 501 until T040 implements dependency service. "
+  },
+  "environment": {
+  "shell": "/bin/bash",
+  "pwd": "/workspace",
+  "git_version": "2.51.1 ",
+  "python_version": "3.12.12 ",
+  "user": "vscode",
+  "hostname": "1f269e12ff22"
+},
+  "project_structure": ". ├── checkpoints │   ├── checkpoint_20251114_000431.json │   ├── checkpoint_20251114_000534.json │   ├── checkpoint_20251114_000645.json │   ├── checkpoint_20251114_001103.json │   ├── checkpoint_20251114_002521.json │   ├── checkpoint_20251114_002938.json │   ├── checkpoint_20251114_163400.json │   ├── checkpoint_20251114_181212.json │   ├── checkpoint_20251117_124614.json │   ├── checkpoint_20251117_163837.json │   ├── checkpoint_20251117_164823.json │   ├── checkpoint_20251117_181733.json │   ├── checkpoint_20251117_220255.json │   ├── checkpoint_20251117_230739.json │   ├── checkpoint_20251118_133854.json │   ├── checkpoint_20251118_140230.json │   ├── checkpoint_20251118_153740.json │   ├── checkpoint_20251118_161049.json │   ├── checkpoint_20251118_220139.json │   ├── checkpoint_20251118_222647.json │   ├── checkpoint_20251118_224051.json │   ├── checkpoint_20251118_225016.json │   ├── checkpoint_20251118_230232.json │   └── checkpoint_20251118_233342.json ├── dashboard │   ├── .eslintrc.json │   ├── package.json │   ├── src │   └── tests ├── .devcontainer │   ├── devcontainer.json │   ├── docker-compose.yml │   ├── Dockerfile │   ├── README.md │   └── signoz-config.yaml ├── docker-compose.yml ├── docs │   ├── drafts │   ├── .DS_Store │   ├── git │   ├── implementation │   ├── omega-constitution.md │   ├── setup │   └── speckit ├── .DS_Store ├── .github │   ├── agents │   ├── copilot-instructions.md │   └── prompts ├── .gitignore ├── prds │   ├── epic-1.1-system-discovery-baseline-assessment.md │   └── templates ├── README.md ├── .specify │   ├── memory │   ├── scripts │   └── templates ├── specs │   └── 001-system-discovery-baseline ├── tools │   ├── agents │   ├── alembic │   ├── alembic.ini │   ├── docker │   ├── pyproject.toml │   ├── .pytest_cache │   ├── README.md │   ├── run_migration.py │   ├── src │   ├── T019_IMPLEMENTATION_SUMMARY.md │   ├── test_router_isolated.py │   ├── tests │   ├── uv.lock │   ├── validate_projects_api.py │   └── validate_schema.py └── .vscode     └── settings.json  30 directories, 49 files ",
+  "resume_instructions": [
+  "Ensure you're in the project root: cd /workspace",
+  "Activate virtual environment if available: source .venv/bin/activate",
+  "Check Git status: git status",
+  "Review modified files listed in this checkpoint",
+  "Check recent commits: git log --oneline -5",
+  "Review the work context for current tasks and blockers",
+  "Check project documentation in /docs directory",
+  "Review tools available in /tools directory",
+  "Use GitHub Copilot with context from .github/copilot-instructions.md"
+],
+  "copilot_context": {
+    "project_goals": [
+      "Demonstrate migration workflows from monoliths to microservices",
+      "Provide intelligent automation through agentic systems", 
+      "Establish best practices for microservices decomposition",
+      "Enable practical implementation with real-world tools"
+    ],
+    "key_directories": {
+      "/data/codebase/": "Reference codebases (Spring Modulith)",
+      "/docs/": "Project documentation",
+      "/tools/": "Migration utilities and scripts",
+      "/.github/": "GitHub workflows and prompts"
+    },
+    "current_phase": "Initial phase focusing on development environment, Git workflow, tools structure, and reference codebase integration"
+  }
+}

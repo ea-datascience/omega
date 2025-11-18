@@ -1,5 +1,6 @@
 """Analysis module init."""
 from .analysis import router as analysis_router
 from .architecture import router as architecture_router
+from .dependencies import router as dependencies_router
 
-__all__ = ["analysis_router", "architecture_router"]
+__all__ = ["analysis_router", "architecture_router", "dependencies_router"]

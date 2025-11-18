@@ -3,18 +3,14 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  
   // Mount current directory to /workspace in container
   "mounts": [
     "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
   ],
-  
   // Run once when container is created - setup Python environment
   "postCreateCommand": "uv python install 3.12 && uv venv .venv --python 3.12",
-  
   // Run every time VS Code attaches - ensure environment is available
   "postAttachCommand": "if [ -f .venv/bin/activate ]; then echo 'Virtual environment ready at .venv/'; else echo 'Virtual environment not found - run postCreateCommand'; fi",
-  
   // Configure tool-specific properties
   "customizations": {
     "vscode": {
@@ -22,11 +18,9 @@
         // Basic file support
         "ms-vscode.vscode-json",
         "redhat.vscode-yaml",
-        
         // Git and version control
         "eamodio.gitlens"
       ],
-      
       "settings": {
         "editor.formatOnSave": true,
         "python.pythonPath": "/workspace/.venv/bin/python",
@@ -35,10 +29,8 @@
       }
     }
   },
-  
   // Comment out to connect as root instead
   "remoteUser": "vscode",
-  
   // Configure container features
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},

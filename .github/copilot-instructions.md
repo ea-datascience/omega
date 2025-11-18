@@ -102,6 +102,61 @@ This project welcomes contributions from developers interested in:
 
 This is a non-negotiable requirement that ensures professional, accessible, and distraction-free communication focused exclusively on technical content. Any use of emojis violates project standards and must be immediately corrected.
 
+### Reproducibility and Tooling Standards
+
+**CRITICAL PRINCIPLE**: All tools, configurations, and setup procedures MUST be reproducible across all developers and environments.
+
+**MANDATORY REQUIREMENTS**:
+
+1. **No Ad-Hoc Installations**: Never use ad-hoc command-line installations or manual downloads
+2. **Scripted Setup**: All installations MUST be scripted in `/workspace/tools/src/utils/`
+3. **Version Pinning**: All dependencies MUST have explicitly pinned versions
+4. **Utility Modules**: All shared utilities MUST be in `/workspace/tools/src/utils/`
+5. **Documentation**: All tools MUST have setup documentation in `/workspace/docs/setup/`
+6. **Testing**: All utilities MUST have tests in `/workspace/tools/tests/`
+
+**CORRECT EXAMPLES**:
+```bash
+# CORRECT: Use scripted installation
+./tools/src/utils/install-tree-sitter-java.sh
+
+# CORRECT: Use utility module
+python -m src.utils.parser_manager install --parser tree-sitter
+
+# CORRECT: Check service status
+python -m src.utils.service_utils
+```
+
+**INCORRECT EXAMPLES**:
+```bash
+# INCORRECT: Ad-hoc pip install (no version control, not reproducible)
+pip install tree-sitter-java
+
+# INCORRECT: Direct download (not tracked, not reproducible)
+curl -O https://example.com/tool.zip && unzip tool.zip
+
+# INCORRECT: Manual configuration (not documented, not reproducible)
+# Manually editing config files without scripts
+```
+
+**WHEN CREATING NEW TOOLS**:
+
+1. Create source in `/workspace/tools/src/utils/my_tool.py`
+2. Pin all versions in the tool (e.g., `TOOL_VERSION = "1.2.3"`)
+3. Create installation script if needed in `/workspace/tools/src/utils/install-my-tool.sh`
+4. Add tests in `/workspace/tools/tests/unit/test_my_tool.py`
+5. Document in `/workspace/docs/setup/my-tool-setup.md`
+6. Update this file (copilot-instructions.md) with tool availability
+
+**RATIONALE**:
+- Prevents "works on my machine" issues
+- Enables consistent CI/CD pipelines
+- Supports fast onboarding for new developers
+- Ensures audit trail for all dependencies
+- Facilitates security and compliance reviews
+
+See `/workspace/docs/omega-constitution.md` for complete reproducibility standards.
+
 ## Current Development Phase
 
 The project is in its initial phase with the following established:
@@ -127,6 +182,42 @@ The project is in its initial phase with the following established:
 - PostgreSQL 15+ with pg_vector, ClickHouse for analytics, MinIO for file storage, Redis Cluster for caching, Apache Kafka for events (001-omega-migration-system)
 - Python 3.12+ (per constitution requirements) with Java 17+ for analysis tools + Microsoft Agent Framework, FastAPI, Docker, OpenTelemetry, Context Mapper, Structurizr, CodeQL, Microsoft AppCAT (001-system-discovery-baseline)
 - PostgreSQL 15+ with pg_vector for analysis artifacts, MinIO for file storage, Redis Cluster for caching (001-system-discovery-baseline)
+
+## Infrastructure Services (Available in Dev Container)
+All infrastructure services are running and accessible via docker-compose:
+- PostgreSQL 15 with pg_vector at postgres:5432 - OPERATIONAL
+- ClickHouse at clickhouse:8123 - OPERATIONAL  
+- Redis at redis:6379 - OPERATIONAL
+- MinIO at minio:9000 (console at localhost:9001) - OPERATIONAL
+- Apache Kafka at kafka:9092 - OPERATIONAL
+
+Service utilities available at `/workspace/tools/src/utils/service_utils.py` for connection management.
+
+## Available Developer Utilities (All Reproducible)
+
+All utilities are located in `/workspace/tools/src/utils/` for reproducible setup across all developers:
+
+**Java Environment Management**:
+- Module: `java_utils.py` - Java 17+ detection, validation, environment setup
+- Command: `python -m src.utils.java_utils` - Check Java environment status
+- Installation: Automatic in Dockerfile (OpenJDK 17)
+- Tests: `tools/tests/unit/test_java_utils.py` (27 tests)
+
+**Service Connection Management**:
+- Module: `service_utils.py` - PostgreSQL, ClickHouse, Redis, MinIO, Kafka connections
+- Command: `python -m src.utils.service_utils` - Check all service connections
+- Configuration: All services in docker-compose.yml with health checks
+- Tests: `tools/tests/integration/test_infrastructure_services.py` (14 tests)
+
+**Java Parser Management**:
+- Module: `parser_manager.py` - Reproducible parser installation and evaluation
+- Command: `python -m src.utils.parser_manager evaluate` - Compare parser options
+- Command: `python -m src.utils.parser_manager install --parser tree-sitter` - Install recommended parser
+- Script: `install-tree-sitter-java.sh` - Standalone installation script
+- Pinned Versions: tree-sitter==0.23.2, tree-sitter-java==0.23.5
+- Documentation: See `/workspace/docs/setup/` for setup guides
+
+All utilities follow constitution principles: scripted, versioned, tested, and documented.
 
 ## Recent Changes
 - 001-omega-migration-system: Added Python 3.12+ (per constitution requirements) + Microsoft Agent Framework + JavaParser, Microsoft App Cat, SonarQube Enterprise

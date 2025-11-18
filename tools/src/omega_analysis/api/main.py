@@ -13,7 +13,7 @@ from omega_analysis.models.base import init_db, close_db
 from omega_analysis.logging import setup_logging
 from omega_analysis.tracing import setup_tracing
 from omega_analysis.api.v1 import projects_router
-from omega_analysis.api.analysis import analysis_router, architecture_router, dependencies_router
+from omega_analysis.api.analysis import analysis_router, architecture_router, dependencies_router, baselines_router
 from omega_analysis.api.reports import reports_router
 from omega_analysis.api import health
 
@@ -162,6 +162,12 @@ app.include_router(
     dependencies_router,
     prefix="/api/v1",
     tags=["dependencies"]
+)
+
+app.include_router(
+    baselines_router,
+    prefix="/api/v1",
+    tags=["baselines"]
 )
 
 app.include_router(

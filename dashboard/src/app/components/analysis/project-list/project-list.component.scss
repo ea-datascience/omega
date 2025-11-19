@@ -1,0 +1,129 @@
+.project-list-container {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    mat-card {
+        mat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            mat-card-title h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 10px;
+            }
+        }
+    }
+
+    .loading-container,
+    .error-container,
+    .empty-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+
+        mat-icon {
+            font-size: 64px;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 20px;
+        }
+
+        mat-spinner {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin: 10px 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        p {
+            margin: 10px 0 20px 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    }
+
+    .table-container {
+        overflow-x: auto;
+
+        .projects-table {
+            width: 100%;
+
+            .project-name {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                strong {
+                    font-size: 14px;
+                }
+
+                .project-description {
+                    font-size: 12px;
+                    color: rgba(0, 0, 0, 0.54);
+                }
+            }
+
+            .project-row {
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.04);
+                }
+            }
+
+            mat-chip {
+                font-size: 12px;
+                min-height: 24px;
+            }
+
+            button[mat-icon-button] {
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.04);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .project-list-container {
+        padding: 10px;
+
+        mat-card-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 15px;
+
+            .header-actions {
+                width: 100%;
+
+                button {
+                    flex: 1;
+                }
+            }
+        }
+
+        .table-container {
+            .projects-table {
+                font-size: 12px;
+            }
+        }
+    }
+}

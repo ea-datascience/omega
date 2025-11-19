@@ -1,0 +1,91 @@
+{
+  "checkpoint": {
+    "timestamp": "2025-11-19T20:52:07Z",
+    "created_by": "/workspace/tools/src/utils/create-checkpoint.sh",
+    "version": "2.0",
+    "format": "json"
+  },
+  "project": {
+    "name": "Omega - Agentic Software Migration System",
+    "repository": "ea-datascience/omega",
+    "root_path": "/workspace"
+  },
+  "git_status": {
+  "is_git_repo": true,
+  "branch": "001-system-discovery-baseline ",
+  "remote_url": "git@github.com:ea-datascience/omega.git ",
+  "last_commit": "1c69be0 - Add Angular CLI installation script and fix dashboard dependencies (63 minutes ago) ",
+  "staged_files": 17,
+  "unstaged_files": 0,
+  "untracked_files": 1
+},
+  "modified_files": {
+  "staged": [
+    {"file": "dashboard/angular.json ", "status": "A"},
+    {"file": "dashboard/src/app/app.component.ts ", "status": "A"},
+    {"file": "dashboard/src/app/app.routes.ts ", "status": "A"},
+    {"file": "dashboard/src/app/components/analysis/project-list/project-list.component.html ", "status": "A"},
+    {"file": "dashboard/src/app/components/analysis/project-list/project-list.component.scss ", "status": "A"},
+    {"file": "dashboard/src/app/components/analysis/project-list/project-list.component.ts ", "status": "A"},
+    {"file": "dashboard/src/app/models/analysis-project.model.ts ", "status": "A"},
+    {"file": "dashboard/src/app/services/project.service.ts ", "status": "A"},
+    {"file": "dashboard/src/environments/environment.prod.ts ", "status": "A"},
+    {"file": "dashboard/src/environments/environment.ts ", "status": "A"},
+    {"file": "dashboard/src/favicon.ico ", "status": "A"},
+    {"file": "dashboard/src/index.html ", "status": "A"},
+    {"file": "dashboard/src/main.ts ", "status": "A"},
+    {"file": "dashboard/src/styles.scss ", "status": "A"},
+    {"file": "dashboard/tsconfig.app.json ", "status": "A"},
+    {"file": "dashboard/tsconfig.json ", "status": "A"},
+    {"file": "dashboard/tsconfig.spec.json ", "status": "A"}
+  ],
+  "unstaged": [
+  ],
+  "untracked": [
+    "checkpoints/checkpoint_20251119_205206.json "
+  ]
+},
+  "work_context": {
+    "current_epic": "T044: Dashboard Project List Component ",
+    "current_task": "Create Angular component for displaying analysis projects ",
+    "task_status": "completed ",
+    "next_tasks": "T045: Create analysis progress component, T046: Create architecture visualization component ",
+    "blockers": "None ",
+    "notes": "Successfully implemented T044 project list component with Angular 17 standalone components. Created complete Angular workspace configuration (angular.json, tsconfig files), implemented ProjectListComponent with Material Design table, project service with HTTP client, routing configuration, and environment setup. Build successful with 444.66 KB initial bundle. Component features: project listing with status badges, create/view/delete actions, loading/error/empty states, responsive design, and Material UI integration. "
+  },
+  "environment": {
+  "shell": "/bin/bash",
+  "pwd": "/workspace",
+  "git_version": "2.51.1 ",
+  "python_version": "3.12.12 ",
+  "user": "vscode",
+  "hostname": "943e2616848a"
+},
+  "project_structure": ". ├── checkpoints │   ├── checkpoint_20251114_000431.json │   ├── checkpoint_20251114_000534.json │   ├── checkpoint_20251114_000645.json │   ├── checkpoint_20251114_001103.json │   ├── checkpoint_20251114_002521.json │   ├── checkpoint_20251114_002938.json │   ├── checkpoint_20251114_163400.json │   ├── checkpoint_20251114_181212.json │   ├── checkpoint_20251117_124614.json │   ├── checkpoint_20251117_163837.json │   ├── checkpoint_20251117_164823.json │   ├── checkpoint_20251117_181733.json │   ├── checkpoint_20251117_220255.json │   ├── checkpoint_20251117_230739.json │   ├── checkpoint_20251118_133854.json │   ├── checkpoint_20251118_140230.json │   ├── checkpoint_20251118_153740.json │   ├── checkpoint_20251118_161049.json │   ├── checkpoint_20251118_220139.json │   ├── checkpoint_20251118_222647.json │   ├── checkpoint_20251118_224051.json │   ├── checkpoint_20251118_225016.json │   ├── checkpoint_20251118_230232.json │   ├── checkpoint_20251118_233342.json │   ├── checkpoint_20251118_233726.json │   ├── checkpoint_20251118_235429.json │   ├── checkpoint_20251119_000224.json │   ├── checkpoint_20251119_001146.json │   ├── checkpoint_20251119_012013.json │   └── checkpoint_20251119_205206.json ├── dashboard │   ├── .angular │   ├── angular.json │   ├── dist │   ├── .eslintrc.json │   ├── .gitignore │   ├── node_modules │   ├── package.json │   ├── package-lock.json │   ├── src │   ├── tests │   ├── tsconfig.app.json │   ├── tsconfig.json │   └── tsconfig.spec.json ├── .devcontainer │   ├── devcontainer.json │   ├── docker-compose.yml │   ├── Dockerfile │   ├── README.md │   └── signoz-config.yaml ├── diagrams │   ├── spring-modulith_component.puml │   ├── spring-modulith_container.puml │   ├── spring-modulith_context.puml │   ├── spring-modulith-core_classes.puml │   ├── spring-modulith-integration-test_classes.puml │   └── spring-modulith-observability_classes.puml ├── docker-compose.yml ├── docs │   ├── drafts │   ├── .DS_Store │   ├── git │   ├── implementation │   ├── omega-constitution.md │   ├── setup │   ├── speckit │   └── tools ├── .DS_Store ├── .github │   ├── agents │   ├── copilot-instructions.md │   └── prompts ├── .gitignore ├── prds │   ├── epic-1.1-system-discovery-baseline-assessment.md │   └── templates ├── README.md ├── .specify │   ├── memory │   ├── scripts │   └── templates ├── specs │   └── 001-system-discovery-baseline ├── spring-modulith_analysis.json ├── spring-modulith_ANALYSIS_REPORT.md ├── tools │   ├── agents │   ├── alembic │   ├── alembic.ini │   ├── docker │   ├── pyproject.toml │   ├── .pytest_cache │   ├── README.md │   ├── run_migration.py │   ├── src │   ├── T019_IMPLEMENTATION_SUMMARY.md │   ├── test_router_isolated.py │   ├── tests │   ├── uv.lock │   ├── validate_projects_api.py │   └── validate_schema.py └── .vscode     └── settings.json  35 directories, 69 files ",
+  "resume_instructions": [
+  "Ensure you're in the project root: cd /workspace",
+  "Activate virtual environment if available: source .venv/bin/activate",
+  "Check Git status: git status",
+  "Review modified files listed in this checkpoint",
+  "Check recent commits: git log --oneline -5",
+  "Review the work context for current tasks and blockers",
+  "Check project documentation in /docs directory",
+  "Review tools available in /tools directory",
+  "Use GitHub Copilot with context from .github/copilot-instructions.md"
+],
+  "copilot_context": {
+    "project_goals": [
+      "Demonstrate migration workflows from monoliths to microservices",
+      "Provide intelligent automation through agentic systems", 
+      "Establish best practices for microservices decomposition",
+      "Enable practical implementation with real-world tools"
+    ],
+    "key_directories": {
+      "/data/codebase/": "Reference codebases (Spring Modulith)",
+      "/docs/": "Project documentation",
+      "/tools/": "Migration utilities and scripts",
+      "/.github/": "GitHub workflows and prompts"
+    },
+    "current_phase": "Initial phase focusing on development environment, Git workflow, tools structure, and reference codebase integration"
+  }
+}

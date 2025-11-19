@@ -1,0 +1,355 @@
+<div class="performance-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading performance baseline...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadBaseline()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error && baseline" class="content-layout">
+    <!-- Header Card -->
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>speed</mat-icon>
+          Performance Baseline: {{ baseline.project_name }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Summary Stats -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <mat-icon [class]="getHealthColor(baseline.overall_health)">{{ getStatusIcon(baseline.overall_health) }}</mat-icon>
+            <span class="stat-label">Overall Health:</span>
+            <span class="stat-value" [class]="getHealthColor(baseline.overall_health)">{{ baseline.overall_health }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Requests:</span>
+            <span class="stat-value">{{ formatNumber(baseline.total_requests) }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Avg Response Time:</span>
+            <span class="stat-value">{{ formatNumber(baseline.avg_response_time) }} ms</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Error Rate:</span>
+            <span class="stat-value" [class.warning]="baseline.error_rate > 0.01">{{ formatPercent(baseline.error_rate) }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Duration:</span>
+            <span class="stat-value">{{ baseline.duration_seconds }}s</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Environment:</span>
+            <span class="stat-value">{{ baseline.environment }}</span>
+          </div>
+        </div>
+
+        <!-- Test Scenario Info -->
+        <div *ngIf="baseline.test_scenario" class="scenario-info">
+          <h4>Test Scenario: {{ baseline.test_scenario.name }}</h4>
+          <p *ngIf="baseline.test_scenario.description">{{ baseline.test_scenario.description }}</p>
+          <div class="scenario-details">
+            <span><strong>Virtual Users:</strong> {{ baseline.test_scenario.virtual_users }}</span>
+            <span><strong>Duration:</strong> {{ baseline.test_scenario.duration_seconds }}s</span>
+            <span><strong>Status:</strong> <mat-chip>{{ baseline.test_scenario.status }}</mat-chip></span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Alerts -->
+    <mat-card *ngIf="getAlerts().length > 0" class="alerts-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon color="warn">warning</mat-icon>
+          Performance Alerts ({{ getAlerts().length }})
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="alert-list">
+          <div *ngFor="let alert of getAlerts()" class="alert-item" [class]="alert.severity">
+            <mat-icon>{{ alert.severity === 'critical' ? 'error' : 'warning' }}</mat-icon>
+            <div class="alert-content">
+              <strong>{{ alert.message }}</strong>
+              <p>Threshold: {{ formatNumber(alert.threshold_value) }} | Actual: {{ formatNumber(alert.actual_value) }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Tabs for Different Metrics -->
+    <mat-card class="tabs-card">
+      <mat-tab-group>
+        <!-- Overview Tab -->
+        <mat-tab label="Overview">
+          <div class="tab-content">
+            <!-- Key Metrics Grid -->
+            <div class="metrics-grid">
+              <!-- Response Time Chart -->
+              <mat-card class="metric-card">
+                <mat-card-header>
+                  <mat-card-title>Response Time Over Time</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="chart-container" *ngIf="responseTimeChartData">
+                    <canvas baseChart
+                      [data]="responseTimeChartData"
+                      [options]="responseTimeChartOptions"
+                      [type]="lineChartType">
+                    </canvas>
+                  </div>
+                  <p *ngIf="!responseTimeChartData" class="no-data">No response time data available</p>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Throughput Chart -->
+              <mat-card class="metric-card">
+                <mat-card-header>
+                  <mat-card-title>Throughput Over Time</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="chart-container" *ngIf="throughputChartData">
+                    <canvas baseChart
+                      [data]="throughputChartData"
+                      [options]="throughputChartOptions"
+                      [type]="lineChartType">
+                    </canvas>
+                  </div>
+                  <p *ngIf="!throughputChartData" class="no-data">No throughput data available</p>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Resource Usage Chart -->
+              <mat-card class="metric-card full-width">
+                <mat-card-header>
+                  <mat-card-title>Resource Usage Over Time</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="chart-container" *ngIf="resourceChartData">
+                    <canvas baseChart
+                      [data]="resourceChartData"
+                      [options]="resourceChartOptions"
+                      [type]="lineChartType">
+                    </canvas>
+                  </div>
+                  <p *ngIf="!resourceChartData" class="no-data">No resource usage data available</p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Endpoints Tab -->
+        <mat-tab label="Endpoints">
+          <div class="tab-content">
+            <!-- Endpoint Performance Chart -->
+            <mat-card class="chart-card" *ngIf="endpointChartData">
+              <mat-card-header>
+                <mat-card-title>Top 10 Slowest Endpoints</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="chart-container-large">
+                  <canvas baseChart
+                    [data]="endpointChartData"
+                    [options]="endpointChartOptions"
+                    [type]="barChartType">
+                  </canvas>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Endpoint Table -->
+            <mat-card class="table-card">
+              <mat-card-header>
+                <mat-card-title>All Endpoints</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <table mat-table [dataSource]="baseline.endpoint_metrics" class="endpoint-table">
+                  <ng-container matColumnDef="endpoint">
+                    <th mat-header-cell *matHeaderCellDef>Endpoint</th>
+                    <td mat-cell *matCellDef="let element"><code>{{ element.endpoint }}</code></td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="method">
+                    <th mat-header-cell *matHeaderCellDef>Method</th>
+                    <td mat-cell *matCellDef="let element"><mat-chip>{{ element.method }}</mat-chip></td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="requests">
+                    <th mat-header-cell *matHeaderCellDef>Requests</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.total_requests) }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="avg_response">
+                    <th mat-header-cell *matHeaderCellDef>Avg Response (ms)</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.avg_response_time) }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="p95_response">
+                    <th mat-header-cell *matHeaderCellDef>P95 (ms)</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.p95_response_time) }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="error_rate">
+                    <th mat-header-cell *matHeaderCellDef>Error Rate</th>
+                    <td mat-cell *matCellDef="let element" [class.error-high]="element.error_rate > 0.01">
+                      {{ formatPercent(element.error_rate) }}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="throughput">
+                    <th mat-header-cell *matHeaderCellDef>Throughput (req/s)</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.requests_per_second) }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="endpointColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: endpointColumns;"></tr>
+                </table>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <!-- Resources Tab -->
+        <mat-tab label="Resources">
+          <div class="tab-content">
+            <div class="resource-grid">
+              <!-- CPU Metrics -->
+              <mat-card class="resource-card">
+                <mat-card-header>
+                  <mat-card-title>
+                    <mat-icon>memory</mat-icon>
+                    CPU Usage
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="resource-stats">
+                    <div class="resource-gauge">
+                      <div class="gauge-value" 
+                           [class.critical]="isResourceCritical(baseline.resource_metrics.cpu_usage_percent)"
+                           [class.warning]="isResourceWarning(baseline.resource_metrics.cpu_usage_percent)">
+                        {{ formatNumber(baseline.resource_metrics.cpu_usage_percent) }}%
+                      </div>
+                      <div class="gauge-label">Current</div>
+                    </div>
+                    <div class="resource-details">
+                      <p><strong>Average:</strong> {{ formatNumber(baseline.resource_metrics.cpu_avg) }}%</p>
+                      <p><strong>Peak:</strong> {{ formatNumber(baseline.resource_metrics.cpu_peak) }}%</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Memory Metrics -->
+              <mat-card class="resource-card">
+                <mat-card-header>
+                  <mat-card-title>
+                    <mat-icon>storage</mat-icon>
+                    Memory Usage
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="resource-stats">
+                    <div class="resource-gauge">
+                      <div class="gauge-value"
+                           [class.critical]="isResourceCritical(baseline.resource_metrics.memory_usage_percent)"
+                           [class.warning]="isResourceWarning(baseline.resource_metrics.memory_usage_percent)">
+                        {{ formatNumber(baseline.resource_metrics.memory_usage_percent) }}%
+                      </div>
+                      <div class="gauge-label">Current</div>
+                    </div>
+                    <div class="resource-details">
+                      <p><strong>Usage:</strong> {{ formatNumber(baseline.resource_metrics.memory_usage_mb) }} MB</p>
+                      <p><strong>Average:</strong> {{ formatNumber(baseline.resource_metrics.memory_avg_mb) }} MB</p>
+                      <p><strong>Peak:</strong> {{ formatNumber(baseline.resource_metrics.memory_peak_mb) }} MB</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Database Metrics -->
+              <mat-card class="resource-card" *ngIf="baseline.database_metrics">
+                <mat-card-header>
+                  <mat-card-title>
+                    <mat-icon>database</mat-icon>
+                    Database Performance
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="database-stats">
+                    <p><strong>Total Queries:</strong> {{ formatNumber(baseline.database_metrics.total_queries) }}</p>
+                    <p><strong>Avg Query Time:</strong> {{ formatNumber(baseline.database_metrics.avg_query_time_ms) }} ms</p>
+                    <p><strong>Slow Queries:</strong> {{ baseline.database_metrics.slow_query_count }}</p>
+                    <p><strong>Active Connections:</strong> {{ baseline.database_metrics.active_connections }} / {{ baseline.database_metrics.max_connections }}</p>
+                    <p *ngIf="baseline.database_metrics.cache_hit_rate !== undefined">
+                      <strong>Cache Hit Rate:</strong> {{ formatPercent(baseline.database_metrics.cache_hit_rate) }}
+                    </p>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Comparisons Tab -->
+        <mat-tab label="Comparisons" *ngIf="baseline.baseline_comparisons && baseline.baseline_comparisons.length > 0">
+          <div class="tab-content">
+            <mat-card class="table-card">
+              <mat-card-header>
+                <mat-card-title>Baseline Comparison</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <table mat-table [dataSource]="baseline.baseline_comparisons" class="comparison-table">
+                  <ng-container matColumnDef="metric">
+                    <th mat-header-cell *matHeaderCellDef>Metric</th>
+                    <td mat-cell *matCellDef="let element">{{ element.metric_name }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="baseline">
+                    <th mat-header-cell *matHeaderCellDef>Baseline</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.baseline_value) }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="current">
+                    <th mat-header-cell *matHeaderCellDef>Current</th>
+                    <td mat-cell *matCellDef="let element">{{ formatNumber(element.current_value) }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="difference">
+                    <th mat-header-cell *matHeaderCellDef>Difference</th>
+                    <td mat-cell *matCellDef="let element" [class.regression]="element.is_regression">
+                      {{ element.difference > 0 ? '+' : '' }}{{ formatNumber(element.difference) }}
+                      ({{ element.difference_percent > 0 ? '+' : '' }}{{ formatNumber(element.difference_percent) }}%)
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let element">
+                      <mat-chip [color]="getComparisonColor(element)">{{ element.severity }}</mat-chip>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="comparisonColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: comparisonColumns;"></tr>
+                </table>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

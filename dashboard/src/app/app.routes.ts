@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'projects/:id/dependencies',
     loadComponent: () => import('./components/analysis/dependency-graph/dependency-graph.component').then(m => m.DependencyGraphComponent)
+  },
+  {
+    path: 'projects/:id/performance',
+    loadComponent: () => import('./components/analysis/performance-dashboard/performance-dashboard.component').then(m => m.PerformanceDashboardComponent)
   }
 ];

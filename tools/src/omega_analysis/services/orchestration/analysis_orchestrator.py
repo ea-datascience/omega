@@ -10,6 +10,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import UUID, uuid4
 
+from omega_analysis.services.orchestration.progress_tracker import (
+    ProgressTracker,
+    AnalysisPhase
+)
+
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +34,7 @@ class AnalysisOrchestrator:
     def __init__(self):
         """Initialize the analysis orchestrator."""
         self.active_analyses: Dict[UUID, Dict[str, Any]] = {}
+        self.progress_trackers: Dict[UUID, ProgressTracker] = {}
         logger.info("Analysis Orchestrator initialized")
     
     async def start_analysis(
@@ -50,17 +56,24 @@ class AnalysisOrchestrator:
         
         logger.info(f"Starting analysis {analysis_id} for project {project_id}")
         
+        # Initialize progress tracker
+        tracker = ProgressTracker(analysis_id, project_id)
+        self.progress_trackers[analysis_id] = tracker
+        
         # Initialize analysis tracking
         self.active_analyses[analysis_id] = {
             "analysis_id": analysis_id,
             "project_id": project_id,
             "status": "running",
-            "phase": "static_analysis",
-            "progress": 0.0,
-            "started_at": datetime.utcnow(),
             "config": analysis_config or {},
-            "errors": []
         }
+        
+        # Start initialization phase
+        tracker.start_phase(AnalysisPhase.INITIALIZING)
+        tracker.complete_phase(AnalysisPhase.INITIALIZING)
+        
+        # Start static analysis phase
+        tracker.start_phase(AnalysisPhase.STATIC_ANALYSIS)
         
         # TODO: Trigger actual analysis workflow
         # This will be implemented in subsequent phases:
@@ -89,20 +102,11 @@ class AnalysisOrchestrator:
         Raises:
             ValueError: If analysis ID not found
         """
-        if analysis_id not in self.active_analyses:
+        if analysis_id not in self.progress_trackers:
             raise ValueError(f"Analysis {analysis_id} not found")
         
-        analysis = self.active_analyses[analysis_id]
-        
-        return {
-            "analysis_id": str(analysis_id),
-            "project_id": str(analysis["project_id"]),
-            "status": analysis["status"],
-            "phase": analysis["phase"],
-            "progress": analysis["progress"],
-            "started_at": analysis["started_at"].isoformat(),
-            "errors": analysis.get("errors", [])
-        }
+        tracker = self.progress_trackers[analysis_id]
+        return tracker.get_status()
     
     async def cancel_analysis(self, analysis_id: UUID, reason: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -118,19 +122,17 @@ class AnalysisOrchestrator:
         Raises:
             ValueError: If analysis ID not found or already completed
         """
-        if analysis_id not in self.active_analyses:
+        if analysis_id not in self.progress_trackers:
             raise ValueError(f"Analysis {analysis_id} not found")
         
-        analysis = self.active_analyses[analysis_id]
+        tracker = self.progress_trackers[analysis_id]
         
-        if analysis["status"] in ["completed", "failed", "cancelled"]:
-            raise ValueError(f"Cannot cancel analysis in status: {analysis['status']}")
+        if tracker.current_phase in [AnalysisPhase.COMPLETED, AnalysisPhase.FAILED, AnalysisPhase.CANCELLED]:
+            raise ValueError(f"Cannot cancel analysis in phase: {tracker.current_phase.value}")
         
         logger.info(f"Cancelling analysis {analysis_id}. Reason: {reason}")
         
-        analysis["status"] = "cancelled"
-        analysis["cancelled_at"] = datetime.utcnow()
-        analysis["cancellation_reason"] = reason
+        tracker.mark_cancelled(reason)
         
         return {
             "analysis_id": str(analysis_id),

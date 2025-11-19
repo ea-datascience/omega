@@ -1,0 +1,463 @@
+/**
+ * Analysis Dashboard Component Styles
+ * 
+ * Responsive layout for the main dashboard with sidebar navigation,
+ * overview cards, findings, and recommendations.
+ */
+
+// Container
+.dashboard-container {
+    height: 100vh;
+    width: 100%;
+}
+
+// Sidebar
+.dashboard-sidenav {
+    width: 280px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+    .sidenav-header {
+        padding: 24px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+
+        h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+    }
+
+    .nav-item {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover:not([disabled]) {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        &.active {
+            background-color: rgba(103, 58, 183, 0.12);
+            border-left: 4px solid #673ab7;
+
+            mat-icon {
+                color: #673ab7;
+            }
+        }
+
+        &[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .badge {
+            background-color: #f44336;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    }
+
+    .sidenav-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+        button {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+}
+
+// Toolbar
+.dashboard-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+
+        a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .breadcrumb-separator {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+    }
+
+    .spacer {
+        flex: 1;
+    }
+}
+
+// Content Area
+.dashboard-content {
+    background-color: #f5f5f5;
+}
+
+.dashboard-main {
+    padding: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+// Loading and Error States
+.loading-container {
+    padding: 48px 24px;
+    text-align: center;
+
+    p {
+        margin-top: 16px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+.error-container {
+    padding: 48px 24px;
+
+    mat-card {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+
+        mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            margin: 16px 0;
+            color: rgba(0, 0, 0, 0.87);
+        }
+    }
+}
+
+// Project Header
+.project-header {
+    margin-bottom: 24px;
+
+    mat-card-title {
+        font-size: 28px;
+        font-weight: 500;
+    }
+
+    mat-card-subtitle {
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .status-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+
+        mat-chip {
+            mat-icon {
+                margin-right: 4px;
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+    }
+}
+
+// Overview Cards
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.overview-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &.clickable {
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    mat-card-content {
+        padding: 20px;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+
+        mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+            text-transform: uppercase;
+        }
+    }
+
+    .card-value {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 8px 0;
+        line-height: 1.2;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+// Summary Section
+.summary-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.findings-card,
+.recommendations-card {
+    mat-card-header {
+        mat-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+
+            mat-icon {
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 32px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+// Findings
+.finding-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .finding-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .finding-category {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.6);
+            text-transform: capitalize;
+        }
+    }
+
+    h4 {
+        margin: 8px 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 4px 0;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.7);
+        line-height: 1.5;
+    }
+
+    .finding-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 8px;
+
+        .affected-components {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.6);
+
+            mat-icon {
+                font-size: 16px;
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+}
+
+// Recommendations
+.recommendation-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .recommendation-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .recommendation-category {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.6);
+            text-transform: capitalize;
+        }
+    }
+
+    h4 {
+        margin: 8px 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 4px 0;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.7);
+        line-height: 1.5;
+    }
+
+    .recommendation-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 8px;
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.6);
+
+            mat-icon {
+                font-size: 16px;
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+}
+
+// Quick Actions
+.quick-actions {
+    mat-card-header {
+        mat-card-title {
+            font-size: 18px;
+        }
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+
+        button {
+            mat-icon {
+                margin-right: 8px;
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .summary-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-sidenav {
+        width: 240px;
+    }
+
+    .dashboard-main {
+        padding: 16px;
+    }
+
+    .overview-cards {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+
+    .project-header {
+        mat-card-title {
+            font-size: 24px;
+        }
+    }
+
+    .breadcrumbs {
+        display: none;
+    }
+
+    .quick-actions {
+        .action-buttons {
+            flex-direction: column;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .overview-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .card-value {
+        font-size: 28px !important;
+    }
+}

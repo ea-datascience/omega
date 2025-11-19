@@ -1,0 +1,256 @@
+<mat-sidenav-container class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    [opened]="sidenavOpened"
+    class="dashboard-sidenav"
+  >
+    <div class="sidenav-header">
+      <h2>Analysis Dashboard</h2>
+    </div>
+    
+    <mat-nav-list>
+      <mat-list-item
+        *ngFor="let item of navigationItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [disabled]="item.disabled"
+        class="nav-item"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+        <span matListItemMeta *ngIf="item.badge && item.badge > 0" class="badge">
+          {{ item.badge }}
+        </span>
+      </mat-list-item>
+    </mat-nav-list>
+    
+    <mat-divider></mat-divider>
+    
+    <div class="sidenav-footer">
+      <button mat-button color="primary" [routerLink]="['/projects']">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Projects
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="dashboard-content">
+    <!-- Toolbar -->
+    <mat-toolbar color="primary" class="dashboard-toolbar">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      
+      <!-- Breadcrumbs -->
+      <div class="breadcrumbs">
+        <span *ngFor="let crumb of breadcrumbs; let last = last">
+          <a *ngIf="crumb.route && !last" [routerLink]="crumb.route">{{ crumb.label }}</a>
+          <span *ngIf="!crumb.route || last">{{ crumb.label }}</span>
+          <mat-icon *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon>
+        </span>
+      </div>
+      
+      <span class="spacer"></span>
+      
+      <!-- Actions Menu -->
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="exportReport('pdf')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Export PDF</span>
+        </button>
+        <button mat-menu-item (click)="exportReport('html')">
+          <mat-icon>html</mat-icon>
+          <span>Export HTML</span>
+        </button>
+        <button mat-menu-item (click)="exportReport('json')">
+          <mat-icon>code</mat-icon>
+          <span>Export JSON</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="cancelAnalysis()" *ngIf="overview?.analysis_status === 'running'">
+          <mat-icon>cancel</mat-icon>
+          <span>Cancel Analysis</span>
+        </button>
+        <button mat-menu-item (click)="restartAnalysis()" *ngIf="overview?.analysis_status === 'failed'">
+          <mat-icon>refresh</mat-icon>
+          <span>Restart Analysis</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <p>Loading dashboard data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+      <mat-card>
+        <mat-card-content>
+          <mat-icon color="warn">error</mat-icon>
+          <p>{{ error }}</p>
+          <button mat-raised-button color="primary" (click)="loadDashboardData()">
+            Retry
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!loading && !error && overview" class="dashboard-main">
+      <!-- Project Header -->
+      <mat-card class="project-header">
+        <mat-card-header>
+          <mat-card-title>{{ overview.project_name }}</mat-card-title>
+          <mat-card-subtitle>
+            Analysis ID: {{ overview.analysis_id }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="status-info">
+            <mat-chip-set>
+              <mat-chip [color]="getStatusColor()" highlighted>
+                <mat-icon>{{ overview.analysis_status === 'completed' ? 'check_circle' : 
+                              overview.analysis_status === 'running' ? 'hourglass_empty' :
+                              overview.analysis_status === 'failed' ? 'error' : 'pending' }}</mat-icon>
+                {{ overview.analysis_status | titlecase }}
+              </mat-chip>
+            </mat-chip-set>
+            <span class="timestamp">
+              Started: {{ overview.started_at | date:'short' }}
+              <span *ngIf="overview.completed_at">
+                | Completed: {{ overview.completed_at | date:'short' }}
+              </span>
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Overview Cards -->
+      <div class="overview-cards">
+        <mat-card
+          *ngFor="let card of overviewCards"
+          class="overview-card"
+          [class.clickable]="card.route"
+          (click)="onCardClick(card)"
+        >
+          <mat-card-content>
+            <div class="card-header">
+              <mat-icon [color]="card.color || 'primary'">{{ card.icon }}</mat-icon>
+              <span class="card-title">{{ card.title }}</span>
+            </div>
+            <div class="card-value">{{ card.value }}</div>
+            <div class="card-subtitle" *ngIf="card.subtitle">{{ card.subtitle }}</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Analysis Summary -->
+      <div class="summary-section">
+        <div class="summary-left">
+          <!-- Recent Findings -->
+          <mat-card class="findings-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>warning</mat-icon>
+                Recent Findings
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div *ngIf="recentFindings.length === 0" class="empty-state">
+                <p>No findings to display</p>
+              </div>
+              <div *ngFor="let finding of recentFindings" class="finding-item">
+                <div class="finding-header">
+                  <mat-chip [color]="getSeverityColor(finding.severity)" highlighted size="small">
+                    {{ finding.severity }}
+                  </mat-chip>
+                  <span class="finding-category">{{ finding.category }}</span>
+                </div>
+                <h4>{{ finding.title }}</h4>
+                <p>{{ finding.description }}</p>
+                <div class="finding-meta">
+                  <span class="affected-components">
+                    <mat-icon>widgets</mat-icon>
+                    {{ finding.affected_components.length }} component(s) affected
+                  </span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="summary-right">
+          <!-- Top Recommendations -->
+          <mat-card class="recommendations-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>lightbulb</mat-icon>
+                Top Recommendations
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div *ngIf="topRecommendations.length === 0" class="empty-state">
+                <p>No recommendations available</p>
+              </div>
+              <div *ngFor="let rec of topRecommendations" class="recommendation-item">
+                <div class="recommendation-header">
+                  <mat-chip [color]="getPriorityColor(rec.priority)" highlighted size="small">
+                    {{ rec.priority }}
+                  </mat-chip>
+                  <span class="recommendation-category">{{ rec.category }}</span>
+                </div>
+                <h4>{{ rec.title }}</h4>
+                <p>{{ rec.description }}</p>
+                <div class="recommendation-meta">
+                  <span>
+                    <mat-icon>trending_up</mat-icon>
+                    Impact: {{ rec.impact }}
+                  </span>
+                  <span>
+                    <mat-icon>schedule</mat-icon>
+                    Effort: {{ rec.effort }}
+                  </span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <mat-card class="quick-actions">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" [routerLink]="['/projects', analysisId, 'architecture']">
+              <mat-icon>account_tree</mat-icon>
+              View Architecture
+            </button>
+            <button mat-raised-button color="primary" [routerLink]="['/projects', analysisId, 'dependencies']">
+              <mat-icon>device_hub</mat-icon>
+              Analyze Dependencies
+            </button>
+            <button mat-raised-button color="primary" [routerLink]="['/projects', analysisId, 'performance']">
+              <mat-icon>speed</mat-icon>
+              Check Performance
+            </button>
+            <button mat-raised-button (click)="exportReport('pdf')">
+              <mat-icon>download</mat-icon>
+              Export Report
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

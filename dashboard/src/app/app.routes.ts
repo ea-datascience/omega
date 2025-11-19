@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/analysis/project-list/project-list.component').then(m => m.ProjectListComponent)
   },
   {
+    path: 'projects/:id/dashboard',
+    loadComponent: () => import('./components/analysis/analysis-dashboard/analysis-dashboard.component').then(m => m.AnalysisDashboardComponent)
+  },
+  {
     path: 'projects/:id/progress',
     loadComponent: () => import('./components/analysis/analysis-progress/analysis-progress.component').then(m => m.AnalysisProgressComponent)
   },

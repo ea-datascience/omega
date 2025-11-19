@@ -71,15 +71,18 @@ omega/
 - Git with SSH access to GitHub
 - VS Code with Dev Container extension (recommended)
 - Python 3.12 (automatically configured in dev container)
+- Node.js 20 LTS (automatically configured in dev container)
+- Java 17 (automatically configured in dev container)
 
 ### Development Environment
-The project uses a containerized development environment that automatically sets up Python 3.12 and all necessary dependencies when opened in VS Code with the Dev Container extension.
+The project uses a containerized development environment that automatically sets up Python 3.12, Node.js 20 LTS, Java 17, and all necessary dependencies when opened in VS Code with the Dev Container extension.
 
 ### Documentation Standards
 Comprehensive guides are maintained in the `/docs` directory:
 - Git setup and SSH configuration documentation
 - Data management and reference codebase integration guides
 - Tool development and testing guidelines
+- Node.js and dashboard development setup guides
 
 ### Contributing Context
 This project welcomes contributions from developers interested in:

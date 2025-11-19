@@ -1,0 +1,210 @@
+<!-- Analysis Progress Display -->
+<mat-card class="progress-card">
+  <!-- Loading State -->
+  <div *ngIf="loading && !progress" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading analysis progress...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !progress" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Progress Display -->
+  <div *ngIf="progress" class="progress-container">
+    <!-- Header -->
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>analytics</mat-icon>
+        Analysis Progress
+      </mat-card-title>
+      <mat-card-subtitle>
+        Analysis ID: {{ progress.analysis_id }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Overall Status -->
+      <div class="overall-status">
+        <div class="status-header">
+          <mat-chip-set>
+            <mat-chip [highlighted]="true" [color]="getOverallStatusColor()">
+              <mat-icon>{{ progress.status === 'running' ? 'play_circle' : progress.status === 'completed' ? 'check_circle' : progress.status === 'failed' ? 'error' : 'cancel' }}</mat-icon>
+              {{ progress.status | uppercase }}
+            </mat-chip>
+          </mat-chip-set>
+          
+          <button 
+            mat-icon-button 
+            matTooltip="Refresh progress"
+            (click)="refresh()"
+            [disabled]="loading">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+
+        <!-- Overall Progress Bar -->
+        <div class="overall-progress">
+          <div class="progress-info">
+            <span class="progress-label">Overall Progress</span>
+            <span class="progress-percentage">{{ progress.overall_progress }}%</span>
+          </div>
+          <mat-progress-bar 
+            [mode]="getProgressMode()" 
+            [value]="progress.overall_progress"
+            [color]="getOverallStatusColor()">
+          </mat-progress-bar>
+        </div>
+
+        <!-- Timing Information -->
+        <div class="timing-info">
+          <div class="time-item">
+            <mat-icon>schedule</mat-icon>
+            <span>Elapsed: {{ getElapsedTime() }}</span>
+          </div>
+          <div class="time-item" *ngIf="progress.status === 'running' && progress.estimated_completion">
+            <mat-icon>timer</mat-icon>
+            <span>{{ getEstimatedRemaining() }}</span>
+          </div>
+          <div class="time-item" *ngIf="progress.completed_at">
+            <mat-icon>done</mat-icon>
+            <span>Completed: {{ formatTimestamp(progress.completed_at) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Current Phase Highlight -->
+      <div class="current-phase" *ngIf="progress.status === 'running'">
+        <h3>
+          <mat-icon>{{ getPhaseIcon(progress.current_phase) }}</mat-icon>
+          {{ getPhaseLabel(progress.current_phase) }}
+        </h3>
+        <p class="phase-description">{{ getPhaseDescription(progress.current_phase) }}</p>
+      </div>
+
+      <!-- Phase Progress Details -->
+      <div class="phases-container">
+        <h3>Analysis Phases</h3>
+        <mat-accordion multi="true">
+          <mat-expansion-panel *ngFor="let phaseProgress of progress.phases">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon [color]="getPhaseStatusColor(phaseProgress.status)">
+                  {{ getPhaseIcon(phaseProgress.phase) }}
+                </mat-icon>
+                <span class="phase-title">{{ getPhaseLabel(phaseProgress.phase) }}</span>
+                <mat-chip [color]="getPhaseStatusColor(phaseProgress.status)" class="status-chip">
+                  {{ phaseProgress.status | uppercase }}
+                </mat-chip>
+              </mat-panel-title>
+              <mat-panel-description>
+                <span class="progress-text">{{ phaseProgress.progress }}%</span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <!-- Phase Details -->
+            <div class="phase-details">
+              <!-- Phase Progress Bar -->
+              <div class="phase-progress-bar">
+                <mat-progress-bar 
+                  mode="determinate" 
+                  [value]="phaseProgress.progress"
+                  [color]="getPhaseStatusColor(phaseProgress.status)">
+                </mat-progress-bar>
+              </div>
+
+              <!-- Phase Timing -->
+              <div class="phase-timing">
+                <div *ngIf="phaseProgress.started_at">
+                  <strong>Started:</strong> {{ formatTimestamp(phaseProgress.started_at) }}
+                </div>
+                <div *ngIf="phaseProgress.completed_at">
+                  <strong>Completed:</strong> {{ formatTimestamp(phaseProgress.completed_at) }}
+                </div>
+              </div>
+
+              <!-- Subtasks -->
+              <div class="subtasks" *ngIf="phaseProgress.subtasks && phaseProgress.subtasks.length > 0">
+                <h4>Tasks</h4>
+                <mat-list>
+                  <mat-list-item *ngFor="let subtask of phaseProgress.subtasks">
+                    <mat-icon matListItemIcon [color]="subtask.status === 'completed' ? 'accent' : subtask.status === 'failed' ? 'warn' : 'primary'">
+                      {{ subtask.status === 'completed' ? 'check_circle' : subtask.status === 'failed' ? 'error' : subtask.status === 'in_progress' ? 'hourglass_empty' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <div matListItemTitle>{{ subtask.name }}</div>
+                    <div matListItemLine *ngIf="subtask.description">{{ subtask.description }}</div>
+                    <div matListItemLine class="subtask-progress">
+                      <mat-progress-bar 
+                        mode="determinate" 
+                        [value]="subtask.progress"
+                        class="small-progress">
+                      </mat-progress-bar>
+                      <span class="subtask-percentage">{{ subtask.progress }}%</span>
+                    </div>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <!-- Errors and Warnings -->
+      <div class="issues-container" *ngIf="progress.errors.length > 0 || progress.warnings.length > 0">
+        <mat-divider></mat-divider>
+        
+        <!-- Errors -->
+        <div class="errors-section" *ngIf="progress.errors.length > 0">
+          <h3>
+            <mat-icon color="warn">error</mat-icon>
+            Errors ({{ progress.errors.length }})
+          </h3>
+          <mat-list>
+            <mat-list-item *ngFor="let error of progress.errors">
+              <mat-icon matListItemIcon color="warn">error_outline</mat-icon>
+              <div matListItemTitle>{{ error.context }}</div>
+              <div matListItemLine>{{ error.message }}</div>
+              <div matListItemLine class="timestamp">{{ formatTimestamp(error.timestamp) }}</div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <!-- Warnings -->
+        <div class="warnings-section" *ngIf="progress.warnings.length > 0">
+          <h3>
+            <mat-icon style="color: orange">warning</mat-icon>
+            Warnings ({{ progress.warnings.length }})
+          </h3>
+          <mat-list>
+            <mat-list-item *ngFor="let warning of progress.warnings">
+              <mat-icon matListItemIcon style="color: orange">warning_amber</mat-icon>
+              <div matListItemTitle>{{ warning.context }}</div>
+              <div matListItemLine>{{ warning.message }}</div>
+              <div matListItemLine class="timestamp">{{ formatTimestamp(warning.timestamp) }}</div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <!-- Actions -->
+    <mat-card-actions *ngIf="progress.status === 'running'">
+      <button 
+        mat-raised-button 
+        color="warn" 
+        (click)="cancelAnalysis()"
+        matTooltip="Cancel analysis execution">
+        <mat-icon>cancel</mat-icon>
+        Cancel Analysis
+      </button>
+    </mat-card-actions>
+  </div>
+</mat-card>

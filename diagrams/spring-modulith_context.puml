@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+title System Context Diagram for spring-modulith
+
+Person(developer, "Developer", "Software developers building and maintaining the system")
+Person(architect, "Architect", "Enterprise architects analyzing the system")
+Person(user, "End User", "Users interacting with the application")
+
+System(spring_modulith, "spring-modulith", "Monolithic Spring Boot application under analysis")
+System_Ext(database, "Database System", "Relational database (PostgreSQL/MySQL)")
+System_Ext(external_api, "External APIs", "Third-party services and APIs")
+
+Rel(user, spring_modulith, "Uses", "HTTPS/REST")
+Rel(developer, spring_modulith, "Develops and maintains", "IDE/Git")
+Rel(architect, spring_modulith, "Analyzes for migration", "Omega System")
+Rel(spring_modulith, database, "Reads/Writes", "JDBC/JPA")
+Rel(spring_modulith, external_api, "Integrates with", "REST/HTTP")
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+title Component Diagram for spring-modulith-integration-test
+
+Container_Boundary(spring_modulith_integration_test_boundary, "spring-modulith-integration-test") {
+    Component(contributed, "contributed", "Java Package", "1 classes")
+    Component(detected, "detected", "Java Package", "1 classes")
+    Component(enumerated, "enumerated", "Java Package", "1 classes")
+    Component(empty, "empty", "Java Package", "1 classes")
+    Component(first, "first", "Java Package", "1 classes")
+    Component(third, "third", "Java Package", "1 classes")
+    Component(second, "second", "Java Package", "1 classes")
+    Component(fourth, "fourth", "Java Package", "1 classes")
+    Component(myproject, "myproject", "Java Package", "2 classes")
+    Component(cycleA, "cycleA", "Java Package", "1 classes")
+}
+
+ContainerDb(database, "Database", "PostgreSQL", "Data storage")
+
+@enduml

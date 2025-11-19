@@ -1,0 +1,29 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Class Diagram for spring-modulith-observability
+
+LAYOUT_WITH_LEGEND()
+
+Component(ModulithEventMetricsCustomizer, "ModulithEventMetricsCustomizer", "Java Class", "1 methods, 0 fields")
+Component(ModulithEventMetrics, "ModulithEventMetrics", "Java Class", "2 methods, 0 fields")
+Component(LocalServiceRenamingSpanFilter, "LocalServiceRenamingSpanFilter", "Java Class", "1 methods, 0 fields")
+Component(ModulePassingObservationFilter, "ModulePassingObservationFilter", "Java Class", "3 methods, 0 fields")
+Component(ModulithContext, "ModulithContext", "Java Class", "4 methods, 3 fields")
+Component(ObservedModule, "ObservedModule", "Java Class", "8 methods, 0 fields")
+Component(ModulithObservations, "ModulithObservations", "Java Class", "0 methods, 0 fields")
+Component(ModuleObservabilitySupport, "ModuleObservabilitySupport", "Java Class", "4 methods, 1 fields")
+Component(ModulithObservationConvention, "ModulithObservationConvention", "Java Class", "1 methods, 0 fields")
+Component(SpringDataRestModuleObservabilityBeanPostProcessor, "SpringDataRestModuleObservabilityBeanPostProcessor", "Java Class", "2 methods, 3 fields")
+Component(ModulithMetrics, "ModulithMetrics", "Java Class", "0 methods, 0 fields")
+Component(ModuleObservabilityBeanPostProcessor, "ModuleObservabilityBeanPostProcessor", "Java Class", "6 methods, 6 fields")
+Component(ModuleEntryInterceptor, "ModuleEntryInterceptor", "Java Class", "5 methods, 7 fields")
+Component(DefaultObservedModule, "DefaultObservedModule", "Java Class", "11 methods, 1 fields")
+Component(ModuleEventListener, "ModuleEventListener", "Java Class", "2 methods, 5 fields")
+Component(DefaultModulithObservationConvention, "DefaultModulithObservationConvention", "Java Class", "5 methods, 0 fields")
+Component(CrossModuleEventCounterFactory, "CrossModuleEventCounterFactory", "Java Class", "3 methods, 2 fields")
+Component(ObservedModuleType, "ObservedModuleType", "Java Class", "5 methods, 7 fields")
+Component(ModuleObservabilityAutoConfiguration, "ModuleObservabilityAutoConfiguration", "Java Class", "7 methods, 0 fields")
+Component(SpringDataRestModuleObservabilityAutoConfiguration, "SpringDataRestModuleObservabilityAutoConfiguration", "Java Class", "1 methods, 0 fields")
+
+@enduml

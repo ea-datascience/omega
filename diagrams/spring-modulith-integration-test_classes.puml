@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Class Diagram for spring-modulith-integration-test
+
+LAYOUT_WITH_LEGEND()
+
+Component(ApplicationModuleSourceContribution, "ApplicationModuleSourceContribution", "Java Class", "3 methods, 0 fields")
+Component(DetectedContribution, "DetectedContribution", "Java Class", "0 methods, 0 fields")
+Component(EnumeratedContribution, "EnumeratedContribution", "Java Class", "0 methods, 0 fields")
+Component(EmptyApplication, "EmptyApplication", "Java Class", "0 methods, 0 fields")
+Component(First, "First", "Java Class", "1 methods, 0 fields")
+Component(Third, "Third", "Java Class", "1 methods, 0 fields")
+Component(Second, "Second", "Java Class", "1 methods, 0 fields")
+Component(Fourth, "Fourth", "Java Class", "0 methods, 0 fields")
+Component(Application, "Application", "Java Class", "0 methods, 0 fields")
+Component(CentralConfiguration, "CentralConfiguration", "Java Class", "0 methods, 1 fields")
+Component(CycleA, "CycleA", "Java Class", "0 methods, 1 fields")
+Component(ClientToInternal, "ClientToInternal", "Java Class", "0 methods, 1 fields")
+Component(SampleValidator, "SampleValidator", "Java Class", "2 methods, 0 fields")
+Component(WithFieldInjection, "WithFieldInjection", "Java Class", "0 methods, 1 fields")
+Component(SomeValueC, "SomeValueC", "Java Class", "0 methods, 0 fields")
+Component(ServiceComponentC, "ServiceComponentC", "Java Class", "1 methods, 1 fields")
+Component(SomeConfigurationD, "SomeConfigurationD", "Java Class", "1 methods, 0 fields")
+Component(ConfigurationPropertiesD, "ConfigurationPropertiesD", "Java Class", "1 methods, 1 fields")
+Component(EventListenerD, "EventListenerD", "Java Class", "1 methods, 0 fields")
+Component(DisallowedClientOfInternal, "DisallowedClientOfInternal", "Java Class", "0 methods, 1 fields")
+Component(ServiceComponentE, "ServiceComponentE", "Java Class", "0 methods, 0 fields")
+Component(ServiceComponentB, "ServiceComponentB", "Java Class", "1 methods, 2 fields")
+Component(SomeEventListenerB, "SomeEventListenerB", "Java Class", "1 methods, 0 fields")
+Component(InvalidComponent, "InvalidComponent", "Java Class", "1 methods, 0 fields")
+Component(InvalidModuleDependency, "InvalidModuleDependency", "Java Class", "1 methods, 0 fields")
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+title Container Diagram for spring-modulith
+
+Person(developer, "Developer", "Software developers")
+Person(user, "End User", "Application users")
+
+System_Boundary(spring_modulith_boundary, "spring-modulith") {
+    Container(spring_modulith_runtime, "spring-modulith-runtime", "Spring Boot Module", "15 classes, 49 methods")
+    Container(spring_modulith_observability, "spring-modulith-observability", "Spring Boot Module", "20 classes, 71 methods")
+    Container(spring_modulith_core, "spring-modulith-core", "Spring Boot Module", "39 classes, 428 methods")
+    Container(spring_modulith_integration_test, "spring-modulith-integration-test", "Spring Boot Module", "46 classes, 21 methods")
+    Container(spring_modulith_test, "spring-modulith-test", "Spring Boot Module", "18 classes, 75 methods")
+    Container(spring_modulith_moments, "spring-modulith-moments", "Spring Boot Module", "13 classes, 83 methods")
+    Container(spring_modulith_docs, "spring-modulith-docs", "Spring Boot Module", "10 classes, 105 methods")
+    Container(spring_modulith_junit, "spring-modulith-junit", "Spring Boot Module", "11 classes, 41 methods")
+    Container(spring_modulith_actuator, "spring-modulith-actuator", "Spring Boot Module", "2 classes, 6 methods")
+    Container(spring_modulith_api, "spring-modulith-api", "Spring Boot Module", "1 classes, 1 methods")
+    Container(spring_modulith_apt, "spring-modulith-apt", "Spring Boot Module", "1 classes, 14 methods")
+}
+
+ContainerDb(database, "Database", "PostgreSQL/MySQL", "Application data storage")
+System_Ext(external_api, "External APIs", "Third-party services")
+
+Rel(user, spring_modulith_runtime, "Uses", "HTTPS")
+Rel(spring_modulith_runtime, spring_modulith_observability, "Depends on", "Java imports")
+Rel(spring_modulith_observability, spring_modulith_core, "Depends on", "Java imports")
+Rel(spring_modulith_core, spring_modulith_integration_test, "Depends on", "Java imports")
+
+@enduml

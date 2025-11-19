@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Class Diagram for spring-modulith-core
+
+LAYOUT_WITH_LEGEND()
+
+Component(ApplicationModuleInformationFactory, "ApplicationModuleInformationFactory", "Java Class", "1 methods, 0 fields")
+Component(ApplicationModuleSourceFactory, "ApplicationModuleSourceFactory", "Java Class", "5 methods, 0 fields")
+Component(SpringBean, "SpringBean", "Java Class", "10 methods, 2 fields")
+Component(JavaPackage, "JavaPackage", "Java Class", "39 methods, 8 fields")
+Component(ApplicationModuleIdentifier, "ApplicationModuleIdentifier", "Java Class", "6 methods, 1 fields")
+Component(ApplicationModuleDependencies, "ApplicationModuleDependencies", "Java Class", "11 methods, 3 fields")
+Component(ApplicationModuleInformation, "ApplicationModuleInformation", "Java Class", "4 methods, 0 fields")
+Component(SyntacticSugar, "SyntacticSugar", "Java Class", "7 methods, 0 fields")
+Component(ApplicationModuleDetectionStrategy, "ApplicationModuleDetectionStrategy", "Java Class", "5 methods, 0 fields")
+Component(ApplicationModuleSourceContributions, "ApplicationModuleSourceContributions", "Java Class", "4 methods, 3 fields")
+Component(SpringBootModulithMetadata, "SpringBootModulithMetadata", "Java Class", "11 methods, 4 fields")
+Component(JavaAccessSource, "JavaAccessSource", "Java Class", "2 methods, 4 fields")
+Component(ApplicationModules, "ApplicationModules", "Java Class", "43 methods, 12 fields")
+Component(ApplicationModulesFactory, "ApplicationModulesFactory", "Java Class", "2 methods, 0 fields")
+Component(DependencyType, "DependencyType", "Java Class", "0 methods, 0 fields")
+Component(Violation, "Violation", "Java Class", "6 methods, 1 fields")
+Component(ApplicationModuleIdentifiers, "ApplicationModuleIdentifiers", "Java Class", "5 methods, 1 fields")
+Component(ArchitecturallyEvidentType, "ArchitecturallyEvidentType", "Java Class", "17 methods, 2 fields")
+Component(ApplicationModuleDetectionStrategyLookup, "ApplicationModuleDetectionStrategyLookup", "Java Class", "1 methods, 3 fields")
+Component(FormattableType, "FormattableType", "Java Class", "9 methods, 3 fields")
+Component(ModulithMetadata, "ModulithMetadata", "Java Class", "10 methods, 0 fields")
+Component(Classes, "Classes", "Java Class", "26 methods, 2 fields")
+Component(Types, "Types", "Java Class", "2 methods, 0 fields")
+Component(EventType, "EventType", "Java Class", "7 methods, 2 fields")
+Component(Source, "Source", "Java Class", "1 methods, 0 fields")
+
+@enduml

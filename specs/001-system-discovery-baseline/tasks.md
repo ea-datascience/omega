@@ -96,25 +96,26 @@ Based on plan.md structure:
 ### API Endpoints for User Story 1
 
 - [x] T035 [US1] Implement project management endpoints in tools/src/omega_analysis/api/v1/projects.py (AnalysisProject CRUD API)
-- [ ] T036 [US1] Implement analysis operations endpoints in tools/src/api/analysis/analysis.py
-- [ ] T037 [US1] Implement architecture retrieval endpoints in tools/src/api/analysis/architecture.py
-- [ ] T038 [US1] Implement dependency graph endpoints in tools/src/api/analysis/dependencies.py
-- [ ] T039 [US1] Implement performance baselines endpoints in tools/src/api/analysis/baselines.py
+- [x] T036 [US1] Implement analysis operations endpoints in tools/src/omega_analysis/api/v1/analysis.py
+- [x] T037 [US1] Implement architecture retrieval endpoints in tools/src/omega_analysis/api/v1/architecture.py
+- [x] T038 [US1] Implement dependency graph endpoints in tools/src/omega_analysis/api/v1/dependencies.py
+- [x] T039 [US1] Implement performance baselines endpoints in tools/src/omega_analysis/api/v1/baselines.py
 
 ### Analysis Orchestration for User Story 1
 
-- [ ] T040 [US1] Create main analysis workflow orchestrator in tools/src/services/orchestration/analysis_orchestrator.py
-- [ ] T041 [US1] Implement analysis progress tracking in tools/src/services/orchestration/progress_tracker.py
-- [ ] T042 [US1] Create analysis result aggregation service in tools/src/services/orchestration/result_aggregator.py
+- [x] T040 [US1] Create main analysis workflow orchestrator in tools/src/omega_analysis/services/orchestration/analysis_orchestrator.py
+- [x] T041 [US1] Implement analysis progress tracking in tools/src/omega_analysis/services/orchestration/progress_tracker.py
+- [x] T042 [US1] Create analysis result aggregation service in tools/src/omega_analysis/services/orchestration/result_aggregator.py
+- [x] T043 [US1] Create report generation CLI utility in tools/src/utils/report_generator.py (generates static analysis reports with C4 diagrams without dashboard dependencies; includes CodeQL and AppCAT integration placeholders for future implementation)
 
 ### Dashboard Components for User Story 1
 
-- [ ] T043 [P] [US1] Create project list component in dashboard/src/components/analysis/project-list.component.ts
-- [ ] T044 [P] [US1] Create analysis progress component in dashboard/src/components/analysis/analysis-progress.component.ts
-- [ ] T045 [P] [US1] Create architecture visualization component in dashboard/src/components/analysis/architecture-viewer.component.ts
-- [ ] T046 [P] [US1] Create dependency graph visualization in dashboard/src/components/analysis/dependency-graph.component.ts
-- [ ] T047 [P] [US1] Create performance metrics dashboard in dashboard/src/components/analysis/performance-dashboard.component.ts
-- [ ] T048 [US1] Create main analysis dashboard page in dashboard/src/pages/dashboard/analysis-dashboard.page.ts
+- [ ] T044 [P] [US1] Create project list component in dashboard/src/components/analysis/project-list.component.ts
+- [ ] T045 [P] [US1] Create analysis progress component in dashboard/src/components/analysis/analysis-progress.component.ts
+- [ ] T046 [P] [US1] Create architecture visualization component in dashboard/src/components/analysis/architecture-viewer.component.ts
+- [ ] T047 [P] [US1] Create dependency graph visualization in dashboard/src/components/analysis/dependency-graph.component.ts
+- [ ] T048 [P] [US1] Create performance metrics dashboard in dashboard/src/components/analysis/performance-dashboard.component.ts
+- [ ] T049 [US1] Create main analysis dashboard page in dashboard/src/pages/dashboard/analysis-dashboard.page.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional with complete automated analysis capabilities
 
@@ -128,35 +129,35 @@ Based on plan.md structure:
 
 ### Risk Assessment Models for User Story 2
 
-- [ ] T049 [P] [US2] Create RiskAssessment model in tools/src/models/risk.py
-- [ ] T050 [P] [US2] Create ServiceBoundary model in tools/src/models/boundary.py
-- [ ] T051 [P] [US2] Create supporting risk factor models in tools/src/models/risk_factors.py
+- [ ] T050 [P] [US2] Create RiskAssessment model in tools/src/models/risk.py
+- [ ] T051 [P] [US2] Create ServiceBoundary model in tools/src/models/boundary.py
+- [ ] T052 [P] [US2] Create supporting risk factor models in tools/src/models/risk_factors.py
 
 ### Risk Assessment Engine for User Story 2
 
-- [ ] T052 [US2] Implement quantitative risk scoring framework in tools/src/services/assessment/risk_scorer.py
-- [ ] T053 [US2] Create migration complexity analyzer in tools/src/services/assessment/complexity_analyzer.py
-- [ ] T054 [US2] Implement service boundary recommendation engine in tools/src/services/assessment/boundary_recommender.py
-- [ ] T055 [US2] Create effort estimation algorithms in tools/src/services/assessment/effort_estimator.py
+- [ ] T053 [US2] Implement quantitative risk scoring framework in tools/src/services/assessment/risk_scorer.py
+- [ ] T054 [US2] Create migration complexity analyzer in tools/src/services/assessment/complexity_analyzer.py
+- [ ] T055 [US2] Implement service boundary recommendation engine in tools/src/services/assessment/boundary_recommender.py
+- [ ] T056 [US2] Create effort estimation algorithms in tools/src/services/assessment/effort_estimator.py
 
 ### Assessment API Endpoints for User Story 2
 
-- [ ] T056 [US2] Implement risk assessment endpoints in tools/src/api/analysis/assessments.py
-- [ ] T057 [US2] Implement service boundary endpoints in tools/src/api/analysis/boundaries.py
-- [ ] T058 [US2] Create boundary approval workflow endpoints in tools/src/api/validation/boundary_approval.py
+- [ ] T057 [US2] Implement risk assessment endpoints in tools/src/api/analysis/assessments.py
+- [ ] T058 [US2] Implement service boundary endpoints in tools/src/api/analysis/boundaries.py
+- [ ] T059 [US2] Create boundary approval workflow endpoints in tools/src/api/validation/boundary_approval.py
 
 ### Human-in-the-Loop Validation for User Story 2
 
-- [ ] T059 [US2] Implement architect approval workflow in tools/src/services/validation/approval_workflow.py
-- [ ] T060 [US2] Create validation result tracking in tools/src/services/validation/validation_tracker.py
-- [ ] T061 [US2] Implement notification system for approval requests in tools/src/services/validation/notification_service.py
+- [ ] T060 [US2] Implement architect approval workflow in tools/src/services/validation/approval_workflow.py
+- [ ] T061 [US2] Create validation result tracking in tools/src/services/validation/validation_tracker.py
+- [ ] T062 [US2] Implement notification system for approval requests in tools/src/services/validation/notification_service.py
 
 ### Dashboard Components for User Story 2
 
-- [ ] T062 [P] [US2] Create risk assessment dashboard in dashboard/src/components/assessment/risk-dashboard.component.ts
-- [ ] T063 [P] [US2] Create service boundary visualization in dashboard/src/components/assessment/boundary-viewer.component.ts
-- [ ] T064 [P] [US2] Create approval workflow interface in dashboard/src/components/validation/approval-interface.component.ts
-- [ ] T065 [US2] Create migration readiness report page in dashboard/src/pages/reports/readiness-report.page.ts
+- [ ] T063 [P] [US2] Create risk assessment dashboard in dashboard/src/components/assessment/risk-dashboard.component.ts
+- [ ] T064 [P] [US2] Create service boundary visualization in dashboard/src/components/assessment/boundary-viewer.component.ts
+- [ ] T065 [P] [US2] Create approval workflow interface in dashboard/src/components/validation/approval-interface.component.ts
+- [ ] T066 [US2] Create migration readiness report page in dashboard/src/pages/reports/readiness-report.page.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently with complete risk assessment capabilities
 
@@ -170,33 +171,33 @@ Based on plan.md structure:
 
 ### Compliance Models for User Story 3
 
-- [ ] T066 [P] [US3] Create ComplianceRecord model in tools/src/models/compliance.py
-- [ ] T067 [P] [US3] Create supporting compliance requirement models in tools/src/models/compliance_requirements.py
+- [ ] T067 [P] [US3] Create ComplianceRecord model in tools/src/models/compliance.py
+- [ ] T068 [P] [US3] Create supporting compliance requirement models in tools/src/models/compliance_requirements.py
 
 ### Compliance Analysis Engine for User Story 3
 
-- [ ] T068 [US3] Implement regulatory framework analyzer in tools/src/services/compliance/regulatory_analyzer.py
-- [ ] T069 [US3] Create data classification engine in tools/src/services/compliance/data_classifier.py
-- [ ] T070 [US3] Implement security control assessment in tools/src/services/compliance/security_assessor.py
-- [ ] T071 [US3] Create audit trail generator in tools/src/services/compliance/audit_trail_generator.py
+- [ ] T069 [US3] Implement regulatory framework analyzer in tools/src/services/compliance/regulatory_analyzer.py
+- [ ] T070 [US3] Create data classification engine in tools/src/services/compliance/data_classifier.py
+- [ ] T071 [US3] Implement security control assessment in tools/src/services/compliance/security_assessor.py
+- [ ] T072 [US3] Create audit trail generator in tools/src/services/compliance/audit_trail_generator.py
 
 ### Compliance API Endpoints for User Story 3
 
-- [ ] T072 [US3] Implement compliance records endpoints in tools/src/api/analysis/compliance.py
-- [ ] T073 [US3] Create compliance report generation endpoints in tools/src/api/reports/compliance_reports.py
+- [ ] T073 [US3] Implement compliance records endpoints in tools/src/api/analysis/compliance.py
+- [ ] T074 [US3] Create compliance report generation endpoints in tools/src/api/reports/compliance_reports.py
 
 ### Report Generation System for User Story 3
 
-- [ ] T074 [US3] Implement comprehensive report generator in tools/src/services/reporting/report_generator.py
-- [ ] T075 [US3] Create PDF report templates in tools/src/services/reporting/templates/
-- [ ] T076 [US3] Implement Excel export functionality in tools/src/services/reporting/excel_exporter.py
+- [ ] T075 [US3] Implement comprehensive report generator in tools/src/services/reporting/report_generator.py
+- [ ] T076 [US3] Create PDF report templates in tools/src/services/reporting/templates/
+- [ ] T077 [US3] Implement Excel export functionality in tools/src/services/reporting/excel_exporter.py
 
 ### Dashboard Components for User Story 3
 
-- [ ] T077 [P] [US3] Create compliance dashboard in dashboard/src/components/compliance/compliance-dashboard.component.ts
-- [ ] T078 [P] [US3] Create audit trail viewer in dashboard/src/components/compliance/audit-trail.component.ts
-- [ ] T079 [P] [US3] Create report generation interface in dashboard/src/components/reports/report-generator.component.ts
-- [ ] T080 [US3] Create compliance report page in dashboard/src/pages/reports/compliance-report.page.ts
+- [ ] T078 [P] [US3] Create compliance dashboard in dashboard/src/components/compliance/compliance-dashboard.component.ts
+- [ ] T079 [P] [US3] Create audit trail viewer in dashboard/src/components/compliance/audit-trail.component.ts
+- [ ] T080 [P] [US3] Create report generation interface in dashboard/src/components/reports/report-generator.component.ts
+- [ ] T081 [US3] Create compliance report page in dashboard/src/pages/reports/compliance-report.page.ts
 
 **Checkpoint**: All user stories should now be independently functional with complete compliance documentation
 
@@ -206,16 +207,16 @@ Based on plan.md structure:
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T081 [P] Create comprehensive API documentation in docs/api/
-- [ ] T082 [P] Implement health check endpoints in tools/src/api/health/health.py
-- [ ] T083 [P] Add system metrics and monitoring in tools/src/api/health/metrics.py
-- [ ] T084 [P] Implement GraphQL query interface in tools/src/api/graphql/
-- [ ] T085 [P] Create CLI tool for analysis operations in tools/src/cli/analyze.py
-- [ ] T086 [P] Implement validation CLI in tools/src/cli/validate.py
-- [ ] T087 Code cleanup and refactoring across all modules
-- [ ] T088 Performance optimization for large codebase analysis
-- [ ] T089 Security hardening and penetration testing
-- [ ] T090 Run quickstart.md validation with Spring Modulith reference
+- [ ] T082 [P] Create comprehensive API documentation in docs/api/
+- [ ] T083 [P] Implement health check endpoints in tools/src/api/health/health.py
+- [ ] T084 [P] Add system metrics and monitoring in tools/src/api/health/metrics.py
+- [ ] T085 [P] Implement GraphQL query interface in tools/src/api/graphql/
+- [ ] T086 [P] Create CLI tool for analysis operations in tools/src/cli/analyze.py
+- [ ] T087 [P] Implement validation CLI in tools/src/cli/validate.py
+- [ ] T088 Code cleanup and refactoring across all modules
+- [ ] T089 Performance optimization for large codebase analysis
+- [ ] T090 Security hardening and penetration testing
+- [ ] T091 Run quickstart.md validation with Spring Modulith reference
 
 ---
 

@@ -14,6 +14,9 @@ from omega_analysis.services.orchestration.progress_tracker import (
     ProgressTracker,
     AnalysisPhase
 )
+from omega_analysis.services.orchestration.result_aggregator import (
+    ResultAggregator
+)
 
 
 logger = logging.getLogger(__name__)
@@ -35,6 +38,7 @@ class AnalysisOrchestrator:
         """Initialize the analysis orchestrator."""
         self.active_analyses: Dict[UUID, Dict[str, Any]] = {}
         self.progress_trackers: Dict[UUID, ProgressTracker] = {}
+        self.result_aggregators: Dict[UUID, ResultAggregator] = {}
         logger.info("Analysis Orchestrator initialized")
     
     async def start_analysis(
@@ -59,6 +63,10 @@ class AnalysisOrchestrator:
         # Initialize progress tracker
         tracker = ProgressTracker(analysis_id, project_id)
         self.progress_trackers[analysis_id] = tracker
+        
+        # Initialize result aggregator
+        aggregator = ResultAggregator(analysis_id, project_id)
+        self.result_aggregators[analysis_id] = aggregator
         
         # Initialize analysis tracking
         self.active_analyses[analysis_id] = {
@@ -174,6 +182,67 @@ class AnalysisOrchestrator:
             "gap_analysis": latest.get("gap_results", {}),
             "recommendations": latest.get("recommendations", [])
         }
+    
+    async def get_aggregated_results(self, analysis_id: UUID) -> Dict[str, Any]:
+        """
+        Get fully aggregated results for an analysis using ResultAggregator.
+        
+        Args:
+            analysis_id: UUID of the analysis
+        
+        Returns:
+            Dict containing comprehensive aggregated report
+        
+        Raises:
+            ValueError: If analysis ID not found
+        """
+        if analysis_id not in self.result_aggregators:
+            raise ValueError(f"Analysis {analysis_id} not found")
+        
+        aggregator = self.result_aggregators[analysis_id]
+        return aggregator.aggregate_results()
+    
+    async def add_analysis_result(
+        self,
+        analysis_id: UUID,
+        result_type: str,
+        result_data: Dict[str, Any],
+        source: str,
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """
+        Add a result to an analysis's aggregator.
+        
+        Args:
+            analysis_id: UUID of the analysis
+            result_type: Type of result (static_analysis, runtime_analysis, etc.)
+            result_data: The actual result data
+            source: Source of the result
+            metadata: Optional metadata
+        
+        Raises:
+            ValueError: If analysis ID not found
+        """
+        if analysis_id not in self.result_aggregators:
+            raise ValueError(f"Analysis {analysis_id} not found")
+        
+        aggregator = self.result_aggregators[analysis_id]
+        
+        # Map result type string to aggregator method
+        if result_type == "static_analysis":
+            aggregator.add_static_analysis_result(result_data, source, metadata)
+        elif result_type == "runtime_analysis":
+            aggregator.add_runtime_analysis_result(result_data, source, metadata)
+        elif result_type == "gap_analysis":
+            aggregator.add_gap_analysis_result(result_data, metadata)
+        elif result_type == "architecture":
+            aggregator.add_architecture_result(result_data, source, metadata)
+        elif result_type == "dependencies":
+            aggregator.add_dependency_result(result_data, source, metadata)
+        elif result_type == "performance":
+            aggregator.add_performance_result(result_data, source, metadata)
+        else:
+            logger.warning(f"Unknown result type: {result_type}")
     
     async def get_system_architecture(self, project_id: UUID):
         """

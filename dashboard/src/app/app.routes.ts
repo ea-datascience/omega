@@ -13,5 +13,9 @@ export const routes: Routes = [
   {
     path: 'projects/:id/progress',
     loadComponent: () => import('./components/analysis/analysis-progress/analysis-progress.component').then(m => m.AnalysisProgressComponent)
+  },
+  {
+    path: 'projects/:id/architecture',
+    loadComponent: () => import('./components/analysis/architecture-visualization/architecture-visualization.component').then(m => m.ArchitectureVisualizationComponent)
   }
 ];

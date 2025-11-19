@@ -1,0 +1,209 @@
+<div class="architecture-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading architecture visualization...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadArchitecture()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error && architecture" class="content-layout">
+    <!-- Header Card -->
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>account_tree</mat-icon>
+          System Architecture: {{ architecture.project_name }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-label">Components:</span>
+            <span class="stat-value">{{ architecture.statistics.total_components }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Relationships:</span>
+            <span class="stat-value">{{ architecture.statistics.total_relationships }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Avg Cohesion:</span>
+            <span class="stat-value">{{ (architecture.statistics.average_cohesion * 100).toFixed(1) }}%</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Avg Coupling:</span>
+            <span class="stat-value">{{ (architecture.statistics.average_coupling * 100).toFixed(1) }}%</span>
+          </div>
+        </div>
+        
+        <div class="controls-row">
+          <button mat-raised-button color="primary" (click)="resetView()">
+            <mat-icon>center_focus_strong</mat-icon>
+            Reset View
+          </button>
+          
+          <mat-form-field appearance="outline" class="filter-select">
+            <mat-label>Filter by Type</mat-label>
+            <mat-select [(value)]="filterType">
+              <mat-option value="all">All Components</mat-option>
+              <mat-option value="service">Services</mat-option>
+              <mat-option value="controller">Controllers</mat-option>
+              <mat-option value="repository">Repositories</mat-option>
+              <mat-option value="module">Modules</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+          <h4>Legend:</h4>
+          <div class="legend-items">
+            <div class="legend-item">
+              <span class="legend-color module"></span>
+              <span>Module</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color service"></span>
+              <span>Service</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color controller"></span>
+              <span>Controller</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color repository"></span>
+              <span>Repository</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color component"></span>
+              <span>Component</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color service-candidate"></span>
+              <span>Service Candidate</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Graph Visualization -->
+    <mat-card class="graph-card">
+      <mat-card-content>
+        <div #graphContainer class="graph-container"></div>
+        <p class="graph-hint">
+          <mat-icon>info</mat-icon>
+          Click and drag nodes to rearrange. Scroll to zoom. Click nodes for details.
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Component Details Panel -->
+    <mat-card *ngIf="selectedComponent" class="details-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Component Details
+        </mat-card-title>
+        <button mat-icon-button (click)="closeDetails()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="detail-section">
+          <h3>{{ selectedComponent.name }}</h3>
+          <mat-chip-set>
+            <mat-chip>{{ getComponentTypeDisplay(selectedComponent.type) }}</mat-chip>
+            <mat-chip *ngIf="selectedComponent.is_candidate_service" color="accent">Service Candidate</mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="detail-section" *ngIf="selectedComponent.description">
+          <h4>Description</h4>
+          <p>{{ selectedComponent.description }}</p>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedComponent.responsibilities.length > 0">
+          <h4>Responsibilities</h4>
+          <ul>
+            <li *ngFor="let responsibility of selectedComponent.responsibilities">
+              {{ responsibility }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedComponent.package_path">
+          <h4>Package</h4>
+          <code>{{ selectedComponent.package_path }}</code>
+        </div>
+
+        <div class="detail-section metrics">
+          <h4>Metrics</h4>
+          <div class="metric-row">
+            <span class="metric-label">Classes:</span>
+            <span class="metric-value">{{ selectedComponent.class_count || 'N/A' }}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Lines of Code:</span>
+            <span class="metric-value">{{ selectedComponent.line_count?.toLocaleString() || 'N/A' }}</span>
+          </div>
+          <div class="metric-row" *ngIf="selectedComponent.cohesion_score !== undefined">
+            <span class="metric-label">Cohesion:</span>
+            <span class="metric-value">{{ (selectedComponent.cohesion_score * 100).toFixed(1) }}%</span>
+          </div>
+          <div class="metric-row" *ngIf="selectedComponent.coupling_score !== undefined">
+            <span class="metric-label">Coupling:</span>
+            <span class="metric-value">{{ (selectedComponent.coupling_score * 100).toFixed(1) }}%</span>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedComponent.technology_stack">
+          <h4>Technology Stack</h4>
+          <div class="tech-section" *ngIf="selectedComponent.technology_stack.frameworks?.length">
+            <strong>Frameworks:</strong>
+            <mat-chip-set>
+              <mat-chip *ngFor="let fw of selectedComponent.technology_stack.frameworks">{{ fw }}</mat-chip>
+            </mat-chip-set>
+          </div>
+          <div class="tech-section" *ngIf="selectedComponent.technology_stack.libraries?.length">
+            <strong>Libraries:</strong>
+            <mat-chip-set>
+              <mat-chip *ngFor="let lib of selectedComponent.technology_stack.libraries">{{ lib }}</mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="getComponentRelationships().length > 0">
+          <h4>Relationships ({{ getComponentRelationships().length }})</h4>
+          <mat-expansion-panel *ngFor="let rel of getComponentRelationships()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ rel.relationship_type.replace('_', ' ') }}
+              </mat-panel-title>
+              <mat-panel-description>
+                Strength: {{ (rel.strength * 100).toFixed(0) }}%
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="relationship-details">
+              <p><strong>Source:</strong> {{ rel.source_id }}</p>
+              <p><strong>Target:</strong> {{ rel.target_id }}</p>
+              <p *ngIf="rel.description"><strong>Description:</strong> {{ rel.description }}</p>
+              <p *ngIf="rel.call_count"><strong>Call Count:</strong> {{ rel.call_count }}</p>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

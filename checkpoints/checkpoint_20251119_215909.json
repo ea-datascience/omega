@@ -1,0 +1,80 @@
+{
+  "checkpoint": {
+    "timestamp": "2025-11-19T21:59:09Z",
+    "created_by": "/workspace/tools/src/utils/create-checkpoint.sh",
+    "version": "2.0",
+    "format": "json"
+  },
+  "project": {
+    "name": "Omega - Agentic Software Migration System",
+    "repository": "ea-datascience/omega",
+    "root_path": "/workspace"
+  },
+  "git_status": {
+  "is_git_repo": true,
+  "branch": "001-system-discovery-baseline ",
+  "remote_url": "git@github.com:ea-datascience/omega.git ",
+  "last_commit": "7ac1025 - Checkpoint: T045 - Dashboard Analysis Progress Component - Completed (23 minutes ago) ",
+  "staged_files": 0,
+  "unstaged_files": 1,
+  "untracked_files": 6
+},
+  "modified_files": {
+  "staged": [
+  ],
+  "unstaged": [
+    {"file": "dashboard/src/app/app.routes.ts ", "status": "M"}
+  ],
+  "untracked": [
+    "checkpoints/checkpoint_20251119_215909.json ",
+    "dashboard/src/app/components/analysis/architecture-visualization/architecture-visualization.component.html ",
+    "dashboard/src/app/components/analysis/architecture-visualization/architecture-visualization.component.scss ",
+    "dashboard/src/app/components/analysis/architecture-visualization/architecture-visualization.component.ts ",
+    "dashboard/src/app/models/architecture.model.ts ",
+    "dashboard/src/app/services/architecture.service.ts "
+  ]
+},
+  "work_context": {
+    "current_epic": "T046: Dashboard Architecture Visualization Component ",
+    "current_task": "T046: Implement interactive architecture graph visualization with D3.js ",
+    "task_status": "completed ",
+    "next_tasks": "T047: Dependency graph visualization component ",
+    "blockers": " ",
+    "notes": "Created architecture visualization component with D3.js force-directed graph, interactive node exploration, component details panel, filters, legend, and comprehensive architecture metrics. Includes SystemArchitecture models with components, relationships, layers, and service candidates. "
+  },
+  "environment": {
+  "shell": "/bin/bash",
+  "pwd": "/workspace",
+  "git_version": "2.51.1 ",
+  "python_version": "3.12.12 ",
+  "user": "vscode",
+  "hostname": "943e2616848a"
+},
+  "project_structure": ". ├── checkpoints │   ├── checkpoint_20251114_000431.json │   ├── checkpoint_20251114_000534.json │   ├── checkpoint_20251114_000645.json │   ├── checkpoint_20251114_001103.json │   ├── checkpoint_20251114_002521.json │   ├── checkpoint_20251114_002938.json │   ├── checkpoint_20251114_163400.json │   ├── checkpoint_20251114_181212.json │   ├── checkpoint_20251117_124614.json │   ├── checkpoint_20251117_163837.json │   ├── checkpoint_20251117_164823.json │   ├── checkpoint_20251117_181733.json │   ├── checkpoint_20251117_220255.json │   ├── checkpoint_20251117_230739.json │   ├── checkpoint_20251118_133854.json │   ├── checkpoint_20251118_140230.json │   ├── checkpoint_20251118_153740.json │   ├── checkpoint_20251118_161049.json │   ├── checkpoint_20251118_220139.json │   ├── checkpoint_20251118_222647.json │   ├── checkpoint_20251118_224051.json │   ├── checkpoint_20251118_225016.json │   ├── checkpoint_20251118_230232.json │   ├── checkpoint_20251118_233342.json │   ├── checkpoint_20251118_233726.json │   ├── checkpoint_20251118_235429.json │   ├── checkpoint_20251119_000224.json │   ├── checkpoint_20251119_001146.json │   ├── checkpoint_20251119_012013.json │   ├── checkpoint_20251119_205206.json │   ├── checkpoint_20251119_213539.json │   └── checkpoint_20251119_215909.json ├── dashboard │   ├── .angular │   ├── angular.json │   ├── dist │   ├── .eslintrc.json │   ├── .gitignore │   ├── node_modules │   ├── package.json │   ├── package-lock.json │   ├── src │   ├── tests │   ├── tsconfig.app.json │   ├── tsconfig.json │   └── tsconfig.spec.json ├── .devcontainer │   ├── devcontainer.json │   ├── docker-compose.yml │   ├── Dockerfile │   ├── README.md │   └── signoz-config.yaml ├── diagrams │   ├── spring-modulith_component.puml │   ├── spring-modulith_container.puml │   ├── spring-modulith_context.puml │   ├── spring-modulith-core_classes.puml │   ├── spring-modulith-integration-test_classes.puml │   └── spring-modulith-observability_classes.puml ├── docker-compose.yml ├── docs │   ├── drafts │   ├── .DS_Store │   ├── git │   ├── implementation │   ├── omega-constitution.md │   ├── setup │   ├── speckit │   └── tools ├── .DS_Store ├── .github │   ├── agents │   ├── copilot-instructions.md │   └── prompts ├── .gitignore ├── prds │   ├── epic-1.1-system-discovery-baseline-assessment.md │   └── templates ├── README.md ├── .specify │   ├── memory │   ├── scripts │   └── templates ├── specs │   └── 001-system-discovery-baseline ├── spring-modulith_analysis.json ├── spring-modulith_ANALYSIS_REPORT.md ├── tools │   ├── agents │   ├── alembic │   ├── alembic.ini │   ├── docker │   ├── pyproject.toml │   ├── .pytest_cache │   ├── README.md │   ├── run_migration.py │   ├── src │   ├── T019_IMPLEMENTATION_SUMMARY.md │   ├── test_router_isolated.py │   ├── tests │   ├── uv.lock │   ├── validate_projects_api.py │   └── validate_schema.py └── .vscode     └── settings.json  35 directories, 71 files ",
+  "resume_instructions": [
+  "Ensure you're in the project root: cd /workspace",
+  "Activate virtual environment if available: source .venv/bin/activate",
+  "Check Git status: git status",
+  "Review modified files listed in this checkpoint",
+  "Check recent commits: git log --oneline -5",
+  "Review the work context for current tasks and blockers",
+  "Check project documentation in /docs directory",
+  "Review tools available in /tools directory",
+  "Use GitHub Copilot with context from .github/copilot-instructions.md"
+],
+  "copilot_context": {
+    "project_goals": [
+      "Demonstrate migration workflows from monoliths to microservices",
+      "Provide intelligent automation through agentic systems", 
+      "Establish best practices for microservices decomposition",
+      "Enable practical implementation with real-world tools"
+    ],
+    "key_directories": {
+      "/data/codebase/": "Reference codebases (Spring Modulith)",
+      "/docs/": "Project documentation",
+      "/tools/": "Migration utilities and scripts",
+      "/.github/": "GitHub workflows and prompts"
+    },
+    "current_phase": "Initial phase focusing on development environment, Git workflow, tools structure, and reference codebase integration"
+  }
+}

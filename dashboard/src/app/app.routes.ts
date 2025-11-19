@@ -17,5 +17,9 @@ export const routes: Routes = [
   {
     path: 'projects/:id/architecture',
     loadComponent: () => import('./components/analysis/architecture-visualization/architecture-visualization.component').then(m => m.ArchitectureVisualizationComponent)
+  },
+  {
+    path: 'projects/:id/dependencies',
+    loadComponent: () => import('./components/analysis/dependency-graph/dependency-graph.component').then(m => m.DependencyGraphComponent)
   }
 ];

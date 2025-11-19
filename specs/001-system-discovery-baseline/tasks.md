@@ -110,9 +110,9 @@ Based on plan.md structure:
 
 ### Dashboard Components for User Story 1
 
-- [ ] T044 [P] [US1] Create project list component in dashboard/src/components/analysis/project-list.component.ts
-- [ ] T045 [P] [US1] Create analysis progress component in dashboard/src/components/analysis/analysis-progress.component.ts
-- [ ] T046 [P] [US1] Create architecture visualization component in dashboard/src/components/analysis/architecture-viewer.component.ts
+- [x] T044 [P] [US1] Create project list component in dashboard/src/components/analysis/project-list.component.ts
+- [x] T045 [P] [US1] Create analysis progress component in dashboard/src/components/analysis/analysis-progress.component.ts
+- [x] T046 [P] [US1] Create architecture visualization component in dashboard/src/components/analysis/architecture-viewer.component.ts
 - [ ] T047 [P] [US1] Create dependency graph visualization in dashboard/src/components/analysis/dependency-graph.component.ts
 - [ ] T048 [P] [US1] Create performance metrics dashboard in dashboard/src/components/analysis/performance-dashboard.component.ts
 - [ ] T049 [US1] Create main analysis dashboard page in dashboard/src/pages/dashboard/analysis-dashboard.page.ts

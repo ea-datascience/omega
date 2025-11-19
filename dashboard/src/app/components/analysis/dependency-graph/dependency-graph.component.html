@@ -1,0 +1,320 @@
+<div class="dependency-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading dependency graph...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadDependencies()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error && dependencyGraph" class="content-layout">
+    <!-- Header Card -->
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>device_hub</mat-icon>
+          Dependency Graph: {{ dependencyGraph.project_name }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Metrics Row -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-label">Total Nodes:</span>
+            <span class="stat-value">{{ dependencyGraph.metrics.total_nodes }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Dependencies:</span>
+            <span class="stat-value">{{ dependencyGraph.metrics.total_edges }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">External:</span>
+            <span class="stat-value">{{ dependencyGraph.metrics.external_dependencies }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Circular:</span>
+            <span class="stat-value" [class.warning]="dependencyGraph.metrics.circular_dependencies > 0">
+              {{ dependencyGraph.metrics.circular_dependencies }}
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Coupling:</span>
+            <span class="stat-value">{{ (dependencyGraph.metrics.coupling_score * 100).toFixed(1) }}%</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Stability:</span>
+            <span class="stat-value">{{ (dependencyGraph.metrics.stability_score * 100).toFixed(1) }}%</span>
+          </div>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="controls-row">
+          <!-- Layout Toggle -->
+          <mat-button-toggle-group [(value)]="layoutType" (change)="changeLayout(layoutType)">
+            <mat-button-toggle value="force">
+              <mat-icon>bubble_chart</mat-icon>
+              Force Layout
+            </mat-button-toggle>
+            <mat-button-toggle value="hierarchy">
+              <mat-icon>account_tree</mat-icon>
+              Tree Layout
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+
+          <!-- Search -->
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search Dependencies</mat-label>
+            <input matInput [(ngModel)]="searchTerm" (keyup.enter)="searchDependencies()">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <!-- Filter by Type -->
+          <mat-form-field appearance="outline" class="filter-select">
+            <mat-label>Dependency Type</mat-label>
+            <mat-select [(value)]="filterType" (selectionChange)="applyFilters()">
+              <mat-option value="all">All Types</mat-option>
+              <mat-option [value]="DependencyType.DIRECT">Direct</mat-option>
+              <mat-option [value]="DependencyType.TRANSITIVE">Transitive</mat-option>
+              <mat-option [value]="DependencyType.COMPILE">Compile</mat-option>
+              <mat-option [value]="DependencyType.RUNTIME">Runtime</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Show/Hide Toggles -->
+          <div class="toggle-controls">
+            <mat-checkbox [(ngModel)]="showExternal" (change)="applyFilters()">
+              Show External
+            </mat-checkbox>
+            <mat-checkbox [(ngModel)]="showTransitive" (change)="applyFilters()">
+              Show Transitive
+            </mat-checkbox>
+          </div>
+
+          <!-- Actions -->
+          <button mat-raised-button color="primary" (click)="resetView()">
+            <mat-icon>center_focus_strong</mat-icon>
+            Reset View
+          </button>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+          <h4>Legend:</h4>
+          <div class="legend-items">
+            <div class="legend-item">
+              <span class="legend-color package"></span>
+              <span>Package</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color module"></span>
+              <span>Module</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color class"></span>
+              <span>Class</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color component"></span>
+              <span>Component</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color external"></span>
+              <span>External</span>
+            </div>
+          </div>
+          <div class="legend-section">
+            <h4>Edge Colors:</h4>
+            <div class="legend-items">
+              <div class="legend-item">
+                <span class="legend-line tight"></span>
+                <span>Tight Coupling</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-line moderate"></span>
+                <span>Moderate Coupling</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-line loose"></span>
+                <span>Loose Coupling</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-line circular"></span>
+                <span>Circular Dependency</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Circular Dependencies Warning -->
+    <mat-card *ngIf="getCircularDependencies().length > 0" class="warning-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon color="warn">warning</mat-icon>
+          Circular Dependencies Detected ({{ getCircularDependencies().length }})
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-expansion-panel *ngFor="let cycle of getCircularDependencies()">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Cycle {{ cycle.cycle_id }}
+            </mat-panel-title>
+            <mat-panel-description>
+              Severity: <mat-chip [color]="cycle.severity === 'high' ? 'warn' : 'accent'">{{ cycle.severity }}</mat-chip>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="cycle-details">
+            <p><strong>Description:</strong> {{ cycle.description }}</p>
+            <p><strong>Nodes in Cycle:</strong></p>
+            <ol>
+              <li *ngFor="let nodeId of cycle.nodes">{{ nodeId }}</li>
+            </ol>
+          </div>
+        </mat-expansion-panel>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Graph Visualization -->
+    <mat-card class="graph-card">
+      <mat-card-content>
+        <div #graphContainer class="graph-container"></div>
+        <p class="graph-hint">
+          <mat-icon>info</mat-icon>
+          <span *ngIf="layoutType === 'force'">Click and drag nodes. Scroll to zoom. Click nodes/edges for details.</span>
+          <span *ngIf="layoutType === 'hierarchy'">Hierarchical view from root dependencies. Click nodes for details.</span>
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Node Details Panel -->
+    <mat-card *ngIf="selectedNode" class="details-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Node Details
+        </mat-card-title>
+        <button mat-icon-button (click)="closeDetails()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="detail-section">
+          <h3>{{ selectedNode.name }}</h3>
+          <mat-chip-set>
+            <mat-chip>{{ selectedNode.type }}</mat-chip>
+            <mat-chip *ngIf="selectedNode.is_external" color="warn">External</mat-chip>
+            <mat-chip *ngIf="selectedNode.has_vulnerabilities" color="warn">Has Vulnerabilities</mat-chip>
+            <mat-chip *ngIf="selectedNode.is_deprecated" color="accent">Deprecated</mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="detail-section" *ngIf="selectedNode.namespace">
+          <h4>Namespace</h4>
+          <code>{{ selectedNode.namespace }}</code>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedNode.package_path">
+          <h4>Package Path</h4>
+          <code>{{ selectedNode.package_path }}</code>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedNode.version">
+          <h4>Version</h4>
+          <p>{{ selectedNode.version }}</p>
+        </div>
+
+        <div class="detail-section metrics">
+          <h4>Dependency Metrics</h4>
+          <div class="metric-row">
+            <span class="metric-label">Incoming Dependencies:</span>
+            <span class="metric-value">{{ selectedNode.in_degree }}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Outgoing Dependencies:</span>
+            <span class="metric-value">{{ selectedNode.out_degree }}</span>
+          </div>
+          <div class="metric-row" *ngIf="selectedNode.centrality_score !== undefined">
+            <span class="metric-label">Centrality Score:</span>
+            <span class="metric-value">{{ (selectedNode.centrality_score * 100).toFixed(1) }}%</span>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="getConnectedEdges().length > 0">
+          <h4>Connected Dependencies ({{ getConnectedEdges().length }})</h4>
+          <mat-expansion-panel *ngFor="let edge of getConnectedEdges()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ edge.source_id === selectedNode.id ? '→' : '←' }} 
+                {{ edge.source_id === selectedNode.id ? edge.target_id : edge.source_id }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ getDependencyTypeDisplay(edge.dependency_type) }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="edge-details">
+              <p><strong>Type:</strong> {{ getDependencyTypeDisplay(edge.dependency_type) }}</p>
+              <p><strong>Coupling:</strong> {{ edge.coupling_strength }}</p>
+              <p *ngIf="edge.usage_count"><strong>Usage Count:</strong> {{ edge.usage_count }}</p>
+              <p *ngIf="edge.is_circular"><strong>Circular:</strong> <mat-chip color="warn">Yes</mat-chip></p>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Edge Details Panel -->
+    <mat-card *ngIf="selectedEdge" class="details-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>link</mat-icon>
+          Dependency Details
+        </mat-card-title>
+        <button mat-icon-button (click)="closeDetails()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="detail-section">
+          <h3>{{ selectedEdge.source_id }} → {{ selectedEdge.target_id }}</h3>
+          <mat-chip-set>
+            <mat-chip>{{ getDependencyTypeDisplay(selectedEdge.dependency_type) }}</mat-chip>
+            <mat-chip [color]="selectedEdge.coupling_strength === CouplingStrength.TIGHT ? 'warn' : 'primary'">
+              {{ selectedEdge.coupling_strength }} coupling
+            </mat-chip>
+            <mat-chip *ngIf="selectedEdge.is_circular" color="warn">Circular</mat-chip>
+            <mat-chip *ngIf="selectedEdge.is_problematic" color="accent">Problematic</mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="detail-section" *ngIf="selectedEdge.usage_count">
+          <h4>Usage Count</h4>
+          <p>{{ selectedEdge.usage_count }}</p>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedEdge.call_sites && selectedEdge.call_sites.length > 0">
+          <h4>Call Sites</h4>
+          <ul>
+            <li *ngFor="let site of selectedEdge.call_sites">
+              <code>{{ site }}</code>
+            </li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

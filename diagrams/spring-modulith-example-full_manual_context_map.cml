@@ -1,0 +1,33 @@
+/* Spring Modulith Full Example - Context Map */
+/* Generated from source code analysis */
+/* Note: Context Mapper requires compiled classes with reflection */
+
+ContextMap SpringModulithExample {
+  contains order, inventory
+
+  /* Relationships */
+  order [D,ACL] -> [U,OHS] inventory
+}
+
+BoundedContext order {
+  /* Module: example.order */
+  /* Classes: 3 */
+  /* Interfaces: 0 */
+
+  Aggregate {
+    Entity Order
+    Entity OrderManagement
+    Entity OrderInternal
+  }
+}
+
+BoundedContext inventory {
+  /* Module: example.inventory */
+  /* Classes: 2 */
+  /* Interfaces: 0 */
+
+  Aggregate {
+    Entity InventoryInternal
+    Entity InventoryManagement
+  }
+}

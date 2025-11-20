@@ -1,0 +1,35 @@
+/* Spring Boot Application Context Map */
+/* Application: Application */
+/* Base Package: example */
+/* Modules: 2 */
+/* Generated: 2025-11-20 */
+
+ContextMap ApplicationContextMap {
+  contains order, inventory
+
+  /* Inter-Module Dependencies */
+  inventory [D,ACL] -> [U,OHS] order
+
+}
+
+BoundedContext order {
+  type = MODULE
+  domainVisionStatement = "example.order"
+
+  Aggregate {
+    Service OrderManagement
+    Service OrderInternal
+  }
+
+}
+
+BoundedContext inventory {
+  type = MODULE
+  domainVisionStatement = "example.inventory"
+
+  Aggregate {
+    Service InventoryInternal
+    Service InventoryManagement
+  }
+
+}

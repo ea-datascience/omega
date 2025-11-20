@@ -1,0 +1,48 @@
+{
+  "application": "Application",
+  "base_package": "example",
+  "modules": [
+    {
+      "name": "order",
+      "package": "example.order",
+      "entities": [],
+      "services": [
+        "OrderManagement",
+        "OrderInternal"
+      ],
+      "events": [],
+      "repositories": [],
+      "controllers": [],
+      "all_classes": [
+        "OrderCompleted",
+        "Order",
+        "OrderManagement",
+        "OrderInternal"
+      ]
+    },
+    {
+      "name": "inventory",
+      "package": "example.inventory",
+      "entities": [],
+      "services": [
+        "InventoryInternal",
+        "InventoryManagement"
+      ],
+      "events": [],
+      "repositories": [],
+      "controllers": [],
+      "all_classes": [
+        "InventoryInternal",
+        "InventoryManagement",
+        "InventorySettings"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "inventory",
+      "to": "order",
+      "type": "imports"
+    }
+  ]
+}

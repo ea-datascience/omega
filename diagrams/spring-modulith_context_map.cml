@@ -1,0 +1,5 @@
+/* No bounded contexts discovered */
+/* This may indicate: */
+/*   - No Spring Boot applications in codebase */
+/*   - Base package mismatch */
+/*   - Source code location issue */

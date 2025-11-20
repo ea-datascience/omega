@@ -250,7 +250,34 @@ All utilities are located in `/workspace/tools/src/utils/` for reproducible setu
 - Pinned Versions: tree-sitter==0.23.2, tree-sitter-java==0.23.5
 - Documentation: See `/workspace/docs/setup/` for setup guides
 
+**Context Mapper Integration**:
+- Module: `context_mapper.py` - Context Mapper DSL & Discovery wrapper (481 lines)
+- Installation: `install-context-mapper.sh` - Maven-based installer for CM libraries
+- Pinned Versions: Context Mapper DSL 6.12.0, Discovery 1.1.0, Maven 3.9.9
+- Features: Source code analysis (recommended), reflection-based analysis, CML/JSON export
+- Tests: `tools/tests/unit/test_context_mapper.py` (12 tests)
+- Tests: `tools/tests/integration/test_context_mapper_integration.py` (5 tests)
+- Tests: `tools/tests/e2e/test_context_mapper_e2e.py` (4 tests)
+- Documentation: `/workspace/docs/setup/context-mapper-setup.md`
+
+**Spring Boot Analyzer**:
+- Module: `spring_boot_analyzer.py` - Source code analyzer for Spring Boot apps (470 lines)
+- Features: Module detection, service/entity classification, dependency analysis, no compilation
+- Tests: `tools/tests/unit/test_spring_boot_analyzer.py` (16 tests)
+- Tests: `tools/tests/integration/test_spring_boot_analyzer_integration.py` (8 tests)
+- Documentation: `/workspace/docs/setup/context-mapper-setup.md` (integrated)
+
+**Structurizr CLI Integration**:
+- Module: `structurizr_cli.py` - Structurizr CLI wrapper for C4 diagrams (421 lines)
+- Installation: `install-structurizr.sh` - Downloads CLI v2025.11.09 from GitHub
+- Features: DSL validation, export to PlantUML/Mermaid/DOT, workspace inspection
+- Tests: `tools/tests/unit/test_structurizr_cli.py` (14 tests)
+- Tests: `tools/tests/integration/test_structurizr_cli_integration.py` (9 tests)
+- Documentation: `/workspace/docs/setup/structurizr-cli-setup.md`
+
 All utilities follow constitution principles: scripted, versioned, tested, and documented.
+
+**Total Test Coverage**: 114 tests across all utilities (100% passing)
 
 ## Recent Changes
 - 001-omega-migration-system: Added Python 3.12+ (per constitution requirements) + Microsoft Agent Framework + JavaParser, Microsoft App Cat, SonarQube Enterprise

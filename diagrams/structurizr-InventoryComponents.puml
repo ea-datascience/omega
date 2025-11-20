@@ -1,0 +1,86 @@
+@startuml
+title <size:24>Component View: Spring Modulith Example - Inventory Module</size>\n<size:24>Components within the Inventory module</size>
+
+set separator none
+left to right direction
+skinparam ranksep 60
+skinparam nodesep 30
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Component
+  .Element-RWxlbWVudCxDb21wb25lbnQ= {
+    BackgroundColor: #85bbf0;
+    LineColor: #5d82a8;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #000000;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Container,Module
+  .Element-RWxlbWVudCxDb250YWluZXIsTW9kdWxl {
+    BackgroundColor: #438dd5;
+    LineColor: #2e6295;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #444444;
+    FontColor: #444444;
+    FontSize: 24;
+  }
+  // Inventory Module
+  .Boundary-SW52ZW50b3J5IE1vZHVsZQ== {
+    BackgroundColor: #ffffff;
+    LineColor: #2e6295;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #438dd5;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+  // Spring Modulith Example
+  .Boundary-U3ByaW5nIE1vZHVsaXRoIEV4YW1wbGU= {
+    BackgroundColor: #ffffff;
+    LineColor: #0b4884;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #1168bd;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+rectangle "Spring Modulith Example\n<size:16>[Software System]</size>" <<Boundary-U3ByaW5nIE1vZHVsaXRoIEV4YW1wbGU=>> {
+  rectangle "Inventory Module\n<size:16>[Container: Java/Spring]</size>" <<Boundary-SW52ZW50b3J5IE1vZHVsZQ==>> {
+    rectangle "==InventoryInternal\n<size:16>[Component: Spring Service]</size>\n\nInternal inventory logic" <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as SpringModulithExample.InventoryModule.InventoryInternal
+    rectangle "==InventorySettings\n<size:16>[Component: Configuration]</size>\n\nInventory configuration" <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as SpringModulithExample.InventoryModule.InventorySettings
+    rectangle "==InventoryManagement\n<size:16>[Component: Spring Service]</size>\n\nPublic API for inventory" <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as SpringModulithExample.InventoryModule.InventoryManagement
+  }
+
+  rectangle "==Order Module\n<size:16>[Container: Java/Spring]</size>\n\nManages order lifecycle" <<Element-RWxlbWVudCxDb250YWluZXIsTW9kdWxl>> as SpringModulithExample.OrderModule
+}
+
+SpringModulithExample.InventoryModule.InventoryManagement --> SpringModulithExample.InventoryModule.InventorySettings <<Relationship-UmVsYXRpb25zaGlw>> : "Uses"
+SpringModulithExample.InventoryModule.InventoryInternal --> SpringModulithExample.OrderModule <<Relationship-UmVsYXRpb25zaGlw>> : "Listens to"
+
+@enduml

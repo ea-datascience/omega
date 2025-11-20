@@ -1,0 +1,80 @@
+{
+  "checkpoint": {
+    "timestamp": "2025-11-20T16:12:12Z",
+    "created_by": "/workspace/tools/src/utils/create-checkpoint.sh",
+    "version": "2.0",
+    "format": "json"
+  },
+  "project": {
+    "name": "Omega - Agentic Software Migration System",
+    "repository": "ea-datascience/omega",
+    "root_path": "/workspace"
+  },
+  "git_status": {
+  "is_git_repo": true,
+  "branch": "001-system-discovery-baseline ",
+  "remote_url": "git@github.com:ea-datascience/omega.git ",
+  "last_commit": "2f1a958 - 📊 Checkpoint: Context Mapper Integration - Completed (5 hours ago) ",
+  "staged_files": 0,
+  "unstaged_files": 2,
+  "untracked_files": 5
+},
+  "modified_files": {
+  "staged": [
+  ],
+  "unstaged": [
+    {"file": ".github/copilot-instructions.md ", "status": "M"},
+    {"file": "tools/README.md ", "status": "M"}
+  ],
+  "untracked": [
+    "src/utils/install-codeql.sh ",
+    "src/utils/install-structurizr.sh ",
+    "src/utils/structurizr_cli.py ",
+    "tests/integration/test_structurizr_cli_integration.py ",
+    "tests/unit/test_structurizr_cli.py "
+  ]
+},
+  "work_context": {
+    "current_epic": "System Discovery Baseline - T024a Structurizr CLI ",
+    "current_task": "Install and integrate Structurizr CLI for C4 diagrams ",
+    "task_status": "completed ",
+    "next_tasks": "T025a: Install CodeQL CLI (started, architecture issue to resolve) ",
+    "blockers": "CodeQL CLI downloaded x86-64 version but system is ARM64 - need to fix architecture detection ",
+    "notes": "T024a complete: Structurizr CLI v2025.11.09 installed, Python wrapper created (421 lines), 23 tests (14 unit + 9 integration) all passing, comprehensive documentation created, Spring Modulith diagrams generated. Ready for CodeQL after fixing ARM64 compatibility. "
+  },
+  "environment": {
+  "shell": "/bin/bash",
+  "pwd": "/workspace/tools",
+  "git_version": "2.51.1 ",
+  "python_version": "3.12.12 ",
+  "user": "vscode",
+  "hostname": "943e2616848a"
+},
+  "project_structure": ". ├── checkpoints │   ├── checkpoint_20251114_000431.json │   ├── checkpoint_20251114_000534.json │   ├── checkpoint_20251114_000645.json │   ├── checkpoint_20251114_001103.json │   ├── checkpoint_20251114_002521.json │   ├── checkpoint_20251114_002938.json │   ├── checkpoint_20251114_163400.json │   ├── checkpoint_20251114_181212.json │   ├── checkpoint_20251117_124614.json │   ├── checkpoint_20251117_163837.json │   ├── checkpoint_20251117_164823.json │   ├── checkpoint_20251117_181733.json │   ├── checkpoint_20251117_220255.json │   ├── checkpoint_20251117_230739.json │   ├── checkpoint_20251118_133854.json │   ├── checkpoint_20251118_140230.json │   ├── checkpoint_20251118_153740.json │   ├── checkpoint_20251118_161049.json │   ├── checkpoint_20251118_220139.json │   ├── checkpoint_20251118_222647.json │   ├── checkpoint_20251118_224051.json │   ├── checkpoint_20251118_225016.json │   ├── checkpoint_20251118_230232.json │   ├── checkpoint_20251118_233342.json │   ├── checkpoint_20251118_233726.json │   ├── checkpoint_20251118_235429.json │   ├── checkpoint_20251119_000224.json │   ├── checkpoint_20251119_001146.json │   ├── checkpoint_20251119_012013.json │   ├── checkpoint_20251119_205206.json │   ├── checkpoint_20251119_213539.json │   ├── checkpoint_20251119_215909.json │   ├── checkpoint_20251119_221640.json │   ├── checkpoint_20251119_224443.json │   ├── checkpoint_20251119_230803.json │   ├── checkpoint_20251120_113804.json │   └── checkpoint_20251120_161212.json ├── dashboard │   ├── .angular │   ├── angular.json │   ├── dist │   ├── .eslintrc.json │   ├── .gitignore │   ├── node_modules │   ├── package.json │   ├── package-lock.json │   ├── src │   ├── tests │   ├── tsconfig.app.json │   ├── tsconfig.json │   └── tsconfig.spec.json ├── .devcontainer │   ├── devcontainer.json │   ├── docker-compose.yml │   ├── Dockerfile │   ├── README.md │   └── signoz-config.yaml ├── diagrams │   ├── classes_context_map.cml │   ├── spring-modulith_component.puml │   ├── spring-modulith_container.puml │   ├── spring-modulith_context_map.cml │   ├── spring-modulith_context.puml │   ├── spring-modulith-core_classes.puml │   ├── spring-modulith-example-full_analysis.cml │   ├── spring-modulith-example-full_analysis.json │   ├── spring-modulith-example-full_context_map.cml │   ├── spring-modulith-example-full_manual_context_map.cml │   ├── spring-modulith-integration-test_classes.puml │   ├── spring-modulith-observability_classes.puml │   ├── spring-modulith-workspace.dsl │   ├── structurizr-Containers-key.puml │   ├── structurizr-Containers.puml │   ├── structurizr-InventoryComponents-key.puml │   ├── structurizr-InventoryComponents.puml │   ├── structurizr-OrderComponents-key.puml │   ├── structurizr-OrderComponents.puml │   ├── structurizr-OrderFlow-key.puml │   ├── structurizr-OrderFlow.puml │   ├── structurizr-SystemContext-key.puml │   └── structurizr-SystemContext.puml ├── docker-compose.yml ├── docs │   ├── drafts │   ├── .DS_Store │   ├── git │   ├── implementation │   ├── omega-constitution.md │   ├── setup │   ├── speckit │   └── tools ├── .DS_Store ├── .github │   ├── agents │   ├── copilot-instructions.md │   └── prompts ├── .gitignore ├── prds │   ├── epic-1.1-system-discovery-baseline-assessment.md │   └── templates ├── README.md ├── .specify │   ├── memory │   ├── scripts │   └── templates ├── specs │   └── 001-system-discovery-baseline ├── spring-modulith_analysis.json ├── spring-modulith_ANALYSIS_REPORT.md ├── tools │   ├── agents │   ├── alembic │   ├── alembic.ini │   ├── build │   ├── docker │   ├── pyproject.toml │   ├── .pytest_cache │   ├── README.md │   ├── run_migration.py │   ├── src │   ├── T019_IMPLEMENTATION_SUMMARY.md │   ├── T023_CONTEXT_MAPPER_IMPLEMENTATION_SUMMARY.md │   ├── test_router_isolated.py │   ├── tests │   ├── uv.lock │   ├── validate_projects_api.py │   └── validate_schema.py └── .vscode     └── settings.json  36 directories, 94 files ",
+  "resume_instructions": [
+  "Ensure you're in the project root: cd /workspace",
+  "Activate virtual environment if available: source .venv/bin/activate",
+  "Check Git status: git status",
+  "Review modified files listed in this checkpoint",
+  "Check recent commits: git log --oneline -5",
+  "Review the work context for current tasks and blockers",
+  "Check project documentation in /docs directory",
+  "Review tools available in /tools directory",
+  "Use GitHub Copilot with context from .github/copilot-instructions.md"
+],
+  "copilot_context": {
+    "project_goals": [
+      "Demonstrate migration workflows from monoliths to microservices",
+      "Provide intelligent automation through agentic systems", 
+      "Establish best practices for microservices decomposition",
+      "Enable practical implementation with real-world tools"
+    ],
+    "key_directories": {
+      "/data/codebase/": "Reference codebases (Spring Modulith)",
+      "/docs/": "Project documentation",
+      "/tools/": "Migration utilities and scripts",
+      "/.github/": "GitHub workflows and prompts"
+    },
+    "current_phase": "Initial phase focusing on development environment, Git workflow, tools structure, and reference codebase integration"
+  }
+}

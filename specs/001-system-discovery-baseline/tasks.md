@@ -74,11 +74,34 @@ Based on plan.md structure:
 
 ### Static Analysis Integration for User Story 1
 
-- [x] T023 [P] [US1] Implement Context Mapper integration in tools/src/analysis/static/context_mapper.py
-- [x] T024 [P] [US1] Implement Structurizr integration for C4 diagrams in tools/src/analysis/static/structurizr.py
-- [x] T025 [P] [US1] Implement CodeQL integration for security scanning in tools/src/analysis/static/codeql.py
-- [x] T026 [P] [US1] Implement Microsoft AppCAT integration in tools/src/analysis/static/appcat.py
+- [x] T023 [P] [US1] Implement Context Mapper integration in tools/src/analysis/static/context_mapper.py ⚠️ **INCOMPLETE: Uses custom Python implementation instead of actual Context Mapper Java library**
+- [x] T024 [P] [US1] Implement Structurizr integration for C4 diagrams in tools/src/analysis/static/structurizr.py ⚠️ **INCOMPLETE: Uses custom Python implementation instead of Structurizr DSL/CLI**
+- [x] T025 [P] [US1] Implement CodeQL integration for security scanning in tools/src/analysis/static/codeql.py ⚠️ **INCOMPLETE: Wrapper exists but CodeQL CLI binary not installed**
+- [x] T026 [P] [US1] Implement Microsoft AppCAT integration in tools/src/analysis/static/appcat.py ⚠️ **INCOMPLETE: Wrapper exists but AppCAT binary not installed**
 - [x] T027 [US1] Create static analysis orchestration service using Microsoft Agent Framework in tools/src/services/orchestration/static_analyzer.py
+
+### ⚠️ CRITICAL GAP: Third-Party Tool Installation and Integration (BLOCKING)
+
+**Issue**: Current implementations use custom Python code instead of actual third-party tools. This bypasses the sophisticated analysis capabilities these tools provide.
+
+**Impact**: System cannot deliver the promised 95% accuracy in dependency graphs and architectural analysis without the real tools.
+
+**Required Actions**:
+
+- [ ] T023a [P] [US1] Install Context Mapper Java library (Maven dependency org.contextmapper:context-mapper-dsl) in tools/src/utils/install-context-mapper.sh
+- [ ] T023b [US1] Rewrite Context Mapper integration to use actual Java library via subprocess/JVM bridge in tools/src/analysis/static/context_mapper.py
+- [ ] T024a [P] [US1] Install Structurizr CLI in tools/bin/structurizr/ via tools/src/utils/install-structurizr.sh
+- [ ] T024b [US1] Rewrite Structurizr integration to use CLI and DSL files in tools/src/analysis/static/structurizr.py
+- [ ] T025a [P] [US1] Install CodeQL CLI and Java query packs in tools/bin/codeql/ via tools/src/utils/install-codeql.sh
+- [ ] T025b [US1] Update CodeQL integration to use installed CLI (remove mock fallback for production) in tools/src/analysis/static/codeql.py
+- [ ] T026a [P] [US1] Install Microsoft AppCAT CLI in tools/bin/appcat/ via tools/src/utils/install-appcat.sh
+- [ ] T026b [US1] Update AppCAT integration to use installed CLI (remove mock fallback for production) in tools/src/analysis/static/appcat.py
+- [ ] T027a [US1] Update static analysis orchestrator to handle real tool execution and error handling in tools/src/services/orchestration/static_analyzer.py
+- [ ] T027b [US1] Add tool version validation and health checks in tools/src/utils/tool_health_checker.py
+- [ ] T027c [P] [US1] Update Docker/dev container configuration to include all third-party tools in .devcontainer/Dockerfile
+- [ ] T027d [P] [US1] Create comprehensive tool installation documentation in docs/setup/static-analysis-tools.md
+
+**Checkpoint**: Tools properly installed and integrated - ready for actual architectural analysis
 
 ### Runtime Analysis Integration for User Story 1
 
@@ -234,8 +257,20 @@ Based on plan.md structure:
 ### User Story Dependencies
 
 - **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
+  - ⚠️ **BLOCKED**: T023a-T027d must be completed to fix third-party tool integration before US1 can be considered production-ready
 - **User Story 2 (P2)**: Can start after Foundational (Phase 2) - Integrates with US1 models but independently testable
 - **User Story 3 (P3)**: Can start after Foundational (Phase 2) - Uses analysis results from US1/US2 but independently testable
+
+### Critical Path Update
+
+**IMPORTANT**: The following tasks are now on the critical path and MUST be completed before US1 can be validated:
+
+1. **Tool Installation (Parallel)**: T023a, T024a, T025a, T026a, T027c
+2. **Tool Integration (Sequential)**: T023b, T024b, T025b, T026b
+3. **Orchestration Update**: T027a, T027b
+4. **Documentation**: T027d
+
+**Estimated Impact**: 2-3 weeks additional work to properly integrate real tools
 
 ### Within Each User Story
 
@@ -282,29 +317,59 @@ Task: "Create architecture visualization component in dashboard/src/components/a
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 Only)
+### ⚠️ CRITICAL ISSUE DISCOVERED
 
-1. Complete Phase 1: Setup (8 tasks)
-2. Complete Phase 2: Foundational (10 tasks) - CRITICAL foundation
-3. Complete Phase 3: User Story 1 (30 tasks) - Complete automated analysis system
-4. **STOP and VALIDATE**: Test User Story 1 independently with Spring Modulith
-5. Deploy/demo automated analysis capabilities
+**Current Status**: User Story 1 dashboard components (T044-T049) are complete, but the underlying static analysis tools (T023-T026) are incorrectly implemented.
+
+**What's Wrong**:
+- Context Mapper: Custom Python implementation instead of actual Java library
+- Structurizr: Custom Python implementation instead of DSL/CLI
+- CodeQL: Wrapper exists but binary not installed (falls back to mock data)
+- AppCAT: Wrapper exists but binary not installed (falls back to mock data)
+
+**Consequence**: System cannot achieve the promised 95% accuracy without real tools.
+
+**Required Fix**: Complete T023a-T027d (12 new tasks) before US1 can be production-ready.
+
+### Revised MVP Strategy (User Story 1)
+
+**Phase 1: Current State (INCOMPLETE)**
+1. ✅ Setup (8 tasks) - Complete
+2. ✅ Foundational (18 tasks) - Complete
+3. ✅ User Story 1 Backend (18 tasks) - Complete but using mock/custom tools
+4. ✅ User Story 1 Dashboard (6 tasks) - Complete
+5. ⚠️ **CRITICAL GAP**: Real tool integration missing
+
+**Phase 2: Tool Integration Fix (REQUIRED)**
+1. Install all third-party tools (T023a, T024a, T025a, T026a) - 4 tasks in parallel
+2. Rewrite integrations to use real tools (T023b, T024b, T025b, T026b) - 4 tasks sequential
+3. Update orchestration and add health checks (T027a, T027b) - 2 tasks
+4. Update Docker/docs (T027c, T027d) - 2 tasks in parallel
+5. **VALIDATE**: Test with real tools against Spring Modulith
+
+**Estimated Additional Timeline**: 2-3 weeks to properly integrate real tools
 
 ### Incremental Delivery
 
 1. Complete Setup + Foundational → Analysis platform foundation ready
-2. Add User Story 1 → Test with reference codebases → Deploy/Demo (MVP with automated analysis!)
+2. Add User Story 1 → ⚠️ **BLOCKED: Must fix tool integration (T023a-T027d)** → Test with reference codebases → Deploy/Demo (MVP with automated analysis!)
 3. Add User Story 2 → Test risk assessment → Deploy/Demo (Added migration readiness)
 4. Add User Story 3 → Test compliance → Deploy/Demo (Complete enterprise solution)
 5. Each story adds significant value without breaking previous functionality
+
+**Current Reality**: Dashboard works but shows mock/incomplete analysis data. Real tools needed for production deployment.
 
 ### Parallel Team Strategy
 
 With multiple developers:
 
-1. Team completes Setup + Foundational phases together (18 tasks)
-2. Once Foundational is done:
-   - **Senior Developer**: User Story 1 (30 tasks) - Core analysis engine
+1. Team completes Setup + Foundational phases together (18 tasks) ✅ **DONE**
+2. **CRITICAL PATH NOW**: Tool integration fix (T023a-T027d, 12 tasks) - **2-3 weeks**
+   - **DevOps/Senior**: Install tools and Docker integration (T023a, T024a, T025a, T026a, T027c)
+   - **Backend Lead**: Rewrite integrations (T023b, T024b, T025b, T026b)
+   - **Backend Dev**: Update orchestration (T027a, T027b, T027d)
+3. Once tools are integrated:
+   - **Senior Developer**: User Story 1 validation and refinement
    - **Mid-level Developer**: User Story 2 (17 tasks) - Risk assessment
    - **Junior/Mid Developer**: User Story 3 (15 tasks) - Compliance documentation
 3. Stories complete and integrate independently
@@ -312,12 +377,24 @@ With multiple developers:
 
 ### Resource Allocation
 
-- **Total Tasks**: 90 tasks
-- **MVP (US1 only)**: 48 tasks (Setup + Foundational + US1)
-- **Full Feature Set**: 90 tasks
+- **Total Tasks**: 102 tasks (90 original + 12 tool integration fixes)
+- **MVP (US1 only)**: 60 tasks (Setup + Foundational + US1 + Tool Integration)
+- **Full Feature Set**: 102 tasks
 - **Estimated Timeline**: 
-  - MVP: 6-8 weeks (single developer) or 3-4 weeks (3 developers)
-  - Full System: 12-15 weeks (single developer) or 6-8 weeks (3 developers)
+  - **Original Estimate**: 6-8 weeks (single developer) or 3-4 weeks (3 developers)
+  - **Revised with Tool Integration**: 8-11 weeks (single developer) or 5-7 weeks (3 developers)
+  - **Additional Time for Tool Integration**: +2-3 weeks
+  - Full System: 14-18 weeks (single developer) or 8-10 weeks (3 developers)
+
+**Current Progress**:
+- ✅ Setup: 8/8 tasks (100%)
+- ✅ Foundational: 18/18 tasks (100%)
+- ⚠️ User Story 1: 24/36 tasks (67% - missing tool integration)
+- ❌ User Story 2: 0/17 tasks (0%)
+- ❌ User Story 3: 0/15 tasks (0%)
+- ❌ Polish: 0/10 tasks (0%)
+
+**Immediate Priority**: Complete T023a-T027d (12 tasks) to unblock US1 production readiness
 
 ---
 
@@ -325,6 +402,7 @@ With multiple developers:
 
 - [P] tasks = different files, no dependencies - can run in parallel
 - [Story] label maps task to specific user story for traceability
+- ⚠️ Symbol indicates incomplete or incorrectly implemented tasks requiring rework
 - Each user story delivers independent value and can be tested/deployed separately
 - Foundational phase is critical - no user story work can proceed without it
 - Models and static analysis tools can be developed in parallel within each story

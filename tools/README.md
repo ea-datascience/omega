@@ -88,15 +88,160 @@ When developing new tools:
 
 ## Available Tools
 
-### 1. Spring Modulith Clone Script (`src/clone-spring-modulith.sh`)
+### System Discovery & Analysis Tools
 
-A robust, idempotent script for cloning and managing the Spring Modulith reference repository.
+#### 1. Context Mapper Integration (`src/utils/context_mapper.py`)
 
-#### Purpose
-- Clone the official Spring Modulith repository for migration analysis
-- Provide idempotent operation (safe to run multiple times)
-- Ensure latest version availability with comprehensive validation
-- Integrate with the broader Omega workflow for reference codebase management
+Python wrapper for Context Mapper DSL and Discovery libraries, providing two analysis modes:
+
+**Features:**
+- **Source Code Analysis** (recommended): Direct analysis without compilation
+- **Reflection-based Analysis**: Bytecode analysis for compiled applications
+- CML and JSON report generation
+- Spring Boot module and bounded context discovery
+- Integration with Spring Boot Analyzer
+
+**Installation:** `./src/utils/install-context-mapper.sh`  
+**Documentation:** `/docs/setup/context-mapper-setup.md`  
+**Tests:** 21 tests (12 unit + 5 integration + 4 E2E)  
+**Version:** Context Mapper DSL 6.12.0, Discovery 1.1.0
+
+#### 2. Spring Boot Analyzer (`src/utils/spring_boot_analyzer.py`)
+
+Source code analyzer for Spring Boot applications providing module structure discovery.
+
+**Features:**
+- Module detection and classification
+- Service, entity, and repository identification
+- Dependency graph analysis
+- CML and JSON export
+- No compilation required
+
+**Documentation:** `/docs/setup/context-mapper-setup.md` (integrated section)  
+**Tests:** 24 tests (16 unit + 8 integration)  
+**Python Module:** Import as `from src.utils.spring_boot_analyzer import SpringBootAnalyzer`
+
+#### 3. Structurizr CLI Integration (`src/utils/structurizr_cli.py`)
+
+Python wrapper for Structurizr CLI providing C4 model diagram generation.
+
+**Features:**
+- Workspace DSL validation
+- Export to PlantUML, Mermaid, DOT, WebSequenceDiagrams, Ilograph
+- Workspace inspection and element listing
+- Support for System Context, Container, Component, and Dynamic views
+
+**Installation:** `./src/utils/install-structurizr.sh`  
+**Documentation:** `/docs/setup/structurizr-cli-setup.md`  
+**Tests:** 23 tests (14 unit + 9 integration)  
+**Version:** Structurizr CLI 2025.11.09
+
+### Infrastructure & Environment Tools
+
+#### 4. Java Environment Manager (`src/utils/java_utils.py`)
+
+Comprehensive Java environment detection and validation utilities.
+
+**Features:**
+- Java 17+ detection and validation
+- JAVA_HOME management
+- Maven/Gradle detection
+- Classpath utilities
+- Vendor identification (OpenJDK, Oracle, etc.)
+
+**Python Module:** Import as `from src.utils.java_utils import JavaEnvironmentManager`  
+**Tests:** 27 unit tests  
+**Required:** Java 17+ (pre-installed in dev container)
+
+#### 5. Service Connection Manager (`src/utils.service_utils.py`)
+
+Database and infrastructure service connection management.
+
+**Features:**
+- PostgreSQL 15 with pg_vector
+- ClickHouse for analytics
+- Redis Cluster for caching
+- MinIO for object storage
+- Apache Kafka for event streaming
+- Connection health checks and validation
+
+**Python Module:** Import as `from src.utils.service_utils import get_postgres_connection`  
+**Tests:** 14 integration tests  
+**Services:** All running in docker-compose
+
+### Build & Setup Tools
+
+#### 6. Maven Installation (`src/utils/install-maven.sh`)
+
+Reproducible Maven 3.9.9 installation script.
+
+**Features:**
+- Version-pinned download (3.9.9)
+- Automatic environment configuration
+- PATH setup
+- Verification tests
+
+**Installation Location:** `/opt/maven`  
+**Usage:** Run once during project setup
+
+#### 7. Spring Modulith Clone (`src/utils/clone-spring-modulith.sh`)
+
+Idempotent script for cloning the Spring Modulith reference repository.
+
+**Purpose:**
+- Clone official Spring Modulith repository for migration analysis
+- Idempotent operation (safe to run multiple times)
+- Latest version availability with validation
+- Integration with Omega workflow
+
+**Target Directory:** `/workspace/data/codebase/spring-modulith`  
+**Usage:** Run when setting up reference codebase
+
+### Development Utilities
+
+#### 8. Parser Manager (`src/utils/parser_manager.py`)
+
+Java parser evaluation and installation tool.
+
+**Features:**
+- Compare parser options (tree-sitter-java, javalang, JavaParser)
+- Automated installation with version pinning
+- Performance and capability evaluation
+- Reproducible setup
+
+**CLI Usage:** `python -m src.utils.parser_manager evaluate`  
+**Recommended:** tree-sitter-java 0.23.5
+
+#### 9. Checkpoint Creator (`src/utils/create-checkpoint.sh`)
+
+Project state checkpoint creation for progress tracking.
+
+**Features:**
+- Captures full project context
+- JSON format with timestamp
+- Git integration
+- Progress validation
+
+**Output:** `/workspace/checkpoints/checkpoint_YYYYMMDD_HHMMSS.json`  
+**Usage:** Run after completing major work units
+
+#### 10. Report Generator (`src/utils/report_generator.py`)
+
+Analysis report generation utilities.
+
+**Features:**
+- Markdown report generation
+- Data aggregation and formatting
+- Template-based output
+
+**Python Module:** Import as `from src.utils.report_generator import generate_report`
+
+### Coming Soon
+
+The following tools are planned for system discovery baseline:
+
+- **CodeQL CLI Integration** (T025a): Static code analysis and security scanning
+- **Microsoft AppCAT CLI** (T026a): Azure migration assessment and recommendations
 
 #### Features
 - **Idempotent Operation**: Safely handles existing repositories by removing and re-cloning

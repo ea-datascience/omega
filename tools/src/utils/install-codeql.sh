@@ -21,7 +21,6 @@ set -euo pipefail
 
 # Version pinning (CRITICAL: Do not change without updating tests and documentation)
 CODEQL_VERSION="2.23.5"
-CODEQL_URL="https://github.com/github/codeql-cli-binaries/releases/download/v${CODEQL_VERSION}/codeql-linux64.zip"
 INSTALL_DIR="/opt/codeql"
 
 # Colors for output
@@ -29,6 +28,19 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+# Note: CodeQL only provides x86-64 Linux binaries
+# For ARM64 systems, we install the x86-64 version and rely on QEMU user-mode emulation
+# This is a known limitation documented at https://github.com/github/codeql-cli-binaries/issues
+CODEQL_PLATFORM="linux64"
+CODEQL_URL="https://github.com/github/codeql-cli-binaries/releases/download/v${CODEQL_VERSION}/codeql-${CODEQL_PLATFORM}.zip"
+
+# Check architecture and warn if ARM64
+ARCH=$(uname -m)
+if [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
+    echo -e "${YELLOW}Warning: Running on ARM64 system. CodeQL is x86-64 and requires emulation.${NC}"
+    echo -e "${YELLOW}Performance may be reduced. For production use, consider x86-64 systems.${NC}"
+fi
 
 echo "========================================"
 echo "CodeQL CLI Installation Script"
@@ -90,11 +102,16 @@ if [ -d "$INSTALL_DIR" ]; then
 fi
 
 # Download CodeQL CLI
-echo "Downloading CodeQL CLI v${CODEQL_VERSION}..."
+echo "Downloading CodeQL CLI v${CODEQL_VERSION} (${CODEQL_PLATFORM})..."
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
 
-if ! wget -q --show-progress "$CODEQL_URL" -O codeql-linux64.zip; then
+ZIP_FILE="codeql-${CODEQL_PLATFORM}.zip"
+if [ "$CODEQL_PLATFORM" = "generic" ]; then
+    ZIP_FILE="codeql.zip"
+fi
+
+if ! wget -q --show-progress "$CODEQL_URL" -O "$ZIP_FILE"; then
     echo -e "${RED}Error: Failed to download CodeQL CLI${NC}"
     rm -rf "$TEMP_DIR"
     exit 1
@@ -103,8 +120,8 @@ fi
 echo -e "${GREEN}✓${NC} Downloaded CodeQL CLI"
 echo ""
 
-# Verify download size (should be ~300MB)
-FILE_SIZE=$(stat -f%z codeql-linux64.zip 2>/dev/null || stat -c%s codeql-linux64.zip)
+# Verify download size (should be ~300-700MB depending on platform)
+FILE_SIZE=$(stat -f%z "$ZIP_FILE" 2>/dev/null || stat -c%s "$ZIP_FILE")
 FILE_SIZE_MB=$((FILE_SIZE / 1024 / 1024))
 echo "Download size: ${FILE_SIZE_MB}MB"
 
@@ -116,7 +133,7 @@ fi
 
 # Extract CodeQL CLI
 echo "Extracting CodeQL CLI..."
-if ! unzip -q codeql-linux64.zip; then
+if ! unzip -q "$ZIP_FILE"; then
     echo -e "${RED}Error: Failed to extract CodeQL CLI${NC}"
     rm -rf "$TEMP_DIR"
     exit 1

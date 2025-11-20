@@ -31,7 +31,13 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Use netcoreapp package (cross-platform .NET DLLs)
-APPINSPECTOR_URL="https://github.com/microsoft/ApplicationInspector/releases/download/v${APPINSPECTOR_VERSION}/ApplicationInspector_netcoreapp_${APPINSPECTOR_VERSION}.zip"
+# Get download URL from GitHub API to handle redirects properly
+APPINSPECTOR_URL=$(curl -s https://api.github.com/repos/microsoft/ApplicationInspector/releases/tags/v${APPINSPECTOR_VERSION} | jq -r '.assets[] | select(.name | contains("netcoreapp")) | .browser_download_url')
+
+if [ -z "$APPINSPECTOR_URL" ]; then
+    echo -e "${RED}Error: Could not find netcoreapp package for version ${APPINSPECTOR_VERSION}${NC}"
+    exit 1
+fi
 
 echo "========================================"
 echo "Application Inspector Installation Script"
@@ -140,11 +146,11 @@ echo ""
 
 # Verify installation
 echo "Verifying Application Inspector installation..."
-if appinspector --version > /dev/null 2>&1; then
+if appinspector --version 2>&1 | grep -q "ApplicationInspector"; then
     echo -e "${GREEN}✓${NC} Application Inspector installed successfully!"
     echo ""
     echo "Version information:"
-    appinspector --version
+    appinspector --version 2>&1 | head -1
     echo ""
     echo "Installation complete!"
     echo "You can now use 'appinspector' command from anywhere."

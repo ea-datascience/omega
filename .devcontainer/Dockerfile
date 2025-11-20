@@ -35,13 +35,12 @@ RUN mkdir -p /etc/apt/keyrings && \
 # Verify Node.js and npm installation
 RUN node --version && npm --version
 
-# Install .NET 9 SDK for ARM64 (required for Application Inspector)
-RUN curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb && \
-    dpkg -i packages-microsoft-prod.deb && \
-    rm packages-microsoft-prod.deb && \
-    apt-get update && \
-    apt-get install -y dotnet-sdk-9.0 && \
-    apt-get clean -y && rm -rf /var/lib/apt/lists/*
+# Install .NET 9 SDK using the official installer script (supports ARM64)
+RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh && \
+    chmod +x dotnet-install.sh && \
+    ./dotnet-install.sh --channel 9.0 --install-dir /usr/share/dotnet && \
+    rm dotnet-install.sh && \
+    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 # Verify .NET installation
 RUN dotnet --version

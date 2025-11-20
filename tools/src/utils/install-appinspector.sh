@@ -8,7 +8,7 @@
 #
 # Version Information:
 # - Application Inspector: 1.9.53 (latest stable as of 2025-11-20)
-# - .NET Required: 8.0+ (pre-installed in dev container)
+# - .NET Required: 9.0+ (pre-installed in dev container)
 # - Installation Location: /opt/appinspector
 #
 # Usage:
@@ -54,7 +54,7 @@ fi
 echo "Checking .NET installation..."
 if ! command -v dotnet &> /dev/null; then
     echo -e "${RED}Error: .NET SDK not found${NC}"
-    echo "Please install .NET 8.0 SDK or rebuild the dev container"
+    echo "Please install .NET 9.0 SDK or rebuild the dev container"
     echo "See: https://dotnet.microsoft.com/download"
     exit 1
 fi
@@ -115,8 +115,8 @@ echo ""
 
 # Install to /opt/appinspector
 echo "Installing Application Inspector to ${INSTALL_DIR}..."
-mkdir -p /opt
-mv ApplicationInspector_netcoreapp_${APPINSPECTOR_VERSION} "$INSTALL_DIR"
+sudo mkdir -p /opt
+sudo mv ApplicationInspector_netcoreapp_${APPINSPECTOR_VERSION} "$INSTALL_DIR"
 
 echo -e "${GREEN}✓${NC} Installed Application Inspector to ${INSTALL_DIR}"
 echo ""
@@ -127,13 +127,13 @@ rm -rf "$TEMP_DIR"
 
 # Create wrapper script in /usr/local/bin
 echo "Creating wrapper script..."
-cat > /usr/local/bin/appinspector <<'EOF'
+sudo tee /usr/local/bin/appinspector > /dev/null <<'EOF'
 #!/bin/bash
 # Application Inspector wrapper script
 exec dotnet /opt/appinspector/ApplicationInspector.CLI.dll "$@"
 EOF
 
-chmod +x /usr/local/bin/appinspector
+sudo chmod +x /usr/local/bin/appinspector
 
 echo -e "${GREEN}✓${NC} Created wrapper script at /usr/local/bin/appinspector"
 echo ""

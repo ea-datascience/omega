@@ -35,6 +35,17 @@ RUN mkdir -p /etc/apt/keyrings && \
 # Verify Node.js and npm installation
 RUN node --version && npm --version
 
+# Install .NET 8 SDK for ARM64
+RUN curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt-get update && \
+    apt-get install -y dotnet-sdk-8.0 && \
+    apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+# Verify .NET installation
+RUN dotnet --version
+
 # Install uv globally so all users can access it
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     cp /root/.local/bin/uv /usr/local/bin/uv && \
